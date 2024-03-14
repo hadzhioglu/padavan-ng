@@ -191,7 +191,7 @@ function wl_auth_mode_change(isload){
 			new_array = new Array("TKIP");
 		else
 			new_array = new Array("AES", "TKIP+AES");
-
+		
 		free_options(document.form.wl_crypto);
 		for(var i in new_array){
 			document.form.wl_crypto[i] = new Option(new_array[i], new_array[i].toLowerCase());
@@ -202,7 +202,7 @@ function wl_auth_mode_change(isload){
 	}
 	else if(mode == "wpa2"){
 		new_array = new Array("AES");
-
+		
 		free_options(document.form.wl_crypto);
 		for(var i in new_array){
 			document.form.wl_crypto[i] = new Option(new_array[i], new_array[i].toLowerCase());
@@ -211,18 +211,18 @@ function wl_auth_mode_change(isload){
 				document.form.wl_crypto[i].selected = true;
 		}
 	}
-
+	
 	for(var i = 0; i < document.form.wl_key.length; ++i)
 		if(document.form.wl_key[i].selected){
 			cur_key_index = document.form.wl_key[i].value;
 			break;
 		}
-
+	
 	if(mode == "psk" || mode == "wpa" || mode == "wpa2")
 		new_array = new Array("2", "3");
 	else{
 		new_array = new Array("1", "2", "3", "4");
-
+		
 		if(!isload)
 			cur_key_index = "1";
 	}
@@ -296,7 +296,7 @@ function wl_wep_change(){
 			$("wl_crypto").style.display = "";
 			$("wl_wpa_psk").style.display = "";
 		}
-
+		
 		//blocking("all_related_wep", 0);
 		$("all_related_wep").style.display = "none";
 		$("all_wep_key").style.display = "none";
@@ -305,7 +305,7 @@ function wl_wep_change(){
 	else{
 		$("wl_crypto").style.display = "none";
 		$("wl_wpa_psk").style.display = "none";
-
+		
 		if(wep == "0" || mode == "radius"){
 			$("all_wep_key").style.display = "none";
 			$("asus_wep_key").style.display = "none";
@@ -339,7 +339,7 @@ function change_auth_mode(auth_mode_obj){
 	wl_auth_mode_change(0);
 	if(auth_mode_obj.value == "psk" || auth_mode_obj.value == "wpa"){
 		var opts = document.form.wl_auth_mode.options;
-
+		
 		if(opts[opts.selectedIndex].text == "WPA-Personal")
 			document.form.wl_wpa_mode.value = "1";
 		else if(opts[opts.selectedIndex].text == "WPA2-Personal")
@@ -350,7 +350,7 @@ function change_auth_mode(auth_mode_obj){
 			document.form.wl_wpa_mode.value="3";
 		else if(opts[opts.selectedIndex].text == "WPA-Auto-Enterprise (Radius)")
 			document.form.wl_wpa_mode.value = "4";
-
+		
 		if(auth_mode_obj.value == "psk"){
 			document.form.wl_wpa_psk.focus();
 			document.form.wl_wpa_psk.select();
@@ -446,10 +446,10 @@ function StopTheClock()
 function StartTheTimer(){
 	if(msecs == 0){
 		StopTheClock();
-
+		
 		if(stopFlag == 1)
 			return;
-
+		
 		msecs = timeout;
 		StartTheTimer();
 	}
@@ -470,6 +470,9 @@ function submitForm(){
 
 	if(document.form.wl_wpa_psk.value == "Please type Password")
 		document.form.wl_wpa_psk.value = "";
+
+	if(!validate_string_ssid(document.form.wl_ssid))
+		return false;
 
 	if(auth_mode == "psk"){
 		if(!validate_psk(document.form.wl_wpa_psk))
@@ -528,11 +531,13 @@ function nmode_limitation2(){
 	document.form.wl_wpa_psk.select();
 }
 
-window.onunload  = function(){
+window.onunload  = function(){ 
 	var auth_mode = document.form.wl_auth_mode.value;
 
 	if(document.form.wl_wpa_psk.value == "Please type Password")
 		document.form.wl_wpa_psk.value = "";
+
+	validate_string_ssid(document.form.wl_ssid) 
 
 	if(auth_mode == "psk")
 		validate_psk(document.form.wl_wpa_psk)
@@ -580,7 +585,7 @@ window.onunload  = function(){
 <input type="hidden" name="wl_key2" value="">
 <input type="hidden" name="wl_key3" value="">
 <input type="hidden" name="wl_key4" value="">
-<input type="hidden" name="wl_ssid2" value="<% nvram_get_x("", "wl_ssid"); %>">
+<input type="hidden" name="wl_ssid2" value="<% nvram_char_to_ascii("", "wl_ssid"); %>">
 <input type="hidden" name="wl_wpa_psk_org" value="<% nvram_char_to_ascii("", "wl_wpa_psk"); %>">
 <input type="hidden" name="wl_auth_mode_orig" value="<% nvram_get_x("","wl_auth_mode"); %>">
 <input type="hidden" name="wl_wpa_mode_orig" value="<% nvram_get_x("", "wl_wpa_mode"); %>">

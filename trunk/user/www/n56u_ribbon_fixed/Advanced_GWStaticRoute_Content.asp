@@ -44,9 +44,9 @@ function initial(){
 function applyRule(){
 	showLoading();
 	if (document.form.sr_enable_x[0].checked)
-		document.form.action_mode.value = " Restart ";
+	document.form.action_mode.value = " Restart ";
 	else
-		document.form.action_mode.value = " Apply ";
+	document.form.action_mode.value = " Apply ";
 	document.form.current_page.value = "/Advanced_GWStaticRoute_Content.asp";
 	document.form.next_page.value = "";
 	document.form.submit();
@@ -64,36 +64,36 @@ function change_sr_enabled(){
 function GWStatic_markGroup(o, c, b) {
 	document.form.group_id.value = "GWStatic";
 	if(b == " Add "){
-		if (document.form.sr_num_x_0.value > c){
-			alert("<#JS_itemlimit1#> " + c + " <#JS_itemlimit2#>");
-			return false;
-		}
-		else if (!validate_ipaddr_final(document.form.sr_ipaddr_x_0, '') ||
-				 !validate_ipaddr_final(document.form.sr_netmask_x_0, '') ||
-				 !validate_ipaddr_final(document.form.sr_gateway_x_0, '')){
-			return false;
-		}
-		else if (document.form.sr_ipaddr_x_0.value == ""){
-			alert("<#JS_fieldblank#>");
-			document.form.sr_ipaddr_x_0.focus();
-			return false;
-		}
-		else if (document.form.sr_netmask_x_0.value == ""){
-			alert("<#JS_fieldblank#>");
-			document.form.sr_netmask_x_0.focus();
-			return false;
-		}
-		else if (document.form.sr_gateway_x_0.value == ""){
-			alert("<#JS_fieldblank#>");
-			document.form.sr_gateway_x_0.focus();
-			return false;
-		}
-		else if (GWStatic_validate_duplicate_noalert(GWStaticList, document.form.sr_ipaddr_x_0.value, 16, 0) &&
-				 GWStatic_validate_duplicate_noalert(GWStaticList, document.form.sr_netmask_x_0.value, 16, 1) &&
-				 GWStatic_validate_duplicate_noalert(GWStaticList, document.form.sr_gateway_x_0.value, 16, 2) &&
-				 GWStatic_validate_duplicate(GWStaticList, document.form.sr_if_x_0.value, 2, 4)){
-			return false;
-		}
+	if (document.form.sr_num_x_0.value > c){
+	alert("<#JS_itemlimit1#> " + c + " <#JS_itemlimit2#>");
+	return false;
+	}
+	else if (!validate_ipaddr_final(document.form.sr_ipaddr_x_0, '') ||
+	 !validate_ipaddr_final(document.form.sr_netmask_x_0, '') ||
+	 !validate_ipaddr_final(document.form.sr_gateway_x_0, '')){
+	return false;
+	}
+	else if (document.form.sr_ipaddr_x_0.value == ""){
+	alert("<#JS_fieldblank#>");
+	document.form.sr_ipaddr_x_0.focus();
+	return false;
+	}
+	else if (document.form.sr_netmask_x_0.value == ""){
+	alert("<#JS_fieldblank#>");
+	document.form.sr_netmask_x_0.focus();
+	return false;
+	}
+	else if (document.form.sr_gateway_x_0.value == ""){
+	alert("<#JS_fieldblank#>");
+	document.form.sr_gateway_x_0.focus();
+	return false;
+	}
+	else if (GWStatic_validate_duplicate_noalert(GWStaticList, document.form.sr_ipaddr_x_0.value, 16, 0) &&
+	 GWStatic_validate_duplicate_noalert(GWStaticList, document.form.sr_netmask_x_0.value, 16, 1) &&
+	 GWStatic_validate_duplicate_noalert(GWStaticList, document.form.sr_gateway_x_0.value, 16, 2) &&
+	 GWStatic_validate_duplicate(GWStaticList, document.form.sr_if_x_0.value, 2, 4)){
+	return false;
+	}
 	}
 
 	pageChanged = 0;
@@ -104,19 +104,19 @@ function GWStatic_markGroup(o, c, b) {
 function GWStatic_validate_duplicate_noalert(o, v, l, off){
 	for (var i=0; i < o.length; i++)
 	{
-		if (entry_cmp(o[i][off], v, l)==0){
-			return true;
-		}
+	if (entry_cmp(o[i][off], v, l)==0){
+	return true;
+	}
 	}
 	return false;
 }
 
 function GWStatic_validate_duplicate(o, v, l, off){
 	for(var i = 0; i < o.length; i++){
-		if(entry_cmp(o[i][off].toLowerCase(), v.toLowerCase(), l) == 0){
-			alert('<#JS_duplicate#>');
-			return true;
-		}
+	if(entry_cmp(o[i][off].toLowerCase(), v.toLowerCase(), l) == 0){
+	alert('<#JS_duplicate#>');
+	return true;
+	}
 	}
 	return false;
 }
@@ -124,22 +124,22 @@ function GWStatic_validate_duplicate(o, v, l, off){
 function showGWStaticList(){
 	var code = '';
 	if(GWStaticList.length == 0)
-		code +='<tr><td colspan="6" style="text-align: center;"><div class="alert alert-info"><#IPConnection_VSList_Norule#></div></td></tr>';
+	code +='<tr><td colspan="6" style="text-align: center;"><div class="alert alert-info"><#IPConnection_VSList_Norule#></div></td></tr>';
 	else{
 	    for(var i = 0; i < GWStaticList.length; i++){
-		code +='<tr id="row' + i + '">';
-		code +='<td width="28%">&nbsp;' + GWStaticList[i][0] + '</td>';
-		code +='<td width="22%">&nbsp;' + GWStaticList[i][1] + '</td>';
-		code +='<td width="22%">&nbsp;' + GWStaticList[i][2] + '</td>';
-		code +='<td width="10%">&nbsp;' + GWStaticList[i][3] + '</td>';
-		code +='<td width="13%">&nbsp;' + GWStaticList[i][4] + '</td>';
-		code +='<td width="5%" style="text-align: center;"><input type="checkbox" name="GWStatic_s" value="' + i + '" onClick="changeBgColor(this,' + i + ');" id="check' + i + '"></td>';
-		code +='</tr>';
+	code +='<tr id="row' + i + '">';
+	code +='<td width="28%">&nbsp;' + GWStaticList[i][0] + '</td>';
+	code +='<td width="22%">&nbsp;' + GWStaticList[i][1] + '</td>';
+	code +='<td width="22%">&nbsp;' + GWStaticList[i][2] + '</td>';
+	code +='<td width="10%">&nbsp;' + GWStaticList[i][3] + '</td>';
+	code +='<td width="13%">&nbsp;' + GWStaticList[i][4] + '</td>';
+	code +='<td width="5%" style="text-align: center;"><input type="checkbox" name="GWStatic_s" value="' + i + '" onClick="changeBgColor(this,' + i + ');" id="check' + i + '"></td>';
+	code +='</tr>';
 	    }
-		code += '<tr>';
-		code += '<td colspan="5">&nbsp;</td>'
-		code += '<td><button class="btn btn-danger" type="submit" onclick="GWStatic_markGroup(this, 64,\' Del \');" name="GWStatic"><i class="icon icon-minus icon-white"></i></button></td>';
-		code += '</tr>'
+	code += '<tr>';
+	code += '<td colspan="5">&nbsp;</td>'
+	code += '<td><button class="btn btn-danger" type="submit" onclick="GWStatic_markGroup(this, 64,\' Del \');" name="GWStatic"><i class="icon icon-minus icon-white"></i></button></td>';
+	code += '</tr>'
 	}
 	$j('#GWStaticList_Block').append(code);
 }

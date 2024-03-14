@@ -125,12 +125,12 @@ Highcharts.setOptions(Highcharts.locale);
 
 $j(document).ready(function(){
 	$j("#tabs a").click(function(){
-		switchPage(this.id);
-		return false;
+	switchPage(this.id);
+	return false;
 	});
 	if(get_ap_mode()){
-		$j("#tab_tr_dy").parents('li').hide();
-		$j("#tab_tr_mo").parents('li').hide();
+	$j("#tab_tr_dy").parents('li').hide();
+	$j("#tab_tr_mo").parents('li').hide();
 	}
 	netChart = new Highcharts.StockChart(net_chart_rt);
 	invoke_timer(2);
@@ -153,7 +153,7 @@ function initial(){
 
 	var ifdesc = cookie.get(cprefix + 'tab');
 	if (ifdesc)
-		netdev = ifdesc;
+	netdev = ifdesc;
 
 	initTab();
 	calc_speed(0);
@@ -165,7 +165,7 @@ function calc_speed(now_perf){
 	var diff_time = (now_perf - last_perf);
 
 	if (diff_time <= 0)
-		diff_time = 1000;
+	diff_time = 1000;
 
 	last_perf = now_perf;
 	x = parseInt(x/1000)*1000;
@@ -174,96 +174,96 @@ function calc_speed(now_perf){
 	ifdesc_1st = null;
 
 	for(i in netdevs){
-		c = netdevs[i];
-		p = netdevs_prev[i];
-		h = speed_history[i];
-		if(speed_rx[i] === undefined)
-			speed_rx[i] = prepare_array(x);
-		if(speed_tx[i] === undefined)
-			speed_tx[i] = prepare_array(x);
-		if(h === undefined){
-			speed_history[i] = {};
-			h = speed_history[i];
-			h.rx = [];
-			h.tx = [];
-			h.rx_avg = 0;
-			h.tx_avg = 0;
-			h.rx_max = 0;
-			h.tx_max = 0;
-			for (j = updateAvgLen; j > 0; --j) {
-				h.rx.push(0);
-				h.tx.push(0);
-			}
-		}
-		if(p !== undefined){
-			var diff_rx = 0, diff_tx = 0;
-
-			if(p.id != c.id) {
-				p.id = c.id;
-				p.rx = 0;
-				p.tx = 0;
-			}
-
-			if(c.rx < p.rx){
-				if (p.rx <= 0xFFFFFFFF && p.rx > 0xE0000000)
-					diff_rx = (0xFFFFFFFF - p.rx) + c.rx;
-			} else {
-				diff_rx = (c.rx - p.rx);
-			}
-			diff_rx = diff_rx * 1000 / diff_time;
-
-			h.rx.splice(0, 1);
-			h.rx.push(diff_rx);
-			if (diff_rx > h.rx_max)
-				h.rx_max = diff_rx;
-
-			t = 0;
-			for (j = (h.rx.length - updateAvgLen); j < h.rx.length; ++j)
-				t += h.rx[j];
-			h.rx_avg = t / updateAvgLen;
-
-			if(c.tx < p.tx){
-				if (p.tx <= 0xFFFFFFFF && p.tx > 0xE0000000)
-					diff_tx = (0xFFFFFFFF - p.tx) + c.tx;
-			} else {
-				diff_tx = (c.tx - p.tx);
-			}
-
-			diff_tx = diff_tx * 1000 / diff_time;
-			h.tx.splice(0, 1);
-			h.tx.push(diff_tx);
-			if (diff_tx > h.tx_max)
-				h.tx_max = diff_tx;
-
-			t = 0;
-			for (j = (h.tx.length - updateAvgLen); j < h.tx.length; ++j)
-				t += h.tx[j];
-			h.tx_avg = t / updateAvgLen;
-
-			diff_rx = diff_rx*8/1000000;
-			diff_tx = diff_tx*8/1000000;
-
-			speed_rx[i].push([x, diff_rx]);
-			speed_tx[i].push([x, diff_tx]);
-
-			if(i === last_netdev){
-				netChart.series[0].addPoint([x, diff_rx], false, false);
-				netChart.series[1].addPoint([x, diff_tx], false, false);
-			}
-		}
-		h.rx_total = c.rx;
-		h.tx_total = c.tx;
-		netdevs_prev[i] = c;
-		if (!ifdesc_1st)
-			ifdesc_1st = i;
-		if (!ifdesc && i === netdev)
-			ifdesc = i;
+	c = netdevs[i];
+	p = netdevs_prev[i];
+	h = speed_history[i];
+	if(speed_rx[i] === undefined)
+	speed_rx[i] = prepare_array(x);
+	if(speed_tx[i] === undefined)
+	speed_tx[i] = prepare_array(x);
+	if(h === undefined){
+	speed_history[i] = {};
+	h = speed_history[i];
+	h.rx = [];
+	h.tx = [];
+	h.rx_avg = 0;
+	h.tx_avg = 0;
+	h.rx_max = 0;
+	h.tx_max = 0;
+	for (j = updateAvgLen; j > 0; --j) {
+	h.rx.push(0);
+	h.tx.push(0);
+	}
+	}
+	if(p !== undefined){
+	var diff_rx = 0, diff_tx = 0;
+	
+	if(p.id != c.id) {
+	p.id = c.id;
+	p.rx = 0;
+	p.tx = 0;
+	}
+	
+	if(c.rx < p.rx){
+	if (p.rx <= 0xFFFFFFFF && p.rx > 0xE0000000)
+	diff_rx = (0xFFFFFFFF - p.rx) + c.rx;
+	} else {
+	diff_rx = (c.rx - p.rx);
+	}
+	diff_rx = diff_rx * 1000 / diff_time;
+	
+	h.rx.splice(0, 1);
+	h.rx.push(diff_rx);
+	if (diff_rx > h.rx_max)
+	h.rx_max = diff_rx;
+	
+	t = 0;
+	for (j = (h.rx.length - updateAvgLen); j < h.rx.length; ++j)
+	t += h.rx[j];
+	h.rx_avg = t / updateAvgLen;
+	
+	if(c.tx < p.tx){
+	if (p.tx <= 0xFFFFFFFF && p.tx > 0xE0000000)
+	diff_tx = (0xFFFFFFFF - p.tx) + c.tx;
+	} else {
+	diff_tx = (c.tx - p.tx);
+	}
+	
+	diff_tx = diff_tx * 1000 / diff_time;
+	h.tx.splice(0, 1);
+	h.tx.push(diff_tx);
+	if (diff_tx > h.tx_max)
+	h.tx_max = diff_tx;
+	
+	t = 0;
+	for (j = (h.tx.length - updateAvgLen); j < h.tx.length; ++j)
+	t += h.tx[j];
+	h.tx_avg = t / updateAvgLen;
+	
+	diff_rx = diff_rx*8/1000000;
+	diff_tx = diff_tx*8/1000000;
+	
+	speed_rx[i].push([x, diff_rx]);
+	speed_tx[i].push([x, diff_tx]);
+	
+	if(i === last_netdev){
+	netChart.series[0].addPoint([x, diff_rx], false, false);
+	netChart.series[1].addPoint([x, diff_tx], false, false);
+	}
+	}
+	h.rx_total = c.rx;
+	h.tx_total = c.tx;
+	netdevs_prev[i] = c;
+	if (!ifdesc_1st)
+	ifdesc_1st = i;
+	if (!ifdesc && i === netdev)
+	ifdesc = i;
 	}
 
 	if (!ifdesc && ifdesc_1st){
-		ifdesc = ifdesc_1st;
-		setChartData(ifdesc);
-		E('sel_netif').value = 'speed-tab-' + ifdesc;
+	ifdesc = ifdesc_1st;
+	setChartData(ifdesc);
+	E('sel_netif').value = 'speed-tab-' + ifdesc;
 	}
 
 	processTabs();
@@ -276,10 +276,10 @@ function eval_netdevs(response){
 	netdevs = {};
 
 	try {
-		eval(response);
+	eval(response);
 	}
 	catch (ex) {
-		netdevs = {};
+	netdevs = {};
 	}
 
 	calc_speed(now_perf);
@@ -289,7 +289,7 @@ function eval_netdevs(response){
 function prepare_array(x){
 	var data = [], p = -450;
 	for (var i = p; i <= 0; i++)
-		data.push([x+i*2000, 0]);
+	data.push([x+i*2000, 0]);
 	return data;
 }
 
@@ -302,50 +302,50 @@ function prepare_array_chart(){
 function load_netdevs(){
 	clearTimeout(idTimerPoll);
 	$j.ajax({
-		type: "get",
-		url: "/update.cgi",
-		data: {
-			output: "netdev"
-		},
-		dataType: "script",
-		cache: true,
-		error: function(xhr){
-			invoke_timer(2);
-		},
-		success: function(response){
-			invoke_timer(2);
-			eval_netdevs(response);
-		}
+	type: "get",
+	url: "/update.cgi",
+	data: {
+	output: "netdev"
+	},
+	dataType: "script",
+	cache: true,
+	error: function(xhr){
+	invoke_timer(2);
+	},
+	success: function(response){
+	invoke_timer(2);
+	eval_netdevs(response);
+	}
 	});
 }
 
 function prepareData(data){
 	var newData = [];
 	for(var i=0; i<data.length; i++)
-		newData.push(data[i]);
+	newData.push(data[i]);
 	return newData;
 }
 
 function setChartTitle(ifdesc){
 	var title = getTabDesc(ifdesc);
 	if (title)
-		netChart.setTitle({text: title}, null, false);
+	netChart.setTitle({text: title}, null, false);
 }
 
 function setChartData(ifdesc){
 	if (!ifdesc)
-		return false;
+	return false;
 	if (netdev != ifdesc){
-		netdev = ifdesc;
-		cookie.set(cprefix + 'tab', ifdesc, 14);
+	netdev = ifdesc;
+	cookie.set(cprefix + 'tab', ifdesc, 14);
 	}
 	if (last_netdev != ifdesc && speed_rx[ifdesc] !== undefined && speed_tx[ifdesc] !== undefined){
-		if (last_netdev != ""){
-			netChart.series[0].setData(prepareData(speed_rx[ifdesc]), false);
-			netChart.series[1].setData(prepareData(speed_tx[ifdesc]), false);
-		}
-		last_netdev = ifdesc;
-		setChartTitle(ifdesc);
+	if (last_netdev != ""){
+	netChart.series[0].setData(prepareData(speed_rx[ifdesc]), false);
+	netChart.series[1].setData(prepareData(speed_tx[ifdesc]), false);
+	}
+	last_netdev = ifdesc;
+	setChartTitle(ifdesc);
 	}
 }
 
@@ -355,7 +355,7 @@ function handleTabs(arrTabs){
 	var tabName = 'speed-tab-' + ifdesc;
 	free_options(o);
 	for(var i=0; i<arrTabs.length; i++)
-		add_option(o, arrTabs[i][1], arrTabs[i][0], arrTabs[i][0] === tabName);
+	add_option(o, arrTabs[i][1], arrTabs[i][0], arrTabs[i][0] === tabName);
 	setChartData(ifdesc);
 }
 
@@ -369,11 +369,11 @@ function tabSelect(tabName){
 
 function switchPage(id){
 	if(id == "tab_bw_24")
-		location.href = "/Main_TrafficMonitor_last24.asp";
+	location.href = "/Main_TrafficMonitor_last24.asp";
 	else if(id == "tab_tr_dy")
-		location.href = "/Main_TrafficMonitor_daily.asp#DY";
+	location.href = "/Main_TrafficMonitor_daily.asp#DY";
 	else if(id == "tab_tr_mo")
-		location.href = "/Main_TrafficMonitor_daily.asp#MO";
+	location.href = "/Main_TrafficMonitor_daily.asp#MO";
 	return false;
 }
 

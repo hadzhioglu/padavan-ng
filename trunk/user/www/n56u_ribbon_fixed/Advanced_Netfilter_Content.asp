@@ -46,15 +46,15 @@ function initial(){
 	var o = document.form.nf_max_conn;
 	var maxc = support_max_conn();
 	if (maxc < 327680)
-		o.remove(6);
+	o.remove(6);
 	if (maxc < 262144)
-		o.remove(5);
+	o.remove(5);
 	if (maxc < 131072)
-		o.remove(4);
+	o.remove(4);
 	if (maxc < 65536)
-		o.remove(3);
+	o.remove(3);
 	if (maxc < 32768)
-		o.remove(2);
+	o.remove(2);
 
 	change_nat_enable();
 
@@ -69,23 +69,23 @@ function change_nat_enable(){
 
 function applyRule(){
 	if(validForm()){
-		showLoading();
-
-		document.form.action_mode.value = " Apply ";
-		document.form.current_page.value = "/Advanced_Netfilter_Content.asp";
-		document.form.next_page.value = "";
-
-		document.form.submit();
+	showLoading();
+	
+	document.form.action_mode.value = " Apply ";
+	document.form.current_page.value = "/Advanced_Netfilter_Content.asp";
+	document.form.next_page.value = "";
+	
+	document.form.submit();
 	}
 }
 
 function validForm(){
 	if (document.form.nf_alg_ftp0.value!="")
-		if(!validate_range(document.form.nf_alg_ftp0, 21, 65535))
-			return false;
+	if(!validate_range(document.form.nf_alg_ftp0, 21, 65535))
+	return false;
 	if (document.form.nf_alg_ftp1.value!="")
-		if(!validate_range(document.form.nf_alg_ftp1, 1024, 65535))
-			return false;
+	if(!validate_range(document.form.nf_alg_ftp1, 1024, 65535))
+	return false;
 	return true;
 }
 

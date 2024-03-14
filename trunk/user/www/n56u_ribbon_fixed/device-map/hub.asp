@@ -31,6 +31,7 @@ var printer_manufacts_array = parent.printer_manufacts();
 var printer_models_array = parent.printer_models();
 
 var modem_active = '<% nvram_get_x("", "wan0_modem_dev"); %>';
+var mkfs = 0;
 
 function initial(){
 	var i, total_mounted, total_devices;
@@ -68,7 +69,9 @@ function initial(){
 			code +='  </tr>\n';
 			code +='  <tr>\n';
 			code +='    <th><#Safelyremovedisk_title#>:</th>\n';
-			code +='    <td><input type="button" class="btn btn-success span2" onclick="remove_disk('+i+');" value="<#btn_remove#>"></td>\n';
+			code +='    <td><input type="button" class="btn btn-success span2" onclick="remove_disk('+i+');" value="<#btn_remove#>">\n';
+			code +='    &nbsp;\n';
+            code +='    <label id="auto_seek" class="checkbox inline"><input type="checkbox" name="auto_seek_fake" value="" style="margin-left:10;" onclick="click_auto_seek(this);" >移除并格式化 EXT4</label></td>\n';
 			total_mounted++;
 		    } else {
 			code +='    <th><#Totalspace#>:</th>\n';
@@ -76,7 +79,8 @@ function initial(){
 			code +='  </tr>\n';
 			code +='  <tr>\n';
 			code +='    <th><#Safelyremovedisk_title#>:</th>\n';
-			code +='    <td><span class="label label-success"><#Safelyremovedisk#></span></td>\n';
+			code +='    <td><span class="label label-success"><#Safelyremovedisk#></span>\n';
+			code +='    <input id="show_mdev_button" type="button" class="btn btn-success span2" onclick="mdev_disk('+i+');" value="手动挂载" ></td>\n';
 		    }
 			code +='  </tr>\n';
 			code +='</table>\n';
@@ -112,7 +116,7 @@ function initial(){
 
 	for(i = 0; i < printer_ports_array.length; i++){
 		if (parseInt(printer_ports_array[i]) == port_order+1) {
-			code +='<div class="alert alert-info alert-header"><#USB_Printer#></div>\n';
+			code +='<div class="alert alert-info alert-header"><#USB_Printer#><a href="http://dlcdnet.asus.com/pub/ASUS/LiveUpdate/Release/Wireless/Printer.zip" target="_blank">华硕 EZ 打印机共享.exe</a></div>\n';
 			code +='<table width="100%" cellpadding="4" cellspacing="0" class="table">\n';
 			code +='  <tr>\n';
 			code +='    <th width="50%" style="border: 0 none;"><#Modelname#>:</th>\n';
@@ -158,8 +162,32 @@ function remove_disk(port_idx){
 			document.diskForm.port.value = (port_order+1);
 			document.diskForm.devn.value = "";
 		}
+		document.diskForm.mkfs.value = mkfs;
 		document.diskForm.submit();
 	}
+}
+
+function mdev_disk(port_idx) {
+	var str = "你确定要手动重新挂载所有设备吗？";
+	if(confirm(str)){
+		parent.showLoading();
+		
+		document.diskForm.action = "safely_remove_disk.asp";
+		if (port_idx >= 0) {
+			document.diskForm.port.value = parent.getDiskPort(port_idx);
+			document.diskForm.devn.value = parent.getDiskDevice(port_idx);
+		} else {
+			document.diskForm.port.value = (port_order+1);
+			document.diskForm.devn.value = "";
+		}
+		document.diskForm.mkfs.value = "2";
+		document.diskForm.submit();
+	}
+}
+
+function click_auto_seek(o) {
+	var v = (o.checked) ? "1" : "0";
+	mkfs = v;
 }
 
 function remove_modem(port_idx){
@@ -167,7 +195,7 @@ function remove_modem(port_idx){
 
 	if(confirm(str)){
 		parent.showLoading();
-
+		
 		document.diskForm.action = "safely_remove_disk.asp";
 		document.diskForm.port.value = modem_ports_array[port_idx];
 		document.diskForm.devn.value = modem_devnum_array[port_idx];
@@ -209,6 +237,7 @@ function u2ec_monopolize(){
 <form method="post" name="diskForm" action="">
 <input type="hidden" name="port" value="">
 <input type="hidden" name="devn" value="">
+<input type="hidden" name="mkfs" value="">
 </form>
 
 <form method="post" name="prnForm" action="/start_apply.htm">

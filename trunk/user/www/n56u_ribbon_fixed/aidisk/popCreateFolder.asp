@@ -19,7 +19,7 @@ var folderlist = parent.get_sharedfolder_in_pool(selectedPool);
 function initial(){
 	showtext($("poolName"), selectedPool);
 	$("folder").focus();
-
+	
 	clickevent();
 }
 
@@ -41,21 +41,21 @@ function clickevent(){
 
 function validForm(){
 	$("folder").value = trim($("folder").value);
-
+	
 	// share name
 	if($("folder").value.length == 0){
 		alert("<#File_content_alert_desc6#>");
 		$("folder").focus();
 		return false;
 	}
-
-	var re = new RegExp("[^a-zA-Z0-9 _-]+", "gi");
+	
+	var re = new RegExp("[^\u4e00-\u9fa5_a-zA-Z0-9 _-]+", "gi");
 	if(re.test($("folder").value)){
 		alert("<#File_content_alert_desc7#>");
 		$("folder").focus();
 		return false;
 	}
-
+	
 	if(parent.checkDuplicateName($("folder").value, folderlist)){
 		alert("<#File_content_alert_desc8#>");
 		$("folder").focus();
@@ -83,7 +83,7 @@ function get_pressed_keycode(ev){
 function applyRule(){
 	if(validForm()){
 		document.createFolderForm.pool.value = selectedPool;
-
+		
 		parent.showLoading();
 		document.createFolderForm.submit();
 		parent.hidePop("apply");

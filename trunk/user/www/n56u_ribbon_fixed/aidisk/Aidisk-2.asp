@@ -21,7 +21,7 @@ var ddns_return_code = '<% nvram_get_ddns("", "ddns_return_code"); %>';
 function initial(){
 	parent.hideLoading();
 	parent.openHint(15, 2);
-
+	
 	parent.$("dummyShareway").value = "<% nvram_get_x("", "dummyShareway"); %>";
 	if(parent.$("dummyShareway").value == "")
 		parent.$("dummyShareway").value = 0;
@@ -33,44 +33,44 @@ function showTextinWizard(flag){
 	
 	if(dummyShareway == 0){
 		parent.$("dummyShareway").value = dummyShareway;
-
+		
 		document.getElementsByName('dummyoption')[dummyShareway].focus();
 		document.getElementsByName('dummyoption')[dummyShareway].checked = true;
-
+		
 		$("share1").style.display = "none";
 		$("target1").style.display = "none";
 		$("target2").style.display = "none";
 	}
 	else if(dummyShareway == 1){
 		parent.$("dummyShareway").value = dummyShareway;
-
+		
 		document.getElementsByName('dummyoption')[dummyShareway].focus();
 		document.getElementsByName('dummyoption')[dummyShareway].checked = true;
-
+		
 		/*showtext($("user1"), "Admin");
 		$("userpasswd1").value =  "Admin";//*/
 		showtext($("user1"), "admin");
 		$("userpasswd1").value =  "admin";//*/
-
+		
 		showtext($("user2"), "Family");
 		$("userpasswd2").value =  "Family";
 
-		$("share1").style.display = "block";
+		$("share1").style.display = "block";		
 		$("target1").style.display = "";
 		$("target2").style.display = "";
 	}
 	else if(dummyShareway == 2){
 		parent.$("dummyShareway").value = dummyShareway;
-
+		
 		document.getElementsByName('dummyoption')[dummyShareway].focus();
 		document.getElementsByName('dummyoption')[dummyShareway].checked = true;
-
+		
 		/*showtext($("user1"), "Admin");
 		$("userpasswd1").value =  "Admin";//*/
 		showtext($("user1"), "admin");
 		$("userpasswd1").value =  "admin";//*/
 
-		$("share1").style.display = "";
+		$("share1").style.display = "";		
 		$("target1").style.display = "";
 		$("target2").style.display = "none";
 	}
@@ -81,18 +81,18 @@ function showTextinWizard(flag){
 function passTheResult(){
 	if(dummyShareway == 0){
 		parent.$("accountNum").value = 0;
-
+		
 		parent.$("account0").value = "";
 		parent.$("passwd0").value = "";
 		parent.$("permission0").value = "";
-
+		
 		parent.$("account1").value = "";
 		parent.$("passwd1").value = "";
 		parent.$("permission1").value = "";
 	}
 	else if(dummyShareway == 1){
 		parent.$("accountNum").value = 2;
-
+		
 		if(checkPasswdValid($("userpasswd1").value)){
 			parent.$("account0").value = $("user1").firstChild.nodeValue;
 			parent.$("passwd0").value = $("userpasswd1").value;
@@ -102,7 +102,7 @@ function passTheResult(){
 			$("userpasswd1").focus();
 			return;
 		}
-
+		
 		if(checkPasswdValid($("userpasswd2").value)){
 			parent.$("account1").value = $("user2").firstChild.nodeValue;
 			parent.$("passwd1").value = $("userpasswd2").value;
@@ -125,7 +125,7 @@ function passTheResult(){
 			$("userpasswd1").focus();
 			return;
 		}
-
+		
 		parent.$("account1").value = "";
 		parent.$("passwd1").value = "";
 		parent.$("permission1").value = "";
@@ -142,27 +142,27 @@ function go_pre_page(){
 
 function checkPasswdValid(passwd){
 	var tempPasswd = trim(passwd);
-
+	
 	// password
 	if(tempPasswd.length != passwd.length){
 		alert("<#File_Pop_content_alert_desc8#>");
-
+		
 		return false;
 	}
-
+	
 	if(trim(tempPasswd).length <= 0){
 		alert("<#File_Pop_content_alert_desc6#>");
-
+		
 		return false;
 	}
-
+	
 	var re = new RegExp("[^a-zA-Z0-9]+","gi");
 	if(re.test(tempPasswd)){
 		alert("<#File_Pop_content_alert_desc9#>");
-
+		
 		return false;
 	}
-
+	
 	return true;
 }
 </script>

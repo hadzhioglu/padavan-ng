@@ -45,12 +45,12 @@ function initial(){
 function on_change_lan_dhcpc(){
 	var en_ip = 1;
 	if(document.form.lan_proto_x[0].checked){
-		en_ip = 0;
-		$j('input[name="lan_dns_x"]').removeAttr('disabled');
-		$("row_lan_dns_x").style.display = "";
+	en_ip = 0;
+	$j('input[name="lan_dns_x"]').removeAttr('disabled');
+	$("row_lan_dns_x").style.display = "";
 	}else{
-		$("row_lan_dns_x").style.display = "none";
-		$j('input[name="lan_dns_x"]').attr('disabled','disabled');
+	$("row_lan_dns_x").style.display = "none";
+	$j('input[name="lan_dns_x"]').attr('disabled','disabled');
 	}
 	inputCtrl(document.form.lan_ipaddr, en_ip);
 	inputCtrl(document.form.lan_netmask, en_ip);
@@ -62,9 +62,9 @@ function on_change_lan_dhcpc(){
 function on_change_lan_dns(){
 	var en_dns = 1;
 	if(!document.form.lan_dns_x[0].disabled &&
-		document.form.lan_dns_x[0].checked &&
-		document.form.lan_proto_x[0].checked) {
-		en_dns = 0;
+	document.form.lan_dns_x[0].checked &&
+	document.form.lan_proto_x[0].checked) {
+	en_dns = 0;
 	}
 	inputCtrl(document.form.lan_dns1, en_dns);
 	inputCtrl(document.form.lan_dns2, en_dns);
@@ -72,13 +72,13 @@ function on_change_lan_dns(){
 
 function applyRule(){
 	if(validForm()){
-		showLoading();
-
-		document.form.action_mode.value = " Apply ";
-		document.form.current_page.value = "Advanced_APLAN_Content.asp";
-		document.form.next_page.value = "/as.asp";
-
-		document.form.submit();
+	showLoading();
+	
+	document.form.action_mode.value = " Apply ";
+	document.form.current_page.value = "Advanced_APLAN_Content.asp";
+	document.form.next_page.value = "/as.asp";
+	
+	document.form.submit();
 	}
 }
 
@@ -96,26 +96,26 @@ function valid_LAN_IP(ip_obj,flag){
 	var ip_num = inet_network(ip_obj.value);
 
 	if(ip_num < 0 && (flag == "GW" || flag == "DNS"))
-		return true;
+	return true;
 
 	if(ip_num > A_class_min && ip_num < A_class_max)
-		return true;
+	return true;
 	else if(ip_num > B_class_min && ip_num < B_class_max)
-		return false;
+	return false;
 	else if(ip_num > C_class_min && ip_num < C_class_max)
-		return true;
+	return true;
 	return false;
 }
 
 function validForm(){
 	if(document.form.lan_proto_x[0].checked){
-		if (!document.form.lan_dns_x[0].checked){
-			if(!validate_ipaddr_final(document.form.lan_dns1, 'lan_dns'))
-				return false;
-			if(!validate_ipaddr_final(document.form.lan_dns2, 'lan_dns'))
-				return false;
-		}
-		return true;
+	if (!document.form.lan_dns_x[0].checked){
+	if(!validate_ipaddr_final(document.form.lan_dns1, 'lan_dns'))
+	return false;
+	if(!validate_ipaddr_final(document.form.lan_dns2, 'lan_dns'))
+	return false;
+	}
+	return true;
 	}
 
 	var addr_obj = document.form.lan_ipaddr;
@@ -124,73 +124,73 @@ function validForm(){
 	var addr_num = inet_network(addr_obj.value);
 
 	if(!validate_ipaddr_final(addr_obj, 'lan_ipaddr') ||
-			!validate_ipaddr_final(mask_obj, 'lan_netmask') ||
-			!validate_ipaddr_final(gate_obj, 'lan_gateway'))
-		return false;
+	!validate_ipaddr_final(mask_obj, 'lan_netmask') ||
+	!validate_ipaddr_final(gate_obj, 'lan_gateway'))
+	return false;
 
 	if(!valid_LAN_IP(addr_obj, '')) {
-		alert(addr_obj.value+" <#JS_validip#>");
-		addr_obj.focus();
-		addr_obj.select();
-		return false;
+	alert(addr_obj.value+" <#JS_validip#>");
+	addr_obj.focus();
+	addr_obj.select();
+	return false;
 	}
 
 	var snet_min = get_subnet_num(addr_obj.value, mask_obj.value, 0);
 	var snet_max = get_subnet_num(addr_obj.value, mask_obj.value, 1);
 
 	if(addr_num == snet_min || addr_num == snet_max){
-		alert(addr_obj.value+"/"+mask_obj.value+" <#JS_validip#>");
-		addr_obj.focus();
-		addr_obj.select();
-		return false;
+	alert(addr_obj.value+"/"+mask_obj.value+" <#JS_validip#>");
+	addr_obj.focus();
+	addr_obj.select();
+	return false;
 	}
 
 	if(!valid_LAN_IP(gate_obj, 'GW')) {
-		alert(gate_obj.value+" <#JS_validip#>");
-		gate_obj.focus();
-		gate_obj.select();
-		return false;
+	alert(gate_obj.value+" <#JS_validip#>");
+	gate_obj.focus();
+	gate_obj.select();
+	return false;
 	}
 
 	if(gate_obj.value == addr_obj.value){
-		alert(gate_obj.value+" <#JS_validip#>");
-		gate_obj.select();
-		gate_obj.focus();
-		return false;
+	alert(gate_obj.value+" <#JS_validip#>");
+	gate_obj.select();
+	gate_obj.focus();
+	return false;
 	}
 
 	var re = new RegExp('^(?=[a-z0-9])[a-z0-9\-\.]*[a-z0-9]$','gi');
 	var o_dom = document.form.lan_domain;
 	if((o_dom.value != "") && (!re.test(o_dom.value))){
-		alert("<#JS_validchar#>");
-		o_dom.focus();
-		o_dom.select();
-		return false;
+	alert("<#JS_validchar#>");
+	o_dom.focus();
+	o_dom.select();
+	return false;
 	}
 
 	if(!validate_ipaddr_final(document.form.lan_dns1, 'lan_dns'))
-		return false;
+	return false;
 	if(!validate_ipaddr_final(document.form.lan_dns2, 'lan_dns'))
-		return false;
+	return false;
 
 	if(addr_obj.value != old_lan_addr || mask_obj.value != old_lan_mask){
-		var o_min = document.form.dhcp_start;
-		var o_max = document.form.dhcp_end;
-		if(!matchSubnet(o_min.value, addr_obj.value, mask_obj.value) ||
-				!matchSubnet(o_max.value, addr_obj.value, mask_obj.value) ||
-				inet_network(o_min.value) <= snet_min ||
-				inet_network(o_max.value) >= snet_max) {
-			var snet_pool = snet_max-snet_min;
-			o_min.value = num2ip4(snet_min+2);
-			if (snet_pool > 30)
-				o_max.value=num2ip4(snet_max-11);
-			else
-				o_max.value=num2ip4(snet_max-1);
-		}
+	var o_min = document.form.dhcp_start;
+	var o_max = document.form.dhcp_end;
+	if(!matchSubnet(o_min.value, addr_obj.value, mask_obj.value) ||
+	!matchSubnet(o_max.value, addr_obj.value, mask_obj.value) ||
+	inet_network(o_min.value) <= snet_min ||
+	inet_network(o_max.value) >= snet_max) {
+	var snet_pool = snet_max-snet_min;
+	o_min.value = num2ip4(snet_min+2);
+	if (snet_pool > 30)
+	o_max.value=num2ip4(snet_max-11);
+	else
+	o_max.value=num2ip4(snet_max-1);
+	}
 	}
 
 	if(addr_obj.value != old_lan_addr)
-		alert("<#LANHostConfig_lanipaddr_changed_hint#>");
+	alert("<#LANHostConfig_lanipaddr_changed_hint#>");
 
 	return true;
 }
@@ -275,7 +275,7 @@ function done_validating(action){
                                             <th><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this,4,1);"><#LANHostConfig_IPRouters_itemname#></a></th>
                                             <td>
                                                 <input type="text" id="lan_ipaddr" name="lan_ipaddr" value="<% nvram_get_x("", "lan_ipaddr"); %>" maxlength="15" class="input" size="15" onKeyPress="return is_ipaddr(this,event);" />
-                                                &nbsp;<span style="color:#888;">192.168.1.1</span>
+                                                &nbsp;<span style="color:#888;">192.168.123.1</span>
                                             </td>
                                         </tr>
                                         <tr>

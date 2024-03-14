@@ -31,6 +31,7 @@ var accounts = [<% get_all_accounts("ftp"); %>];
 var ddns_enable = '<% nvram_get_x("", "ddns_enable_x"); %>';
 var ddns_server = '<% nvram_get_x("", "ddns_server_x"); %>';
 var ddns_hostname = '<% nvram_get_x("", "ddns_hostname_x"); %>';
+var mkfs = 0;
 
 function initial(){
 	flash_button();
@@ -46,6 +47,7 @@ function initial(){
 	if(mountedNum > 0){
 		showtext($("disk_avail_size"), all_accessable_size);
 		$("show_remove_button").style.display = "";
+		$("auto_seek").style.display = "";
 		show_disk_link();
 	}else{
 		$("mounted_item1").style.display = "none";
@@ -53,6 +55,7 @@ function initial(){
 		
 		$("show_removed_string").style.display = "";
 		$("unmounted_refresh").style.display = "";
+		$("show_mdev_button").style.display = "";
 	}
 
 	if(sw_mode == '3')
@@ -88,11 +91,10 @@ function show_disk_link(){
 					$("ddnslink2").style.display = "";
 					$("ddnslink2_LAN").style.display = "";
 					
- 					var account = accounts[accounts.length-1]
-					$("selected_account_link").href = 'ftp://'+account+'@<% nvram_get_x("", "ddns_hostname_x"); %>';
-					showtext($("selected_account_str"), 'ftp://'+account+'@<% nvram_get_x("", "ddns_hostname_x"); %>');
-					$("selected_account_link_LAN").href = 'ftp://'+account+'@<% nvram_get_x("", "lan_ipaddr_t"); %>';
-					showtext($("selected_account_str_LAN"), 'ftp://'+account+'@<% nvram_get_x("", "lan_ipaddr_t"); %>');
+					$("selected_account_link").href = 'ftp://'+accounts[1]+'@<% nvram_get_x("", "ddns_hostname_x"); %>';
+					showtext($("selected_account_str"), 'ftp://'+accounts[1]+'@<% nvram_get_x("", "ddns_hostname_x"); %>');
+					$("selected_account_link_LAN").href = 'ftp://'+accounts[1]+'@<% nvram_get_x("", "lan_ipaddr_t"); %>';
+					showtext($("selected_account_str_LAN"), 'ftp://'+accounts[1]+'@<% nvram_get_x("", "lan_ipaddr_t"); %>');
 				}
 				$("desc_2").style.display = "";
 			}else{
@@ -132,12 +134,32 @@ function remove_disk(){
 	
 	if(confirm(str)){
 		parent.showLoading();
-
+		
 		document.diskForm.action = "safely_remove_disk.asp";
 		document.diskForm.port.value = parent.getDiskPort(diskOrder);
 		document.diskForm.devn.value = parent.getDiskDevice(diskOrder);
+		document.diskForm.mkfs.value = mkfs;
 		document.diskForm.submit();
 	}
+}
+
+function mdev_disk() {
+	var str = "你确定要手动重新挂载所有设备吗？";
+	
+	if(confirm(str)){
+		parent.showLoading();
+		
+		document.diskForm.action = "safely_remove_disk.asp";
+		document.diskForm.port.value = parent.getDiskPort(diskOrder);
+		document.diskForm.devn.value = parent.getDiskDevice(diskOrder);
+		document.diskForm.mkfs.value = "2";
+		document.diskForm.submit();
+	}
+}
+
+function click_auto_seek(o) {
+	var v = (o.checked) ? "1" : "0";
+	mkfs = v;
 }
 
 </script>
@@ -198,6 +220,9 @@ function remove_disk(){
         <td>
             <input id="show_remove_button" type="button" class="btn btn-success span2" onclick="remove_disk();" value="<#btn_remove#>" style="display:none;">
             <div id="show_removed_string" style="display:none;"><span class="label label-success"><#Safelyremovedisk#></span></div>
+            <input id="show_mdev_button" type="button" class="btn btn-success span2" onclick="mdev_disk();" value="手动挂载" style="display:none;">
+			
+            <label id="auto_seek" class="checkbox inline" style="display:none;" /><input type="checkbox" name="auto_seek_fake" value="" style="margin-left:10;" onclick="click_auto_seek(this);" />移除并格式化 EXT4</label>
         </td>
     </tr>
 </table>
@@ -225,6 +250,7 @@ function remove_disk(){
 <form method="post" name="diskForm" action="">
 <input type="hidden" name="port" value="">
 <input type="hidden" name="devn" value="">
+<input type="hidden" name="mkfs" value="">
 </form>
 </body>
 </html>

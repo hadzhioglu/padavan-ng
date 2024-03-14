@@ -27,7 +27,7 @@ function initial(){
 
 function u2ec_monopolize(){
 	parent.showLoading(2);
-
+	
 	document.form.action_mode.value = "Update";
 	document.form.action_script.value = "mfp_monopolize";
 	document.form.current_page.value = "";
@@ -63,6 +63,11 @@ function u2ec_monopolize(){
 <div class="alert alert-info">
     <ul>
         <li><#PrinterStatus_x_Monopoly_itemdesc#></li>
+    </ul>
+</div>
+<div class="alert alert-info">
+    <ul>
+        <li><a href="http://dlcdnet.asus.com/pub/ASUS/LiveUpdate/Release/Wireless/Printer.zip" target="_blank">华硕 EZ 打印机共享.exe</a></li>
     </ul>
 </div>
 

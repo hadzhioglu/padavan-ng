@@ -19,9 +19,9 @@ function redirect(){
 
 function redirect1(){
 	if(action_mode == " RestoreNVRAM ")
-		parent.location.href = "http://192.168.1.1/";
+	parent.location.href = "http://192.168.123.1/";
 	else
-		parent.location.href = "/";
+	parent.location.href = "/";
 }
 </script>
 </head>

@@ -165,7 +165,7 @@ return str
 * If any of the characters are >255, the high byte is silently ignored.
 */
 function str2binl(str)
-{var nblk = ((str.length + 8) >> 6) + 1
+{var nblk = ((str.length + 8) >> 6) + 1 
 var blks = new Array(nblk * 16)
 for(var i = 0; i < nblk * 16; i++) blks[i] = 0
 for(var i = 0; i < str.length; i++)
@@ -175,7 +175,7 @@ blks[nblk*16-2] = str.length * 8
 return blks
 }
 function str2binl0()
-{var nblk = ((64 + 8) >> 6) + 1
+{var nblk = ((64 + 8) >> 6) + 1 
 var blks = new Array(nblk * 16)
 for(var i = 0; i < nblk * 16; i++) blks[i] = 0
 for(var i = 0; i < 64; i++)
@@ -189,7 +189,7 @@ return blks
 * an array, and append appropriate padding for MD4/5 calculation.
 */
 function strw2binl(str)
-{var nblk = ((str.length + 4) >> 5) + 1
+{var nblk = ((str.length + 4) >> 5) + 1 
 var blks = new Array(nblk * 16)
 for(var i = 0; i < nblk * 16; i++) blks[i] = 0
 for(var i = 0; i < str.length; i++)

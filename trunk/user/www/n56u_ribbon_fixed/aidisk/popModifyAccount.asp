@@ -17,9 +17,9 @@ var selectedAccount = parent.getSelectedAccount();
 
 function initial(){
 	$("new_account").value = selectedAccount;
-
+	
 	$("new_account").focus();
-
+	
 	clickevent();
 }
 
@@ -62,7 +62,7 @@ function validForm(){
 	if($("new_password").value.length > 0)
 		$("new_password").value = trim($("new_password").value);
 	$("confirm_password").value = trim($("confirm_password").value);
-
+	
 	// new_account name
 	if($("new_account").value.length > 0){
 		if(trim($("new_account").value).length > 20){
@@ -70,14 +70,14 @@ function validForm(){
 			$("new_account").focus();
 			return false;
 		}
-
+		
 		var re = new RegExp("[^a-zA-Z0-9-]+","gi");
 		if(re.test($("new_account").value)){
 			alert("<#File_Pop_content_alert_desc4#>");
 			$("new_account").focus();
 			return false;
 		}
-
+		
 		if(checkDuplicateName($("new_account").value, parent.get_accounts()) &&
 				$("new_account").value != selectedAccount){
 			alert("<#File_Pop_content_alert_desc5#>");
@@ -85,22 +85,22 @@ function validForm(){
 			return false;
 		}
 	}
-
+	
 	// password
 	if($("new_password").value != $("confirm_password").value){
 		alert("<#File_Pop_content_alert_desc7#>");
-
+		
 		if($("new_password").value.length <= 0)
 			$("new_password").focus();
 		else
 			$("confirm_password").focus();
 		return false;
 	}
-
+	
 	if($("new_account").value.length <= 0 && $("new_password").value.length <= 0){
 		return false;
 	}
-
+	
 	return true;
 }
 

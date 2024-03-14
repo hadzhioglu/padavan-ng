@@ -34,22 +34,22 @@ function initial(){
 	var id_menu = 5;
 
 	if(!found_app_smbd() && !found_app_ftpd())
-		id_menu = 3;
+	id_menu = 3;
 	else if(!found_app_smbd() || !found_app_ftpd())
-		id_menu = 4;
+	id_menu = 4;
 
 	if(get_ap_mode())
-		id_menu -= 1;
+	id_menu -= 1;
 
 	show_banner(1);
 	show_menu(5,6,id_menu);
 	show_footer();
 
 	if(!found_srv_u2ec())
-		$("row_u2ec").style.display = "none";
+	$("row_u2ec").style.display = "none";
 
 	if(!found_srv_lprd())
-		$("row_lprd").style.display = "none";
+	$("row_lprd").style.display = "none";
 }
 
 function applyRule(){

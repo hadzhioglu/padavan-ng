@@ -19,7 +19,7 @@ div.main_itoggle label.ilabel{
 div.main_itoggle label.itoggle,
 div.main_itoggle label.itoggle span{
     display: block;
-    width: 59px;
+    width: 93px;
     height: 27px;
     /*margin-bottom: 20px;*/
     background: url(../img/itoggle.png) left bottom no-repeat;
@@ -46,14 +46,14 @@ div.main_itoggle label.disabled span
     opacity: 0.6;
 }
 
-/*
+/*	
 	If you want the corners to be
 	transparent, add these two lines
 	to the main block above. Only
 	works on webkit and mozilla browsers
 	For more reliable results, make your
 	own png using the supplied .psd
-
+	
 	-moz-border-radius:6px;
 	-webkit-border-radius:6px;
 */

@@ -23,7 +23,7 @@ var $j = jQuery.noConflict();
 
 function initial(){
 	parent.hideLoading();
-
+	
 	if(this.ddns_server_x == "WWW.ASUS.COM" && this.ddns_hostname_x != ''){
 		this.ddns_hostname_title = this.ddns_hostname_x.substring(0, this.ddns_hostname_x.indexOf('.'));
 		$("DDNSName").value = this.ddns_hostname_title;
@@ -31,7 +31,7 @@ function initial(){
 	else{
 		$("DDNSName").value = "<#asusddns_inputhint#>";
 	}
-
+	
 	switch_ddns();
 }
 
@@ -44,11 +44,11 @@ function switch_ddns(){
 		var ddns_enable_x = '<% nvram_get_x("", "ddns_enable_x"); %>';
 		parent.setASUSDDNS_enable(ddns_enable_x);
 		document.DDNSForm.ddns_server_x.value = this.ddns_server_x;
-
+		
 		if(parent.show_iframe_page("statusframe").indexOf("ASUS_DDNS_TOS.asp") > 0)
 			parent.show_help_iframe(3);
 	}
-
+	
 	show_TOS_checkbox();
 	show_next_button();
 	parent.openHint(15, 3);
@@ -65,10 +65,10 @@ function show_TOS_checkbox(){
 		document.DDNSForm.asusddns_tos_agreement.value = "0";
 		$("ddnsname_input").style.display = "none";
 	}
-
+	
 	if(this.ddns_server_x == "WWW.ASUS.COM")
 		check_return_code();
-
+	
 	show_next_button();
 }
 
@@ -104,11 +104,11 @@ function check_return_code(){
 	else if(this.ddns_return_code == 'register,200'){
 		show_alert_block("<#LANHostConfig_x_DDNS_alarm_3#>");
 		parent.setASUSDDNS_enable("1");
-
+		
 		document.DDNSForm.action = "/aidisk/Aidisk-4.asp";
 		document.DDNSForm.target = "";
 		document.DDNSForm.submit();
-
+		
 		return;
 	}
 	else if(this.ddns_return_code == 'register,203')
@@ -116,21 +116,21 @@ function check_return_code(){
 	else if(this.ddns_return_code == 'register,220'){
 		show_alert_block("<#LANHostConfig_x_DDNS_alarm_4#>");
 		parent.setASUSDDNS_enable("1");
-
+		
 		document.DDNSForm.action = "/aidisk/Aidisk-4.asp";
 		document.DDNSForm.target = "";
 		document.DDNSForm.submit();
-
+		
 		return;
 	}
 	else if(this.ddns_return_code == 'register,230'){
 		show_alert_block("<#LANHostConfig_x_DDNS_alarm_5#>");
 		parent.setASUSDDNS_enable("1");
-
+		
 		document.DDNSForm.action = "/aidisk/Aidisk-4.asp";
 		document.DDNSForm.target = "";
 		document.DDNSForm.submit();
-
+		
 		return;
 	}
 	else if(this.ddns_return_code == 'register,233')
@@ -160,14 +160,14 @@ function check_return_code(){
 function verify_ddns_name(){
 	if(validate_ddns_hostname($("DDNSName"))){
 		parent.showLoading();
-
+		
 		document.DDNSForm.current_page.value = "/aidisk/Aidisk-3.asp";
 		document.DDNSForm.action_script.value = "hostname_check";
 		document.DDNSForm.action_mode.value = "Update";
 		document.DDNSForm.ddns_hostname_x.value = $("DDNSName").value+".asuscomm.com";
-
+		
 		document.DDNSForm.flag.value = "nodetect";
-
+		
 		document.DDNSForm.target = "hidden_frame";
 		document.DDNSForm.submit();
 	}
@@ -179,7 +179,7 @@ function go_next_page(){
 		
 		return;
 	}
-
+	
 	document.DDNSForm.action = "/aidisk/Aidisk-4.asp";
 	document.DDNSForm.target = "";
 	document.DDNSForm.submit();
@@ -194,27 +194,27 @@ function go_pre_page(){
 function validate_ddns_hostname(o){
 	dot = 0;
 	s = o.value;
-
+	
 	if(s == ""){
 		show_alert_block("<#QKSet_account_nameblank#>");
 		return false;
 	}
-
+	
 	if(!validate_string(o)){
 		return false;
 	}
-
+	
 	for(var i = 0; i < s.length; ++i){
 		c = s.charCodeAt(i);
 		if(c == 46){
 			++dot;
-
+			
 			if(dot > 2){
 				show_alert_block("<#LANHostConfig_x_DDNS_alarm_7#>");
 				return false;
 			}
 		}
-
+		
 		if(!validate_hostnamechar(c)){
 			show_alert_block("<#LANHostConfig_x_DDNS_alarm_13#> '"+s.charAt(i)+"' !");
 			return false;
@@ -227,19 +227,19 @@ function validate_ddns_hostname(o){
 function validate_hostnamechar(ch){
 	if(ch >= 48 && ch <= 57)
 		return true;
-
+	
 	if(ch >= 97 && ch <= 122)
 		return true;
-
+	
 	if(ch >= 65 && ch <= 90)
 		return true;
-
+	
 	if(ch == 45)
 		return true;
-
+	
 	if(ch == 46)
 		return true;
-
+	
 	return false;
 }
 

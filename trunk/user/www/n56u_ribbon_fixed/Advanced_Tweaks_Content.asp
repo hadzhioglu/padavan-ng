@@ -40,119 +40,119 @@ function initial(){
 	var num_usb = support_num_usb();
 
 	if (!support_but_wps()){
-		showhide_div('tbl_wps_actions', 0);
+	showhide_div('tbl_wps_actions', 0);
 	}else{
-		var o1 = document.form.ez_action_short;
-		var o2 = document.form.ez_action_long;
-		if (num_usb < 2){
-			o1.remove(9);
-			o1.remove(9);
-			o2.remove(8);
-			o2.remove(8);
-		}
-		if (num_usb < 1){
-			o1.remove(8);
-			o2.remove(7);
-		}
-		if (!support_5g_radio()){
-			o1.options[2].text = "<#TweaksWPSItem02#>";
-			o1.options[5].text = "<#TweaksWPSItem03#>";
-			o2.options[1].text = o1.options[2].text;
-			o2.options[4].text = o1.options[5].text;
-			o1.remove(6);
-			o1.remove(6);
-			o1.remove(3);
-			o1.remove(3);
-			o2.remove(5);
-			o2.remove(5);
-			o2.remove(2);
-			o2.remove(2);
-		}
-		o1.value = '<% nvram_get_x("","ez_action_short"); %>';
-		o2.value = '<% nvram_get_x("","ez_action_long"); %>';
+	var o1 = document.form.ez_action_short;
+	var o2 = document.form.ez_action_long;
+	if (num_usb < 2){
+	o1.remove(9);
+	o1.remove(9);
+	o2.remove(8);
+	o2.remove(8);
+	}
+	if (num_usb < 1){
+	o1.remove(8);
+	o2.remove(7);
+	}
+	if (!support_5g_radio()){
+	o1.options[2].text = "<#TweaksWPSItem02#>";
+	o1.options[5].text = "<#TweaksWPSItem03#>";
+	o2.options[1].text = o1.options[2].text;
+	o2.options[4].text = o1.options[5].text;
+	o1.remove(6);
+	o1.remove(6);
+	o1.remove(3);
+	o1.remove(3);
+	o2.remove(5);
+	o2.remove(5);
+	o2.remove(2);
+	o2.remove(2);
+	}
+	o1.value = '<% nvram_get_x("","ez_action_short"); %>';
+	o2.value = '<% nvram_get_x("","ez_action_long"); %>';
 	}
 
 	if (support_but_fn1()){
-		var o1 = document.form.fn1_action_short;
-		var o2 = document.form.fn1_action_long;
-		if (num_usb < 2){
-			o1.remove(9);
-			o1.remove(9);
-			o2.remove(8);
-			o2.remove(8);
-		}
-		if (num_usb < 1){
-			o1.remove(8);
-			o2.remove(7);
-		}
-		if (!support_5g_radio()){
-			o1.options[2].text = "<#TweaksWPSItem02#>";
-			o1.options[5].text = "<#TweaksWPSItem03#>";
-			o2.options[1].text = o1.options[2].text;
-			o2.options[4].text = o1.options[5].text;
-			o1.remove(6);
-			o1.remove(6);
-			o1.remove(3);
-			o1.remove(3);
-			o2.remove(5);
-			o2.remove(5);
-			o2.remove(2);
-			o2.remove(2);
-		}
-		o1.value = '<% nvram_get_x("","fn1_action_short"); %>';
-		o2.value = '<% nvram_get_x("","fn1_action_long"); %>';
-		showhide_div('tbl_fn1_actions', 1);
+	var o1 = document.form.fn1_action_short;
+	var o2 = document.form.fn1_action_long;
+	if (num_usb < 2){
+	o1.remove(9);
+	o1.remove(9);
+	o2.remove(8);
+	o2.remove(8);
+	}
+	if (num_usb < 1){
+	o1.remove(8);
+	o2.remove(7);
+	}
+	if (!support_5g_radio()){
+	o1.options[2].text = "<#TweaksWPSItem02#>";
+	o1.options[5].text = "<#TweaksWPSItem03#>";
+	o2.options[1].text = o1.options[2].text;
+	o2.options[4].text = o1.options[5].text;
+	o1.remove(6);
+	o1.remove(6);
+	o1.remove(3);
+	o1.remove(3);
+	o2.remove(5);
+	o2.remove(5);
+	o2.remove(2);
+	o2.remove(2);
+	}
+	o1.value = '<% nvram_get_x("","fn1_action_short"); %>';
+	o2.value = '<% nvram_get_x("","fn1_action_long"); %>';
+	showhide_div('tbl_fn1_actions', 1);
 	}
 
 	if (support_but_fn2()){
-		var o1 = document.form.fn2_action_short;
-		var o2 = document.form.fn2_action_long;
-		if (num_usb < 2){
-			o1.remove(9);
-			o1.remove(9);
-			o2.remove(8);
-			o2.remove(8);
-		}
-		if (num_usb < 1){
-			o1.remove(8);
-			o2.remove(7);
-		}
-		if (!support_5g_radio()){
-			o1.options[2].text = "<#TweaksWPSItem02#>";
-			o1.options[5].text = "<#TweaksWPSItem03#>";
-			o2.options[1].text = o1.options[2].text;
-			o2.options[4].text = o1.options[5].text;
-			o1.remove(6);
-			o1.remove(6);
-			o1.remove(3);
-			o1.remove(3);
-			o2.remove(5);
-			o2.remove(5);
-			o2.remove(2);
-			o2.remove(2);
-		}
-		o1.value = '<% nvram_get_x("","fn2_action_short"); %>';
-		o2.value = '<% nvram_get_x("","fn2_action_long"); %>';
-		showhide_div('tbl_fn2_actions', 1);
+	var o1 = document.form.fn2_action_short;
+	var o2 = document.form.fn2_action_long;
+	if (num_usb < 2){
+	o1.remove(9);
+	o1.remove(9);
+	o2.remove(8);
+	o2.remove(8);
+	}
+	if (num_usb < 1){
+	o1.remove(8);
+	o2.remove(7);
+	}
+	if (!support_5g_radio()){
+	o1.options[2].text = "<#TweaksWPSItem02#>";
+	o1.options[5].text = "<#TweaksWPSItem03#>";
+	o2.options[1].text = o1.options[2].text;
+	o2.options[4].text = o1.options[5].text;
+	o1.remove(6);
+	o1.remove(6);
+	o1.remove(3);
+	o1.remove(3);
+	o2.remove(5);
+	o2.remove(5);
+	o2.remove(2);
+	o2.remove(2);
+	}
+	o1.value = '<% nvram_get_x("","fn2_action_short"); %>';
+	o2.value = '<% nvram_get_x("","fn2_action_long"); %>';
+	showhide_div('tbl_fn2_actions', 1);
 	}
 
 	var switch_type = support_switch_type();
 	if (switch_type > 1) {
-		var o3 = document.form.ether_led0;
-		o3.remove(0);
-		o3.remove(0);
-		o3.remove(0);
-		o3.remove(0);
-		o3.remove(0);
-		o3.remove(0);
-		o3.remove(0);
-		o3.remove(1);
-		o3.remove(1);
-		o3.remove(1);
+	var o3 = document.form.ether_led0;
+	o3.remove(0);
+	o3.remove(0);
+	o3.remove(0);
+	o3.remove(0);
+	o3.remove(0);
+	o3.remove(0);
+	o3.remove(0);
+	o3.remove(1);
+	o3.remove(1);
+	o3.remove(1);
 	}
 
 	if (!support_led_pwr())
-		showhide_div("row_led_pwr", 0);
+	showhide_div("row_led_pwr", 0);
 
 	showhide_div("row_led_wan", support_led_wan());
 	showhide_div("row_led_lan", support_led_lan());
@@ -161,21 +161,21 @@ function initial(){
 	change_led_all();
 
 	if (support_led_phy() < 2){
-		showhide_div('row_eth_phy_led1', 0);
-		if (support_led_phy() < 1)
-			showhide_div('row_eth_phy_led0', 0);
+	showhide_div('row_eth_phy_led1', 0);
+	if (support_led_phy() < 1)
+	showhide_div('row_eth_phy_led0', 0);
 	}
 }
 
 function applyRule(){
 	if(validForm()){
-		showLoading();
-
-		document.form.action_mode.value = " Apply ";
-		document.form.current_page.value = "/Advanced_Tweaks_Content.asp";
-		document.form.next_page.value = "";
-
-		document.form.submit();
+	showLoading();
+	
+	document.form.action_mode.value = " Apply ";
+	document.form.current_page.value = "/Advanced_Tweaks_Content.asp";
+	document.form.next_page.value = "";
+	
+	document.form.submit();
 	}
 }
 
@@ -326,7 +326,7 @@ function change_led_all(){
                                                     <option value="6" ><#TweaksWPSItem20#></option>
                                                     <option value="7" ><#TweaksWPSItem21#></option>
                                                     <option value="8" ><#TweaksWPSItem22#></option>
-                                                    <option value="9" ><#TweaksWPSItem32#> (arg: 5)</option>
+                                                    <option value="9" ><#TweaksWPSItem32#> (arg: 3)</option>
                                                 </select>
                                             </td>
                                         </tr>
@@ -350,7 +350,7 @@ function change_led_all(){
                                                     <option value="9" ><#TweaksWPSItem22#></option>
                                                     <option value="7" ><#TweaksWPSItem30#></option>
                                                     <option value="8" ><#TweaksWPSItem31#></option>
-                                                    <option value="10"><#TweaksWPSItem32#> (arg: 6)</option>
+                                                    <option value="10"><#TweaksWPSItem32#> (arg: 4)</option>
                                                     <option value="15"><#TweaksWPSItem33#></option>
                                                 </select>
                                             </td>
@@ -380,7 +380,7 @@ function change_led_all(){
                                                     <option value="6" ><#TweaksWPSItem20#></option>
                                                     <option value="7" ><#TweaksWPSItem21#></option>
                                                     <option value="8" ><#TweaksWPSItem22#></option>
-                                                    <option value="9" ><#TweaksWPSItem32#> (arg: 7)</option>
+                                                    <option value="9" ><#TweaksWPSItem32#> (arg: 5)</option>
                                                 </select>
                                             </td>
                                         </tr>
@@ -404,7 +404,7 @@ function change_led_all(){
                                                     <option value="9" ><#TweaksWPSItem22#></option>
                                                     <option value="7" ><#TweaksWPSItem30#></option>
                                                     <option value="8" ><#TweaksWPSItem31#></option>
-                                                    <option value="10"><#TweaksWPSItem32#> (arg: 8)</option>
+                                                    <option value="10"><#TweaksWPSItem32#> (arg: 6)</option>
                                                     <option value="15"><#TweaksWPSItem33#></option>
                                                 </select>
                                             </td>
@@ -517,6 +517,22 @@ function change_led_all(){
                                                     <option value="9"  <% nvram_match_x("", "ether_led1", "9", "selected"); %>>Link, TX activity</option>
                                                     <option value="10" <% nvram_match_x("", "ether_led1", "10","selected"); %>>Duplex, Collision</option>
                                                     <option value="11" <% nvram_match_x("", "ether_led1", "11","selected"); %>><#btn_Disable#></option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                    </table>
+
+                                    <table width="100%" cellpadding="4" cellspacing="0" class="table">
+                                        <tr>
+                                            <th colspan="2" style="background-color: #E3E3E3;">配置主题界面（没U盘则占用内存空间）</th>
+                                        </tr>
+                                        <tr>
+                                            <th width="50%">下载主题风格包（刷新缓存Ctrl+F5生效）:</th>
+                                            <td>
+                                                <select name="theme_enable" class="input" style="width: 320px;">
+                                                    <option value="0"  <% nvram_match_x("", "theme_enable", "0", "selected"); %>>否</option>
+                                                    <option value="1"  <% nvram_match_x("", "theme_enable", "1", "selected"); %>>是，完整版(5M)</option>
+                                                    <option value="2"  <% nvram_match_x("", "theme_enable", "2", "selected"); %>>是，精简版(1M)</option>
                                                 </select>
                                             </td>
                                         </tr>

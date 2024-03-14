@@ -26,7 +26,7 @@ function clickevent(){
 	$("Submit").onclick = function(){
 			$("pool").value = selectedPool;
 			$("folder").value = selectedFolder;
-
+			
 			parent.showLoading();
 			document.deleteFolderForm.submit();
 			parent.hidePop("apply");

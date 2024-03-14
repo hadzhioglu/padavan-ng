@@ -37,11 +37,11 @@ function showclock(){
 	JS_timeObj2 = JS_timeObj.toString();
 	JS_timeObj2 = JS_timeObj2.substring(0,3) + ", " +
 	              JS_timeObj2.substring(4,10) + "  " +
-				  checkTime(JS_timeObj.getHours()) + ":" +
-				  checkTime(JS_timeObj.getMinutes()) + ":" +
-				  checkTime(JS_timeObj.getSeconds()) + "  " +
-				  JS_timeObj.getFullYear() + " GMT" +
-				  timezone;
+	  checkTime(JS_timeObj.getHours()) + ":" +
+	  checkTime(JS_timeObj.getMinutes()) + ":" +
+	  checkTime(JS_timeObj.getSeconds()) + "  " +
+	  JS_timeObj.getFullYear() + " GMT" +
+	  timezone;
 	$("system_time").innerHTML = JS_timeObj2;
 	setTimeout("showclock()", 1000);
 }

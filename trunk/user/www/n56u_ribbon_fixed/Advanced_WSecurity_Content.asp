@@ -29,25 +29,25 @@ function initial(){
 
 function applyRule(){
 	if(validForm()){
-		showLoading();
-
-		document.form.action_mode.value = " Apply ";
-		document.form.current_page.value = "/Advanced_WSecurity_Content.asp";
-		document.form.next_page.value = "";
-
-		document.form.submit();
+	showLoading();
+	
+	document.form.action_mode.value = " Apply ";
+	document.form.current_page.value = "/Advanced_WSecurity_Content.asp";
+	document.form.next_page.value = "";
+	
+	document.form.submit();
 	}
 }
 
 function validForm(){
 	if(!validate_ipaddr_final(document.form.wl_radius_ipaddr, 'radius_ipaddr'))
-		return false;
+	return false;
 
 	if(!validate_range(document.form.wl_radius_port, 0, 65535))
-		return false;
+	return false;
 
 	if(!validate_string(document.form.wl_radius_key))
-		return false;
+	return false;
 
 	return true;
 }

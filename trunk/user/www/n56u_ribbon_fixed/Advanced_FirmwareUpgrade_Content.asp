@@ -27,16 +27,16 @@ function initial(){
 	show_footer();
 
 	if (!login_safe()){
-		inputCtrl(document.form.file, 0);
-		inputCtrl(document.form.button, 0);
+	inputCtrl(document.form.file, 0);
+	inputCtrl(document.form.button, 0);
 	}
 }
 
 function fwUpload(){
 	if (!document.form.file.value) {
-		alert("<#JS_Shareblanktest#>");
-		document.form.file.focus();
-		return false;
+	alert("<#JS_Shareblanktest#>");
+	document.form.file.focus();
+	return false;
 	}
 	disableCheckChangedStatus();
 	document.form.submit();
@@ -49,17 +49,10 @@ $j.fn.fileName = function(){
 	newVal = valArray[valArray.length-1],
 	$button = $this.siblings('.button');
 	if(newVal !== '') {
-		newVal = newVal.substring(0,26);
-		$button.text(newVal);
+	newVal = newVal.substring(0,26);
+	$button.text(newVal);
 	}
 };
-
-function submitInternet(v){
-	showLoading();
-	document.bigtmp_action.action = "bit_action.asp";
-	document.bigtmp_action.connect_action.value = v;
-	document.bigtmp_action.submit();
-}
 
 </script>
 <style>
@@ -182,21 +175,20 @@ function submitInternet(v){
                                             <li><#FW_desc4#></li>
                                             <li><#FW_desc5#></li>
                                             <li><#FW_desc6#></li>
-                                            <li><#FW_desc7#><br/><input id="bingtmp" class="btn btn-success" style="width:50px display:none;" type="button" name="bingtmp" value="<#TMP_btn#>" onclick="submitInternet('bigtmp');" /></li>
                                         </ol>
                                     </div>
 
                                     <table width="100%" cellpadding="4" cellspacing="0" class="table">
                                         <tr>
-                                            <th width="50%"><#FW_item1#></th>
+                                            <th width="50%"><#statusTitle_System#> <#FW_item1#></th>
                                             <td><input type="text" class="input" value="<% nvram_get_x("", "productid"); %>" readonly="1"></td>
                                         </tr>
                                         <tr>
-                                            <th><#FW_item2#></th>
+                                            <th><#statusTitle_System#> <#FW_item2#></th>
                                             <td><input type="text" name="firmver" class="input" value="<% nvram_get_x("",  "firmver_sub"); %>" readonly="1"></td>
                                         </tr>
                                         <tr>
-                                            <th><#FW_item5#></th>
+                                            <th><#statusTitle_System#> <#FW_item5#></th>
                                             <td>
                                                 <input type="file" name="file" size="36" />
                                             </td>
@@ -215,6 +207,7 @@ function submitInternet(v){
                                             <li><#FW_n2#></li>
                                         </ol>
                                     </div>
+
                                 </div>
                             </div>
                         </div>
@@ -223,11 +216,10 @@ function submitInternet(v){
             </div>
         </div>
     </div>
+
     </form>
+
     <div id="footer"></div>
 </div>
-<form method="post" name="bigtmp_action" action="">
-    <input type="hidden" name="connect_action" value="">
-</form>
 </body>
 </html>

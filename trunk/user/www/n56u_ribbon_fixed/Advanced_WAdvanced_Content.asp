@@ -37,53 +37,37 @@ function initial(){
 	show_menu(5,2,6);
 	show_footer();
 
-	if (support_5g_11ac()){
-		var o1 = document.form.wl_stream_tx;
-		var o2 = document.form.wl_stream_rx;
-		o1.options[0].text = "1T (433Mbps)";
-		o2.options[0].text = "1R (433Mbps)";
-		o1.options[1].text = "2T (867Mbps)";
-		o2.options[1].text = "2R (867Mbps)";
-		o1.options[2].text = "3T (1300Mbps)";
-		o2.options[2].text = "3R (1300Mbps)";
-		o1.options[3].text = "4T (1733Mbps)";
-		o2.options[3].text = "4R (1733Mbps)";
-	}
-
 	if (typeof(support_5g_wid) === 'function'){
-		wid = support_5g_wid();
-		if (wid==7612){
-			showhide_div("row_vga_clamp", 1);
-			showhide_div("row_ldpc", 1);
-		} else if (wid==7615){
-			showhide_div("row_ldpc", 1);
-		}
+	wid = support_5g_wid();
+	if (wid==7612){
+	showhide_div("row_vga_clamp", 1);
+	showhide_div("row_ldpc", 1);
+	} else if (wid==7615 || wid==7915){
+	showhide_div("row_ldpc", 1);
+	}
 	}
 
 	if (support_5g_stream_tx()<4)
-		document.form.wl_stream_tx.remove(3);
+	document.form.wl_stream_tx.remove(3);
 	if (support_5g_stream_tx()<3)
-		document.form.wl_stream_tx.remove(2);
+	document.form.wl_stream_tx.remove(2);
 	if (support_5g_stream_tx()<2) {
-		document.form.wl_stream_tx.remove(1);
-		showhide_div("row_greenap", 0);
+	document.form.wl_stream_tx.remove(1);
+	showhide_div("row_greenap", 0);
 	}
 
 	if (support_5g_stream_rx()<4)
-		document.form.wl_stream_rx.remove(3);
+	document.form.wl_stream_rx.remove(3);
 	if (support_5g_stream_rx()<3)
-		document.form.wl_stream_rx.remove(2);
+	document.form.wl_stream_rx.remove(2);
 	if (support_5g_stream_rx()<2)
-		document.form.wl_stream_rx.remove(1);
+	document.form.wl_stream_rx.remove(1);
 
 	if (support_5g_txbf())
-		showhide_div("row_txbf", 1);
-
-	if (support_5g_band_steering())
-		showhide_div("row_band_steering", 1);
+	showhide_div("row_txbf", 1);
 
 	if (support_5g_mumimo())
-		showhide_div("row_mumimo", 1);
+	showhide_div("row_mumimo", 1);
 
 	load_body();
 
@@ -93,33 +77,33 @@ function initial(){
 function change_wmm() {
 	var gm = document.form.wl_gmode.value;
 	if (document.form.wl_wme.value == "0") {
-		showhide_div("row_wme_no_ack", 0);
-		showhide_div("row_apsd_cap", 0);
+	showhide_div("row_wme_no_ack", 0);
+	showhide_div("row_apsd_cap", 0);
 	}else{
-		showhide_div("row_wme_no_ack", (gm != "0")?0:1);
-		showhide_div("row_apsd_cap", 1);
+	showhide_div("row_wme_no_ack", (gm != "0")?0:1);
+	showhide_div("row_apsd_cap", 1);
 	}
 	showhide_div("row_greenfield", (gm == "1" || gm == "3")?1:0);
 }
 
 function applyRule(){
 	if(validForm()){
-		showLoading();
-
-		document.form.action_mode.value = " Apply ";
-		document.form.current_page.value = "/Advanced_WAdvanced_Content.asp";
-		document.form.next_page.value = "";
-
-		document.form.submit();
+	showLoading();
+	
+	document.form.action_mode.value = " Apply ";
+	document.form.current_page.value = "/Advanced_WAdvanced_Content.asp";
+	document.form.next_page.value = "";
+	
+	document.form.submit();
 	}
 }
 
 function validForm(){
 	if(!validate_range(document.form.wl_frag, 256, 2346)
-		|| !validate_range(document.form.wl_rts, 1, 2347)
-		|| !validate_range(document.form.wl_dtim, 1, 255)
-		|| !validate_range(document.form.wl_bcn, 20, 1000))
-		return false;
+	|| !validate_range(document.form.wl_rts, 1, 2347)
+	|| !validate_range(document.form.wl_dtim, 1, 255)
+	|| !validate_range(document.form.wl_bcn, 20, 1000))
+	return false;
 
 	return true;
 }
@@ -187,10 +171,10 @@ function done_validating(action){
                                             <th width="50%"><#WIFIStreamTX#></th>
                                             <td>
                                                 <select name="wl_stream_tx" class="input">
-                                                    <option value="1" <% nvram_match_x("", "wl_stream_tx", "1", "selected"); %>>1T (150Mbps)</option>
-                                                    <option value="2" <% nvram_match_x("", "wl_stream_tx", "2", "selected"); %>>2T (300Mbps)</option>
-                                                    <option value="3" <% nvram_match_x("", "wl_stream_tx", "3", "selected"); %>>3T (450Mbps)</option>
-                                                    <option value="4" <% nvram_match_x("", "wl_stream_tx", "4", "selected"); %>>4T (600Mbps)</option>
+                                                    <option value="1" <% nvram_match_x("", "wl_stream_tx", "1", "selected"); %>>1T</option>
+                                                    <option value="2" <% nvram_match_x("", "wl_stream_tx", "2", "selected"); %>>2T</option>
+                                                    <option value="3" <% nvram_match_x("", "wl_stream_tx", "3", "selected"); %>>3T</option>
+                                                    <option value="4" <% nvram_match_x("", "wl_stream_tx", "4", "selected"); %>>4T</option>
                                                 </select>
                                             </td>
                                         </tr>
@@ -198,10 +182,10 @@ function done_validating(action){
                                             <th><#WIFIStreamRX#></th>
                                             <td>
                                                 <select name="wl_stream_rx" class="input">
-                                                    <option value="1" <% nvram_match_x("", "wl_stream_rx", "1", "selected"); %>>1R (150Mbps)</option>
-                                                    <option value="2" <% nvram_match_x("", "wl_stream_rx", "2", "selected"); %>>2R (300Mbps)</option>
-                                                    <option value="3" <% nvram_match_x("", "wl_stream_rx", "3", "selected"); %>>3R (450Mbps)</option>
-                                                    <option value="4" <% nvram_match_x("", "wl_stream_rx", "4", "selected"); %>>4R (600Mbps)</option>
+                                                    <option value="1" <% nvram_match_x("", "wl_stream_rx", "1", "selected"); %>>1R</option>
+                                                    <option value="2" <% nvram_match_x("", "wl_stream_rx", "2", "selected"); %>>2R</option>
+                                                    <option value="3" <% nvram_match_x("", "wl_stream_rx", "3", "selected"); %>>3R</option>
+                                                    <option value="4" <% nvram_match_x("", "wl_stream_rx", "4", "selected"); %>>4R</option>
                                                 </select>
                                             </td>
                                         </tr>
@@ -285,13 +269,13 @@ function done_validating(action){
                                             </td>
                                         </tr>
                                         <tr id="row_ldpc" style="display:none">
-                                            <th><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this, 3, 24);"><#WIFILDPC_itemname#></a></th>
+                                            <th><#WIFILDPC#></th>
                                             <td>
                                                 <select name="wl_ldpc" class="input">
-                                                    <option value="0" <% nvram_match_x("","wl_ldpc", "0","selected"); %>><#btn_Disable#> (*)</option>
+                                                    <option value="0" <% nvram_match_x("","wl_ldpc", "0","selected"); %>><#btn_Disable#></option>
                                                     <option value="1" <% nvram_match_x("","wl_ldpc", "1","selected"); %>>11n only</option>
-                                                    <option value="2" <% nvram_match_x("","wl_ldpc", "2","selected"); %>>11ac only</option>
-                                                    <option value="3" <% nvram_match_x("","wl_ldpc", "3","selected"); %>>11n & 11ac Mixed</option>
+                                                    <option value="2" <% nvram_match_x("","wl_ldpc", "2","selected"); %>>11ac only (*)</option>
+                                                    <option value="3" <% nvram_match_x("","wl_ldpc", "3","selected"); %>>11n & 11ac</option>
                                                 </select>
                                             </td>
                                         </tr>
@@ -332,7 +316,7 @@ function done_validating(action){
                                             </td>
                                         </tr>
                                         <tr>
-                                            <th><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this, 3, 23);"><#WLANConfig11n_amsdu_itemname#></a></th>
+                                            <th><#WLANConfig11n_amsdu#></th>
                                             <td>
                                                 <select name="wl_HT_AMSDU" class="input">
                                                     <option value="0" <% nvram_match_x("", "wl_HT_AMSDU", "0", "selected"); %>><#btn_Disable#> (*)</option>
@@ -344,8 +328,8 @@ function done_validating(action){
                                             <th><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this, 3, 19);"><#WLANConfig11b_x_HT_OpMode_itemname#></a></th>
                                             <td>
                                                 <select class="input" id="wl_HT_OpMode" name="wl_HT_OpMode" onChange="return change_common_wl(this, 'WLANConfig11a', 'wl_HT_OpMode')">
-                                                    <option value="0" <% nvram_match_x("","wl_HT_OpMode", "0","selected"); %>><#btn_Disable#></option>
-                                                    <option value="1" <% nvram_match_x("","wl_HT_OpMode", "1","selected"); %>><#btn_Enable#> (*)</option>
+                                                    <option value="0" <% nvram_match_x("","wl_HT_OpMode", "0","selected"); %>><#btn_Disable#> (*)</option>
+                                                    <option value="1" <% nvram_match_x("","wl_HT_OpMode", "1","selected"); %>><#btn_Enable#></option>
                                                 </select>
                                             </td>
                                         </tr>
@@ -376,26 +360,17 @@ function done_validating(action){
                                               </select>
                                             </td>
                                         </tr>
-<!--                                        <tr id="row_band_steering" style="display:none">
-                                            <th><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this, 3, 20);"><#WLANConfig11n_band_steering_itemname#></a></th>
-                                            <td>
-                                                <select name="wl_band_steering" class="input">
-                                                    <option value="0" <% nvram_match_x("","wl_band_steering", "0","selected"); %>><#btn_Disable#> (*)</option>
-                                                    <option value="1" <% nvram_match_x("","wl_band_steering", "1","selected"); %>><#btn_Enable#></option>
-                                                </select>
-                                            </td>
-                                        </tr> -->
                                         <tr id="row_mumimo" style="display:none">
-                                            <th><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this, 3, 21);"><#WLANConfig11n_mumimo_itemname#></a></th>
+                                            <th><#WLANConfig11n_mumimo#></th>
                                             <td>
                                                 <select name="wl_mumimo" class="input">
-                                                    <option value="0" <% nvram_match_x("","wl_mumimo", "0","selected"); %>><#btn_Disable#></option>
-                                                    <option value="1" <% nvram_match_x("","wl_mumimo", "1","selected"); %>><#btn_Enable#> (*)</option>
+                                                    <option value="0" <% nvram_match_x("","wl_mumimo", "0","selected"); %>><#btn_Disable#> (*)</option>
+                                                    <option value="1" <% nvram_match_x("","wl_mumimo", "1","selected"); %>><#btn_Enable#></option>
                                                 </select>
                                             </td>
                                         </tr>
                                         <tr id="row_txbf" style="display:none">
-                                            <th><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this, 3, 22);"><#WLANConfig11n_txbf_itemname#></a></th>
+                                            <th><#WLANConfig11n_txbf#></th>
                                             <td>
                                                 <select name="wl_txbf" class="input">
                                                     <option value="0" <% nvram_match_x("","wl_txbf", "0","selected"); %>><#btn_Disable#></option>

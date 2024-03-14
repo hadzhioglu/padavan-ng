@@ -60,49 +60,49 @@ function initial(){
 
 function applyRule(){
 	if(prevent_lock()){
-		showLoading();
-
-		if (document.form.macfilter_enable_x.value == "0")
-			document.form.action_mode.value = " Apply ";
-		else
-			document.form.action_mode.value = " Restart ";
-		document.form.current_page.value = "/Advanced_MACFilter_Content.asp";
-		document.form.next_page.value = "";
-		document.form.submit();
+	showLoading();
+	
+	if (document.form.macfilter_enable_x.value == "0")
+	document.form.action_mode.value = " Apply ";
+	else
+	document.form.action_mode.value = " Restart ";
+	document.form.current_page.value = "/Advanced_MACFilter_Content.asp";
+	document.form.next_page.value = "";
+	document.form.submit();
 	}
 	else
-		return false;
+	return false;
 }
 
 function change_macfilter() {
 	if(document.form.macfilter_enable_x.value == "0"){
-		$("mac_drop_row").style.display = "none";
-		$("MFList_Block").style.display = "none";
+	$("mac_drop_row").style.display = "none";
+	$("MFList_Block").style.display = "none";
 	}
 	else{
-		$("mac_drop_row").style.display = "";
-		$("MFList_Block").style.display = "";
+	$("mac_drop_row").style.display = "";
+	$("MFList_Block").style.display = "";
 	}
 }
 
 function prevent_lock(){
 	if(document.form.macfilter_enable_x.value == "1"){
-		if(document.form.macfilter_num_x_0.value < 1){
-			if(confirm("<#FirewallConfig_MFList_accept_hint1#>")){
-				document.form.macfilter_list_x_0.value = smac[0] + smac[1] + smac[2] + smac[3] + smac[4] + smac[5];
-				document.form.macfilter_time_x_0.value = "00002359";
-				document.form.macfilter_date_x_0.value = "1111111";
-				markGroupMAC(document.form.MFList2, 64, ' Add ');
-				document.form.submit();
-			}
-			else
-				return false;
-		}
-		else
-			return true;
+	if(document.form.macfilter_num_x_0.value < 1){
+	if(confirm("<#FirewallConfig_MFList_accept_hint1#>")){
+	document.form.macfilter_list_x_0.value = smac[0] + smac[1] + smac[2] + smac[3] + smac[4] + smac[5];
+	document.form.macfilter_time_x_0.value = "00002359";
+	document.form.macfilter_date_x_0.value = "1111111";
+	markGroupMAC(document.form.MFList2, 64, ' Add ');
+	document.form.submit();
 	}
 	else
-		return true;
+	return false;
+	}
+	else
+	return true;
+	}
+	else
+	return true;
 }
 
 
@@ -115,22 +115,22 @@ function showLANIPList(){
 	var code = "";
 	var show_name = "";
 	for(var i = 0; i < clients_info.length ; i++){
-		if(clients_info[i][0] && clients_info[i][0].length > 20)
-			show_name = clients_info[i][0].substring(0, 18) + "..";
-		else
-			show_name = clients_info[i][0];
-
-		if(clients_info[i][2]){
-			code += '<a href="javascript:void(0)"><div onclick="setClientMAC('+i+');"><strong>'+clients_info[i][1]+'</strong>';
-			code += ' ['+clients_info[i][2]+']';
-			if(show_name && show_name.length > 0)
-				code += ' ('+show_name+')';
-			code += ' </div></a>';
-		}
+	if(clients_info[i][0] && clients_info[i][0].length > 20)
+	show_name = clients_info[i][0].substring(0, 18) + "..";
+	else
+	show_name = clients_info[i][0];
+	
+	if(clients_info[i][2]){
+	code += '<a href="javascript:void(0)"><div onclick="setClientMAC('+i+');"><strong>'+clients_info[i][1]+'</strong>';
+	code += ' ['+clients_info[i][2]+']';
+	if(show_name && show_name.length > 0)
+	code += ' ('+show_name+')';
+	code += ' </div></a>';
+	}
 	}
 	if (code == "")
-		code = '<div style="text-align: center;" onclick="hideClients_Block();"><#Nodata#></div>';
-	code +='<!--[if lte IE 6.5]><iframe class="hackiframe2"></iframe><![endif]-->';
+	code = '<div style="text-align: center;" onclick="hideClients_Block();"><#Nodata#></div>';
+	code +='<!--[if lte IE 6.5]><iframe class="hackiframe2"></iframe><![endif]-->';	
 	$("ClientList_Block").innerHTML = code;
 }
 
@@ -142,57 +142,57 @@ function hideClients_Block(){
 
 function pullLANIPList(obj){
 	if(isMenuopen == 0){
-		$j(obj).children('i').removeClass('icon-chevron-down').addClass('icon-chevron-up');
-		$("ClientList_Block").style.display = 'block';
-		document.form.macfilter_list_x_0.focus();
-		isMenuopen = 1;
+	$j(obj).children('i').removeClass('icon-chevron-down').addClass('icon-chevron-up');
+	$("ClientList_Block").style.display = 'block';
+	document.form.macfilter_list_x_0.focus();
+	isMenuopen = 1;
 	}
 	else
-		hideClients_Block();
+	hideClients_Block();
 }
 
 function validNewRow(max_rows) {
 	if (document.form.macfilter_num_x_0.value >= max_rows){
-		alert("<#JS_itemlimit1#> " + max_rows + " <#JS_itemlimit2#>");
-		return false;
+	alert("<#JS_itemlimit1#> " + max_rows + " <#JS_itemlimit2#>");
+	return false;
 	}
 
 	if (document.form.macfilter_list_x_0.value==""){
-		alert("<#JS_fieldblank#>");
-		document.form.macfilter_list_x_0.focus();
-		document.form.macfilter_list_x_0.select();
-		return false;
+	alert("<#JS_fieldblank#>");
+	document.form.macfilter_list_x_0.focus();
+	document.form.macfilter_list_x_0.select();
+	return false;
 	}
 
 	if (!validate_hwaddr(document.form.macfilter_list_x_0)){
-		return false;
+	return false;
 	}
 
 	if ((document.form.macfilter_date_x_Sun.checked == false) &&
-		(document.form.macfilter_date_x_Mon.checked == false) &&
-		(document.form.macfilter_date_x_Tue.checked == false) &&
-		(document.form.macfilter_date_x_Wed.checked == false) &&
-		(document.form.macfilter_date_x_Thu.checked == false) &&
-		(document.form.macfilter_date_x_Fri.checked == false) &&
-		(document.form.macfilter_date_x_Sat.checked == false)){
-		alert("<#MAC_Days#> - <#JS_fieldblank#>");
-		return false;
+	(document.form.macfilter_date_x_Mon.checked == false) &&
+	(document.form.macfilter_date_x_Tue.checked == false) &&
+	(document.form.macfilter_date_x_Wed.checked == false) &&
+	(document.form.macfilter_date_x_Thu.checked == false) &&
+	(document.form.macfilter_date_x_Fri.checked == false) &&
+	(document.form.macfilter_date_x_Sat.checked == false)){
+	alert("<#MAC_Days#> - <#JS_fieldblank#>");
+	return false;
 	}
 
 	if (!validate_timerange(document.form.macfilter_time_x_starthour, 0) ||
-		!validate_timerange(document.form.macfilter_time_x_startmin, 1) ||
-		!validate_timerange(document.form.macfilter_time_x_endhour, 2) ||
-		!validate_timerange(document.form.macfilter_time_x_endmin, 3)){
-		return false;
+	!validate_timerange(document.form.macfilter_time_x_startmin, 1) ||
+	!validate_timerange(document.form.macfilter_time_x_endhour, 2) ||
+	!validate_timerange(document.form.macfilter_time_x_endmin, 3)){
+	return false;
 	}
 
 	var starttime = eval(document.form.macfilter_time_x_starthour.value + document.form.macfilter_time_x_startmin.value);
 	var endtime = eval(document.form.macfilter_time_x_endhour.value + document.form.macfilter_time_x_endmin.value);
 	if(starttime == endtime){
-		alert("<#FirewallConfig_URLActiveTime_itemhint2#>");
-		document.form.macfilter_time_x_starthour.focus();
-		document.form.macfilter_time_x_starthour.select();
-		return false;
+	alert("<#FirewallConfig_URLActiveTime_itemhint2#>");
+	document.form.macfilter_time_x_starthour.focus();
+	document.form.macfilter_time_x_starthour.select();
+	return false;
 	}
 
 	return true;
@@ -200,27 +200,27 @@ function validNewRow(max_rows) {
 
 function updateDT() {
 	document.form.macfilter_date_x_0.value = setDateCheck(
-		document.form.macfilter_date_x_Sun,
-		document.form.macfilter_date_x_Mon,
-		document.form.macfilter_date_x_Tue,
-		document.form.macfilter_date_x_Wed,
-		document.form.macfilter_date_x_Thu,
-		document.form.macfilter_date_x_Fri,
-		document.form.macfilter_date_x_Sat);
+	document.form.macfilter_date_x_Sun,
+	document.form.macfilter_date_x_Mon,
+	document.form.macfilter_date_x_Tue,
+	document.form.macfilter_date_x_Wed,
+	document.form.macfilter_date_x_Thu,
+	document.form.macfilter_date_x_Fri,
+	document.form.macfilter_date_x_Sat);
 	document.form.macfilter_time_x_0.value = setTimeRange(
-		document.form.macfilter_time_x_starthour,
-		document.form.macfilter_time_x_startmin,
-		document.form.macfilter_time_x_endhour,
-		document.form.macfilter_time_x_endmin);
+	document.form.macfilter_time_x_starthour,
+	document.form.macfilter_time_x_startmin,
+	document.form.macfilter_time_x_endhour,
+	document.form.macfilter_time_x_endmin);
 }
 
 function markGroupMAC(o, c, b) {
 	document.form.group_id.value = "MFList";
 	if(b == " Add "){
-		if (validNewRow(c) == false)
-			return false;
-
-		updateDT();
+	if (validNewRow(c) == false)
+	return false;
+	
+	updateDT();
 	}
 	pageChanged = 0;
 	document.form.action_mode.value = b;
@@ -229,32 +229,32 @@ function markGroupMAC(o, c, b) {
 
 function format_time(nvtime) {
 	if (nvtime == "")
-		nvtime = "00002359";
+	nvtime = "00002359";
 	return nvtime.substring(0, 2) + ":" + nvtime.substring(2, 4) + " - " + nvtime.substring(4, 6) + ":" + nvtime.substring(6, 8);
 }
 
 function format_date(nvdate) {
 	var caption = "";
 	if (getDateCheck(nvdate, 1) == true)
-		caption = caption + ", <#DAY_Mon#>";
+	caption = caption + ", <#DAY_Mon#>";
 	if (getDateCheck(nvdate, 2) == true)
-		caption = caption + ", <#DAY_Tue#>";
+	caption = caption + ", <#DAY_Tue#>";
 	if (getDateCheck(nvdate, 3) == true)
-		caption = caption + ", <#DAY_Wed#>";
+	caption = caption + ", <#DAY_Wed#>";
 	if (getDateCheck(nvdate, 4) == true)
-		caption = caption + ", <#DAY_Thu#>";
+	caption = caption + ", <#DAY_Thu#>";
 	if (getDateCheck(nvdate, 5) == true)
-		caption = caption + ", <#DAY_Fri#>";
+	caption = caption + ", <#DAY_Fri#>";
 	if (getDateCheck(nvdate, 6) == true)
-		caption = caption + ", <#DAY_Sat#>";
+	caption = caption + ", <#DAY_Sat#>";
 	if (getDateCheck(nvdate, 0) == true)
-		caption = caption + ", <#DAY_Sun#>";
-
+	caption = caption + ", <#DAY_Sun#>";
+	
 	if (caption == "")
-		caption = "-";
+	caption = "-";
 	else
-		caption = caption.substring(2);
-
+	caption = caption.substring(2);
+	
 	return caption;
 }
 
@@ -264,28 +264,28 @@ function showMFList(){
 	var temp_date = '<% nvram_get_x("", "macfilter_date_x_0"); %>';
 
 	if(MACList.length == 0) {
-		code +='<tr><td colspan="4" style="text-align: center;"><div class="alert alert-info"><#IPConnection_VSList_Norule#></div></td></tr>';
-
-		document.form.macfilter_time_x_0.value = (temp_time == '') ? "00002359" : temp_time;
-		document.form.macfilter_date_x_0.value = (temp_date == '') ? "1111111" : temp_date;
+	code +='<tr><td colspan="4" style="text-align: center;"><div class="alert alert-info"><#IPConnection_VSList_Norule#></div></td></tr>';
+	
+	document.form.macfilter_time_x_0.value = (temp_time == '') ? "00002359" : temp_time;
+	document.form.macfilter_date_x_0.value = (temp_date == '') ? "1111111" : temp_date;
 	}
 	else{
 	    for(var i = 0; i < MACList.length; i++){
-		code +='<tr id="row' + i + '">';
-		code +='<td width="25%">&nbsp;' + MACList[i][0] + '</td>';
-		code +='<td width="25%" style="text-align: center;">' + format_time(MACList[i][1]) + '</td>';
-		code +='<td width="45%">' + format_date(MACList[i][2]) + '</td>';
-		code +='<td width="5%" style="text-align: center;"><input type="checkbox" name="MFList_s" value="' + i + '" onClick="changeBgColor(this,' + i + ');" id="check' + i + '"></td>';
-		code +='</tr>';
+	code +='<tr id="row' + i + '">';
+	code +='<td width="25%">&nbsp;' + MACList[i][0] + '</td>';
+	code +='<td width="25%" style="text-align: center;">' + format_time(MACList[i][1]) + '</td>';
+	code +='<td width="45%">' + format_date(MACList[i][2]) + '</td>';
+	code +='<td width="5%" style="text-align: center;"><input type="checkbox" name="MFList_s" value="' + i + '" onClick="changeBgColor(this,' + i + ');" id="check' + i + '"></td>';
+	code +='</tr>';
 	    }
-		code += '<tr>';
-		code += '<td colspan="3">&nbsp;</td>'
-		code += '<td><button class="btn btn-danger" type="submit" onclick="return markGroupMAC(this, 64, \' Del \');" name="MFList"><i class="icon icon-minus icon-white"></i></button></td>';
-		code += '</tr>'
-
-		var last_row = MACList.length - 1;
-		document.form.macfilter_time_x_0.value = (temp_time == '') ? MACList[last_row][1] : temp_time;
-		document.form.macfilter_date_x_0.value = (temp_date == '') ? MACList[last_row][2] : temp_date;
+	code += '<tr>';
+	code += '<td colspan="3">&nbsp;</td>'
+	code += '<td><button class="btn btn-danger" type="submit" onclick="return markGroupMAC(this, 64, \' Del \');" name="MFList"><i class="icon icon-minus icon-white"></i></button></td>';
+	code += '</tr>'
+	
+	var last_row = MACList.length - 1;
+	document.form.macfilter_time_x_0.value = (temp_time == '') ? MACList[last_row][1] : temp_time;
+	document.form.macfilter_date_x_0.value = (temp_date == '') ? MACList[last_row][2] : temp_date;
 	}
 
 	document.form.macfilter_date_x_Sun.checked = getDateCheck(document.form.macfilter_date_x_0.value, 0);
@@ -400,7 +400,7 @@ function done_validating(action){
                                         </tr>
 
                                         <tr id="mac_drop_row" style="display:none;">
-                                            <th><#MAC_BlockHost#></th>
+                                            <th><#MAC_BlockHost#><div>&nbsp;<span style="color:#FF0000;">若启动adbyby、SS，需要开启</span></div></th>
                                             <td>
                                                 <div class="main_itoggle">
                                                     <div id="fw_mac_drop_on_of">

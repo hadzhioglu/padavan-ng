@@ -18,10 +18,11 @@
 <script type="text/javascript" src="/wireless.js"></script>
 <script type="text/javascript" src="/help_wl.js"></script>
 <script type="text/javascript" src="/popup.js"></script>
+<script type="text/javascript" src="/link_d.js"></script>
 <script>
 var $j = jQuery.noConflict();
 
-var wds_aplist = [["", "", ""]];
+var wds_aplist = "";
 
 function initial(){
 	show_banner(1);
@@ -33,7 +34,15 @@ function initial(){
 	insertChannelOption();
 	document.form.wl_channel.remove(0);
 
-	showLANIPList();
+	if (typeof(support_5g_wid) === 'function'){
+	wid = support_5g_wid();
+	if (wid==7915){
+	document.form.wl_mode_x.remove(1);
+	document.form.wl_mode_x.remove(1);
+	}
+	}
+	
+	wds_scan(0);
 
 	change_wireless_bridge();
 	change_sta_auth_mode(0);
@@ -46,28 +55,30 @@ function initial(){
 function applyRule(){
 	var m = document.form.wl_mode_x.value;
 	if (validForm()){
-		showLoading();
-		if (m == "1" || m == "2")
-			document.form.action_mode.value = " Restart ";
-		else
-			document.form.action_mode.value = " Apply ";
-		document.form.current_page.value = "/Advanced_WMode_Content.asp";
-		document.form.next_page.value = "";
-		document.form.submit();
+	showLoading();
+	if (m == "1" || m == "2")
+	document.form.action_mode.value = " Restart ";
+	else
+	document.form.action_mode.value = " Apply ";
+	document.form.current_page.value = "/Advanced_WMode_Content.asp";
+	document.form.next_page.value = "";
+	document.form.submit();
 	}
 }
 
 function validForm(){
 	var m = document.form.wl_mode_x.value;
 	if (m == "3" || m == "4") {
-		if(document.form.wl_sta_ssid.value == "") {
-			document.form.wl_sta_ssid.focus();
-			return false;
-		}
-		if(document.form.wl_sta_auth_mode.value == "psk"){
-			if(!validate_psk(document.form.wl_sta_wpa_psk))
-				return false;
-		}
+	if(!validate_string_ssid(document.form.wl_sta_ssid))
+	return false;
+	if(document.form.wl_sta_ssid.value == "") {
+	document.form.wl_sta_ssid.focus();
+	return false;
+	}
+	if(document.form.wl_sta_auth_mode.value == "psk"){
+	if(!validate_psk(document.form.wl_sta_wpa_psk))
+	return false;
+	}
 	}
 	return true;
 }
@@ -76,16 +87,29 @@ function done_validating(action){
 	refreshpage();
 }
 
-function wds_scan(){
+function wds_scan(mflag){
 	$j.ajax({
-		url: '/wds_aplist.asp',
-		dataType: 'script',
-		error: function(xhr){
-			setTimeout("wds_scan();", 1000);
-		},
-		success: function(response){
-			showLANIPList();
-		}
+	url: '/wds_aplist.asp',
+	dataType: 'script',
+	error: function(xhr){
+	setTimeout("wds_scan(1);", 1500);
+	},
+	success: function(response){
+	if (mflag == 1){
+	if (typeof(wds_aplist) != "undefined"){
+	if(wds_aplist[0][0].length == 0) {
+	isRunscan = 1;
+	setTimeout("wds_scan(1);", 2000);
+	}
+	}else{
+	isRunscan = 1;
+	setTimeout("wds_scan(1);", 2000);
+	}
+	showSignalList();
+	}else{
+	showSignalList();
+	}
+	}
 	});
 }
 
@@ -99,14 +123,14 @@ function change_wireless_bridge(){
 	var is_apc_auto = 0;
 
 	if (is_wds){
-		if (document.form.wl_wdsapply_x.value == "1")
-			is_wds_list = 1;
+	if (document.form.wl_wdsapply_x.value == "1")
+	is_wds_list = 1;
 	}
 
 	if (is_apc){
-		is_apc_auto = 1;
-		if (!get_ap_mode())
-			is_apc_wisp = 1;
+	is_apc_auto = 1;
+	if (!get_ap_mode())
+	is_apc_wisp = 1;
 	}
 
 	inputCtrl(document.form.wl_channel, !is_apo);
@@ -137,9 +161,9 @@ function change_wireless_bridge(){
 function change_wdsapply(){
 	var m = document.form.wl_mode_x.value;
 	if (m == "1" || m == "2"){
-		var v = (document.form.wl_wdsapply_x.value == "1") ? 1 : 0;
-		showhide_div("row_wds_2", v);
-		showhide_div("row_wds_apc", v);
+	var v = (document.form.wl_wdsapply_x.value == "1") ? 1 : 0;
+	showhide_div("row_wds_2", v);
+	showhide_div("row_wds_apc", v);
 	}
 }
 
@@ -147,24 +171,24 @@ function change_sta_auth_mode(mflag){
 	var mode = document.form.wl_sta_auth_mode.value;
 	var opts = document.form.wl_sta_auth_mode.options;
 	if(mode == "psk"){
-		inputCtrl(document.form.wl_sta_crypto, 1);
-		inputCtrl(document.form.wl_sta_wpa_psk, 1);
-		if(opts[opts.selectedIndex].text == "WPA2-Personal"){
-			if (mflag == 1){
-				document.form.wl_sta_crypto.options[0].selected = 0;
-				document.form.wl_sta_crypto.options[1].selected = 1;
-				document.form.wl_sta_wpa_mode.value = "2";
-			}
-		}else{
-			if (mflag == 1){
-				document.form.wl_sta_crypto.options[1].selected = 0;
-				document.form.wl_sta_crypto.options[0].selected = 1;
-				document.form.wl_sta_wpa_mode.value = "1";
-			}
-		}
+	inputCtrl(document.form.wl_sta_crypto, 1);
+	inputCtrl(document.form.wl_sta_wpa_psk, 1);
+	if(opts[opts.selectedIndex].text == "WPA2-Personal"){
+	if (mflag == 1){
+	document.form.wl_sta_crypto.options[0].selected = 0;
+	document.form.wl_sta_crypto.options[1].selected = 1;
+	document.form.wl_sta_wpa_mode.value = "2";
+	}
 	}else{
-		inputCtrl(document.form.wl_sta_crypto, 0);
-		inputCtrl(document.form.wl_sta_wpa_psk, 0);
+	if (mflag == 1){
+	document.form.wl_sta_crypto.options[1].selected = 0;
+	document.form.wl_sta_crypto.options[0].selected = 1;
+	document.form.wl_sta_wpa_mode.value = "1";
+	}
+	}
+	}else{
+	inputCtrl(document.form.wl_sta_crypto, 0);
+	inputCtrl(document.form.wl_sta_wpa_psk, 0);
 	}
 }
 
@@ -173,71 +197,130 @@ function click_auto_seek(o) {
 	document.form.wl_sta_auto.value = v;
 }
 
-function setClientIP(num){
-	var smac = wds_aplist[num][1].split(":");
-	var mode = document.form.wl_mode_x.value;
-	if (mode == "1" || mode == "2")
-		document.form.wl_wdslist_x_0.value = smac[0] + smac[1] + smac[2] + smac[3] + smac[4] + smac[5];
-	else if (mode == "3" || mode == "4")
-		document.form.wl_sta_ssid.value = wds_aplist[num][0];
-	if (parseInt(wds_aplist[num][2]) > 0)
-		document.form.wl_channel.value = wds_aplist[num][2];
-	hideClients_Block();
-}
+var isRunscan = 0;
 
 function rescan(){
-	wds_aplist = "";
-	showLANIPList();
-	wds_scan();
+	isRunscan = 1;
+	var $j = jQuery.noConflict();
+	$j.ajax({
+	type: "post",
+	url: "/apply.cgi",
+	data: {
+	'action_script': "script/_ezscript getAPSite5g "
+	},
+	dataType: "json",
+	error: function() {
+	setTimeout("wds_scan(1);",3000);
+	},
+	success: function() {
+	setTimeout("wds_scan(1);",3000);
+	}
+	});
 }
 
-function showLANIPList(){
-	var code = "";
-	var show_name = "";
-
-	if(wds_aplist != ""){
-		for(var i = 0; i < wds_aplist.length ; i++){
-			wds_aplist[i][0] = decodeSSID(wds_aplist[i][0]);
-			if(wds_aplist[i][0] && wds_aplist[i][0].length > 16)
-				show_name = wds_aplist[i][0].substring(0, 14) + "..";
-			else
-				show_name = wds_aplist[i][0];
-
-			if(wds_aplist[i][1] && wds_aplist[i][1].length > 0){
-				code += '<a href="javascript:void(0)"><div onclick="setClientIP('+i+');"><strong>'+show_name+'</strong>';
-				code += ' ['+wds_aplist[i][1]+']';
-				code += ', Ch.'+wds_aplist[i][2];
-				code += ', '+wds_aplist[i][3]+'%';
-				code += ' </div></a>';
-			}
-		}
-		code += '<div style="font-weight:bold;cursor:pointer;" onclick="rescan();"><#AP_survey#>&nbsp;</div>';
+function shscan(){
+	var $j = jQuery.noConflict();
+	$j.ajax({
+	type: "post",
+	url: "/apply.cgi",
+	data: {
+	'action_script': "script/_ezscript connAPSite_scan "
+	},
+	dataType: "json",
+	error: function() {
+	setTimeout("applyRule();",500);
+	},
+	success: function() {
+	setTimeout("applyRule();",500);
 	}
-	else{
-		code += '<div style="width: 207px"><center><img style="padding-top: 4px; display: block;" src="/bootstrap/img/ajax-loader.gif"></center></div>';
-	}
-
-	code +='<!--[if lte IE 6.5]><iframe class="hackiframe_wdssurvey"></iframe><![endif]-->';
-	document.getElementById("WDSAPList").innerHTML = code;
+	});
 }
 
-var isMenuopen = 0;
-
-function pullLANIPList(obj){
-	if(isMenuopen == 0){
-		$j(obj).children('i').removeClass('icon-chevron-down').addClass('icon-chevron-up');
-		document.getElementById("WDSAPList").style.display = 'block';
-		document.form.wl_wdslist_x_0.focus();
-		isMenuopen = 1;
-	}
-	else
-		hideClients_Block();
+function getStrA(str) {
+	return str.replace(/(\s*$)/g, "")
 }
 
-function hideClients_Block(){
-	$j("#ctl_wds_2").children('i').removeClass('icon-chevron-up').addClass('icon-chevron-down');
-	document.getElementById('WDSAPList').style.display='none';
-	isMenuopen = 0;
+function showSignalList(){
+	var code = '';
+	var code2 = '';
+	var Norule_i = 1;
+	if (typeof(wds_aplist) != "undefined"){
+	if(wds_aplist[0][0].length > 0) {
+	var Norule_i = 0;
+	}
+	}
+	if(isRunscan == 1){
+	code +='<tr><td colspan="9" style="text-align: center;"><div class="alert alert-info"><center><img style="padding-top: 4px; display: block;" src="/bootstrap/img/ajax-loader.gif"></center></div></td></tr>';
+	isRunscan = 0;
+	}else{
+	if(Norule_i == 1){
+	code +='<tr><td colspan="9" style="text-align: center;"><div class="alert alert-info" style="font-weight:bold;cursor:pointer;" onclick="rescan();"><#AP_survey#></div></td></tr>';
+	}
+	if (typeof(wds_aplist) != "undefined"){
+	if(wds_aplist[0][0].length > 0) {
+	for(var i = 0; i < wds_aplist.length; i++){
+	code +='<tr id="row3' + i + '">';
+	code +='<td width="5%">' + getStrA(wds_aplist[i][0]) + '</td>';
+	code +='<th width="30%" style="white-space:pre;">' + getStrA(Base64.decode(wds_aplist[i][1])) + '</th>';
+	code +='<td width="18%">' + getStrA(wds_aplist[i][2]) + '</td>';
+	code +='<td width="16%">' + getStrA(wds_aplist[i][3]) + '</td>';
+	code +='<td width="10%">' + getStrA(wds_aplist[i][4]) + '%</td>';
+	code +='<td width="11%">' + getStrA(wds_aplist[i][5]) + '</td>';
+	code += '<td width="10%"><button class="btn btn-success" type="submit" name="rt_LinkList_' + i + '" id="rt_LinkList_' + i + '" onclick="document.getElementById(\'app_98_select\').options[' + (i + 1) + '].selected=true;return setWDSAP(this, ' + i + ');" >应用</button></td>';
+	code +='</tr>';
+	}
+	}
+	if(wds_aplist[0][0].length > 0) {
+	code2 += '<tr><th style="border-top: 0 none;" width="50%">✨快捷选用信号✨：</th><td style="border-top: 0 none;">'
+	code2 += '<select name="app_98_select" id="app_98_select" class="input" onChange="return setWDSAP(this, document.form.app_98_select.value);">'
+	code2 += '<option value="-1" >选用信号后点击[应用]生效</option>'
+	for(var i = 0; i < wds_aplist.length; i++){
+	code2 += '<option value="' + i + '" >' + getStrA(Base64.decode(wds_aplist[i][1])).replace(/\ /g, "&nbsp;") + ' [' + getStrA(wds_aplist[i][2]) + '], Ch.' + getStrA(wds_aplist[i][0]) + ', ' + getStrA(wds_aplist[i][4]) + '% </option>'
+	}
+	}
+	}
+	}
+	var code0 = '<table width="100%" align="center" cellpadding="4" cellspacing="0" class="table table-list" id="WDSAPList">'
+	$j('#WDSAPList').replaceWith(code0 + code + '</table>');
+	var code1 = '<table width="100%" align="center" cellpadding="4" cellspacing="0" class="table" id="WDSAPList_select" style="margin-bottom: 0px;">'
+	$j('#WDSAPList_select').replaceWith(code1 + code2 + '</table>');
+}
+
+function setWDSAP(o, i) {
+	if (typeof(wds_aplist) != "undefined"){
+	if(wds_aplist[0][0].length > 0 && i >= 0) {
+	var mode = document.form.wl_mode_x.value;
+	if (mode == "1" || mode == "2"){
+	var smac = getStrA(wds_aplist[i][2]).split(":");
+	document.form.wl_wdslist_x_0.value = smac[0] + smac[1] + smac[2] + smac[3] + smac[4] + smac[5];
+	}else if (mode == "3" || mode == "4"){
+	document.form.wl_sta_ssid.value = getStrA(Base64.decode(wds_aplist[i][1]));
+	}
+	if (parseInt(getStrA(wds_aplist[i][0])) > 0){
+	document.form.wl_channel.value = getStrA(wds_aplist[i][0]);
+	}
+	if (getStrA(wds_aplist[i][3]).indexOf('NONE') != -1 || getStrA(wds_aplist[i][3]).indexOf('OPEN') != -1){
+	document.form.wl_sta_auth_mode.options[1].selected = 0;
+	document.form.wl_sta_auth_mode.options[2].selected = 0;
+	document.form.wl_sta_auth_mode.options[0].selected = 1;
+	change_sta_auth_mode(1)
+	}
+	if (getStrA(wds_aplist[i][3]).indexOf('WPA2') != -1){
+	document.form.wl_sta_auth_mode.options[0].selected = 0;
+	document.form.wl_sta_auth_mode.options[1].selected = 0;
+	document.form.wl_sta_auth_mode.options[2].selected = 1;
+	change_sta_auth_mode(1)
+	}else{
+	if (getStrA(wds_aplist[i][3]).indexOf('WPA1') != -1 || getStrA(wds_aplist[i][3]).indexOf('WPAPSK') != -1){
+	document.form.wl_sta_auth_mode.options[0].selected = 0;
+	document.form.wl_sta_auth_mode.options[2].selected = 0;
+	document.form.wl_sta_auth_mode.options[1].selected = 1;
+	change_sta_auth_mode(1)
+	}
+	}
+	}
+	}
+	return false;
 }
 </script>
 </head>
@@ -261,7 +344,7 @@ function hideClients_Block(){
     <input type="hidden" name="current_page" value="Advanced_WMode_Content.asp">
     <input type="hidden" name="next_page" value="">
     <input type="hidden" name="next_host" value="">
-    <input type="hidden" name="sid_list" value="WLANConfig11a;">
+    <input type="hidden" name="sid_list" value="WLANConfig11a;General;">
     <input type="hidden" name="group_id" value="RBRList">
     <input type="hidden" name="action_mode" value="">
     <input type="hidden" name="action_script" value="">
@@ -270,7 +353,7 @@ function hideClients_Block(){
     <input type="hidden" name="wl_channel_org" value="<% nvram_get_x("","wl_channel"); %>">
     <input type="hidden" name="wl_wdsnum_x_0" value="<% nvram_get_x("", "wl_wdsnum_x"); %>" readonly="1">
     <input type="hidden" name="wl_sta_auto" value="<% nvram_get_x("", "wl_sta_auto"); %>" />
-    <input type="hidden" name="wl_sta_ssid_org" value="<% nvram_get_x("", "wl_sta_ssid"); %>">
+    <input type="hidden" name="wl_sta_ssid_org" value="<% nvram_char_to_ascii("", "wl_sta_ssid"); %>">
     <input type="hidden" name="wl_sta_wpa_mode" value="<% nvram_get_x("","wl_sta_wpa_mode"); %>">
     <input type="hidden" name="wl_sta_wpa_psk_org" value="<% nvram_char_to_ascii("", "wl_sta_wpa_psk"); %>">
 
@@ -352,24 +435,26 @@ function hideClients_Block(){
                                             </td>
                                         </tr>
                                     </table>
-
-                                    <table width="100%" align="center" cellpadding="4" cellspacing="0" class="table">
+                                    <table width="100%" align="center" cellpadding="4" cellspacing="0" class="table" style="margin-bottom: 0px;">
                                         <tr id="row_wds_apc" style="display:none;">
-                                            <th width="50%"><a id="ctl_apc_1" class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this, 0, 1);">STA SSID:</a></th>
+	<th width="50%"><a id="ctl_apc_1" class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this, 0, 1);"><#WLANConfig11b_Channel_itemonssid#></a></th>
                                             <td>
-                                                <div id="WDSAPList" class="alert alert-info ddown-list"></div>
+                                                
                                                 <div class="input-append" style="float: left;">
-                                                    <input type="text" id="ctl_wds_1" name="wl_wdslist_x_0" maxlength="12" size="14" onKeyPress="return is_hwaddr(event);" style="float:left; width: 175px;">
+                                                    <input type="text" id="ctl_wds_1" name="wl_wdslist_x_0" value="" maxlength="12" size="14" onKeyPress="return is_hwaddr(event);" style="float:left; width: 175px;">
                                                     <input type="text" id="ctl_apc_2" name="wl_sta_ssid" value="" maxlength="32" class="input" size="20" style="float:left; width: 175px;"/>
-                                                    <button class="btn btn-chevron" id="ctl_wds_2" type="button" onclick="pullLANIPList(this);" title="Select the Access Point"><i class="icon icon-chevron-down"></i></button>
+                                                    <button class="btn btn-chevron" type="button" onclick="rescan();" title="刷新信号列表"><i class="icon icon-signal"></i></button>
                                                 </div>
-
                                                 <input class="btn btn-primary" id="RBRList" style="margin-left: 5px; width: 99px;" type="submit" onClick="return markGroup(this, 'RBRList', 4, ' Add ');" name="RBRList" value="<#CTL_add#>" size="12">
                                                 <div id="ctl_wds_3" class="alert alert-danger" style="margin-top: 5px; margin-bottom: 0px;">* <#JS_validmac#></div>
                                             </td>
                                         </tr>
+                                    </table>
+	<table width="100%" align="center" cellpadding="4" cellspacing="0" class="table" id="WDSAPList_select" style="margin-bottom: 0px;">
+	</table>
+                                    <table width="100%" align="center" cellpadding="4" cellspacing="0" class="table">
                                         <tr id="row_wds_2" style="display:none;">
-                                            <th><#WLANConfig11b_RBRList_groupitemdesc#></th>
+                                            <th width="50%"><#WLANConfig11b_RBRList_groupitemdesc#></th>
                                             <td>
                                                 <div style="float: left;">
                                                     <select size="4" name="RBRList_s" multiple="true" class="input" style="vertical-align:top;" >
@@ -380,7 +465,7 @@ function hideClients_Block(){
                                             </td>
                                         </tr>
                                         <tr id="row_apc_1" style="display:none;">
-                                            <th><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this, 0, 5);"><#WLANConfig11b_AuthenticationMethod_itemname#></a></th>
+                                            <th width="50%"><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this, 0, 5);"><#WLANConfig11b_AuthenticationMethod_itemname#></a></th>
                                             <td>
                                                 <select name="wl_sta_auth_mode" class="input" onChange="change_sta_auth_mode(1);">
                                                     <option value="open" <% nvram_match_x("", "wl_sta_auth_mode", "open", "selected"); %>>Open System</option>
@@ -408,17 +493,42 @@ function hideClients_Block(){
                                             </td>
                                         </tr>
                                     </table>
-
+                                    <table class="table">
+                                        <tr id="ap_script">
+                                            <td colspan="2" style="border-top: 0 none;">
+                                                <i class="icon-hand-right"></i><a href="javascript:spoiler_toggle('script12')"><span>ap_script【点击打开配置脚本】</span><div>&nbsp;<span style="color:#888;">增强功能：自动切换中继信号脚本【自动搜寻信道、自动搜寻信号】</span></div></a>
+                                                <div id="script12" style="display:none;">
+                                                    <textarea rows="24" wrap="off" spellcheck="false" maxlength="2097152" class="span12" name="scripts.ap_script.sh" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("scripts.ap_script.sh",""); %></textarea>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
                                     <table class="table">
                                         <tr>
-                                            <td width="50%" style="margin-top: 10px; border-top: 0 none;">
+                                            <td width="33%" style="margin-top: 10px; border-top: 0 none;">
                                                 <input class="btn btn-info" type="button"  value="<#GO_2G#>" onclick="location.href='Advanced_WMode2g_Content.asp';">
                                             </td>
                                             <td style="border-top: 0 none;">
                                                 <input class="btn btn-primary" style="width: 219px" type="button" value="<#CTL_apply#>" onclick="applyRule()" />
                                             </td>
+                                            <td style="border-top: 0 none;">
+                                                <input class="btn btn-success" style="width: 150px" type="button" value="执行脚本自动搜寻 AP" onclick="shscan()" />
+                                            </td>
                                         </tr>
                                     </table>
+	<table width="100%" align="center" cellpadding="4" cellspacing="0" class="table table-list" style="margin-bottom: 0px;">
+	<tr>
+	<th width="5%">Ch</th>
+	<th width="30%">SSID</th>
+	<th width="18%">BSSID</th>
+	<th width="16%">Security</th>
+	<th width="10%">Signal(%)</th>
+	<th width="11%">W-Mode</th>
+	<th width="10%"><button class="btn btn-chevron" type="button" onclick="rescan();" title="刷新信号列表"><i class="icon icon-signal"></i></button></th>
+	</tr>
+	</table>
+	<table width="100%" align="center" cellpadding="4" cellspacing="0" class="table table-list" id="WDSAPList">
+	</table>
                                 </div>
                             </div>
                         </div>

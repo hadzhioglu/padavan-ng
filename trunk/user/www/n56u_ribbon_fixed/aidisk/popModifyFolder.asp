@@ -21,7 +21,7 @@ function initial(){
 	showtext($("selected_Pool"), selectedPool);
 	showtext($("selected_Folder"), showhtmlspace(showhtmland(selectedFolder)));
 	$("new_folder").focus();
-
+	
 	clickevent();
 }
 
@@ -43,31 +43,31 @@ function clickevent(){
 
 function validForm(){
 	$("new_folder").value = trim($("new_folder").value);
-
+	
 	// share name
 	if($("new_folder").value.length == 0){
 		alert("<#File_content_alert_desc6#>");
 		$("new_folder").focus();
 		return false;
 	}
-
-	var re = new RegExp("[^a-zA-Z0-9 _-]+","gi");
+	
+	var re = new RegExp("[^\u4e00-\u9fa5_a-zA-Z0-9 _-]+","gi");
 	if(re.test($("new_folder").value)){
 		alert("<#File_content_alert_desc7#>");
 		$("new_folder").focus();
 		return false;
 	}
-
+	
 	if(parent.checkDuplicateName($("new_folder").value, folderlist)){
 		alert("<#File_content_alert_desc8#>");
 		$("new_folder").focus();
 		return false;
 	}
-
+	
 	if(trim($("new_folder").value).length > 12)
 		if (!(confirm("<#File_content_alert_desc10#>")))
 			return false;
-
+	
 	return true;
 }
 

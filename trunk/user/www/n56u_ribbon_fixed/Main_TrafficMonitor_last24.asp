@@ -116,12 +116,12 @@ Highcharts.setOptions(Highcharts.locale);
 
 $j(document).ready(function(){
 	$j("#tabs a").click(function(){
-		switchPage(this.id);
-		return false;
+	switchPage(this.id);
+	return false;
 	});
 	if(get_ap_mode()){
-		$j("#tab_tr_dy").parents('li').hide();
-		$j("#tab_tr_mo").parents('li').hide();
+	$j("#tab_tr_dy").parents('li').hide();
+	$j("#tab_tr_mo").parents('li').hide();
 	}
 	netChart = new Highcharts.StockChart(net_chart_24);
 });
@@ -148,20 +148,20 @@ function redraw_speed(){
 	var x = getNextTime();
 
 	for(var i in speed_history){
-		var h = speed_history[i];
-		if ((typeof(h.rx) === 'undefined') || (typeof(h.tx) === 'undefined'))
-			continue;
-
-		netChart.series[0].setData(prepareData(x, h.rx), false);
-		netChart.series[1].setData(prepareData(x, h.tx), false);
-
-		if (netdev !== i){
-			netdev = i;
-			setChartTitle(i);
-			E('sel_netif').value = 'speed-tab-' + i;
-		}
-
-		break;
+	var h = speed_history[i];
+	if ((typeof(h.rx) === 'undefined') || (typeof(h.tx) === 'undefined'))
+	continue;
+	
+	netChart.series[0].setData(prepareData(x, h.rx), false);
+	netChart.series[1].setData(prepareData(x, h.tx), false);
+	
+	if (netdev !== i){
+	netdev = i;
+	setChartTitle(i);
+	E('sel_netif').value = 'speed-tab-' + i;
+	}
+	
+	break;
 	}
 
 	processTabs();
@@ -176,10 +176,10 @@ function eval_netdevs(response){
 	speed_history = {};
 
 	try {
-		eval(response);
+	eval(response);
 	}
 	catch (ex) {
-		speed_history = {};
+	speed_history = {};
 	}
 
 	redraw_speed();
@@ -188,21 +188,21 @@ function eval_netdevs(response){
 function load_netdevs(){
 	clearTimeout(idTimerPoll);
 	$j.ajax({
-		type: "get",
-		url: "/update.cgi",
-		data: {
-			output: "bandwidth",
-			arg0: "speed",
-			arg1: netdev
-		},
-		dataType: "script",
-		cache: true,
-		error: function(xhr){
-			invoke_timer(5);
-		},
-		success: function(response){
-			eval_netdevs(response);
-		}
+	type: "get",
+	url: "/update.cgi",
+	data: {
+	output: "bandwidth",
+	arg0: "speed",
+	arg1: netdev
+	},
+	dataType: "script",
+	cache: true,
+	error: function(xhr){
+	invoke_timer(5);
+	},
+	success: function(response){
+	eval_netdevs(response);
+	}
 	});
 }
 
@@ -210,7 +210,7 @@ function prepareData(x,data){
 	var newData = [];
 	var i, j = 0, p = data_period;
 	for(i=(data.length-1); i >= 0; i--)
-		newData.unshift([(x - (j++) * p * 1000), (data[i]*8/1000000)]);
+	newData.unshift([(x - (j++) * p * 1000), (data[i]*8/1000000)]);
 	return newData;
 }
 
@@ -218,34 +218,34 @@ function prepare_array_chart(id){
 	var x = getNextTime();
 	var h = speed_history[netdev];
 	if (h !== undefined){
-		if(id==1){
-			if (typeof(h.tx) !== 'undefined')
-				return prepareData(x, h.tx);
-		}else{
-			if (typeof(h.rx) !== 'undefined')
-				return prepareData(x, h.rx);
-		}
+	if(id==1){
+	if (typeof(h.tx) !== 'undefined')
+	return prepareData(x, h.tx);
+	}else{
+	if (typeof(h.rx) !== 'undefined')
+	return prepareData(x, h.rx);
+	}
 	}
 
 	var data = [], p = 1-parseInt(86400/data_period);
 	for(i = p; i <= 0; i++)
-		data.push([x+i*data_period*1000, 0]);
+	data.push([x+i*data_period*1000, 0]);
 	return data;
 }
 
 function setChartTitle(ifdesc){
 	var title = getTabDesc(ifdesc);
 	if (title)
-		netChart.setTitle({text: title}, null, false);
+	netChart.setTitle({text: title}, null, false);
 }
 
 function setChartData(ifdesc){
 	if (!ifdesc)
-		return false;
+	return false;
 	if(netdev != ifdesc){
-		netdev = ifdesc;
-		setChartTitle(ifdesc);
-		load_netdevs();
+	netdev = ifdesc;
+	setChartTitle(ifdesc);
+	load_netdevs();
 	}
 }
 
@@ -254,7 +254,7 @@ function handleTabs(arrTabs){
 	var tabName = 'speed-tab-' + netdev;
 	free_options(o);
 	for(var i=0; i<arrTabs.length; i++)
-		add_option(o, arrTabs[i][1], arrTabs[i][0], arrTabs[i][0] === tabName);
+	add_option(o, arrTabs[i][1], arrTabs[i][0], arrTabs[i][0] === tabName);
 }
 
 function tabSelect(tabName){
@@ -264,11 +264,11 @@ function tabSelect(tabName){
 
 function switchPage(id){
 	if(id == "tab_bw_rt")
-		location.href = "/Main_TrafficMonitor_realtime.asp";
+	location.href = "/Main_TrafficMonitor_realtime.asp";
 	else if(id == "tab_tr_dy")
-		location.href = "/Main_TrafficMonitor_daily.asp#DY";
+	location.href = "/Main_TrafficMonitor_daily.asp#DY";
 	else if(id == "tab_tr_mo")
-		location.href = "/Main_TrafficMonitor_daily.asp#MO";
+	location.href = "/Main_TrafficMonitor_daily.asp#MO";
 	return false;
 }
 

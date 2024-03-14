@@ -41,13 +41,13 @@ function initial(){
 
 function applyRule(){
 	if(validForm()){
-		showLoading();
-
-		document.form.action_mode.value = " Apply ";
-		document.form.current_page.value = "Advanced_LAN_Content.asp";
-		document.form.next_page.value = "";
-
-		document.form.submit();
+	showLoading();
+	
+	document.form.action_mode.value = " Apply ";
+	document.form.current_page.value = "Advanced_LAN_Content.asp";
+	document.form.next_page.value = "";
+	
+	document.form.submit();
 	}
 }
 
@@ -65,11 +65,11 @@ function valid_LAN_IP(ip_obj){
 	var ip_num = inet_network(ip_obj.value);
 
 	if(ip_num > A_class_min && ip_num < A_class_max)
-		return true;
+	return true;
 	else if(ip_num > B_class_min && ip_num < B_class_max)
-		return false;
+	return false;
 	else if(ip_num > C_class_min && ip_num < C_class_max)
-		return true;
+	return true;
 	return false;
 }
 
@@ -79,62 +79,62 @@ function validForm(){
 	var addr_num = inet_network(addr_obj.value);
 
 	if(!validate_ipaddr_final(addr_obj, 'lan_ipaddr') ||
-			!validate_ipaddr_final(mask_obj, 'lan_netmask'))
-		return false;
+	!validate_ipaddr_final(mask_obj, 'lan_netmask'))
+	return false;
 
 	if(!valid_LAN_IP(addr_obj)) {
-		alert(addr_obj.value+" <#JS_validip#>");
-		addr_obj.focus();
-		addr_obj.select();
-		return false;
+	alert(addr_obj.value+" <#JS_validip#>");
+	addr_obj.focus();
+	addr_obj.select();
+	return false;
 	}
 
 	var snet_min = get_subnet_num(addr_obj.value, mask_obj.value, 0);
 	var snet_max = get_subnet_num(addr_obj.value, mask_obj.value, 1);
 
 	if(addr_num == snet_min || addr_num == snet_max){
-		alert(addr_obj.value+"/"+mask_obj.value+" <#JS_validip#>");
-		addr_obj.focus();
-		addr_obj.select();
-		return false;
+	alert(addr_obj.value+"/"+mask_obj.value+" <#JS_validip#>");
+	addr_obj.focus();
+	addr_obj.select();
+	return false;
 	}
 
 	var wan_addr = document.form.wan_ipaddr.value;
 	var wan_mask = document.form.wan_netmask.value;
 
 	if(wan_addr != "0.0.0.0" && wan_addr != "" && wan_mask != "0.0.0.0" && wan_mask != ""){
-		if(matchSubnet2(wan_addr, wan_mask, addr_obj.value, mask_obj.value)){
-			alert("<#JS_validsubnet#>");
-			mask_obj.focus();
-			mask_obj.select();
-			return false;
-		}
+	if(matchSubnet2(wan_addr, wan_mask, addr_obj.value, mask_obj.value)){
+	alert("<#JS_validsubnet#>");
+	mask_obj.focus();
+	mask_obj.select();
+	return false;
+	}
 	}
 
 	if(addr_obj.value != old_lan_addr || mask_obj.value != old_lan_mask){
-		var o_min = document.form.dhcp_start;
-		var o_max = document.form.dhcp_end;
-		if(!matchSubnet(o_min.value, addr_obj.value, mask_obj.value) ||
-				!matchSubnet(o_max.value, addr_obj.value, mask_obj.value) ||
-				inet_network(o_min.value) <= snet_min ||
-				inet_network(o_max.value) >= snet_max) {
-			if(confirm("<#JS_DHCP1#>")){
-				var snet_pool = snet_max-snet_min;
-				o_min.value = num2ip4(snet_min+2);
-				if (snet_pool > 30)
-					o_max.value=num2ip4(snet_max-11);
-				else
-					o_max.value=num2ip4(snet_max-1);
-			}else{
-				mask_obj.focus();
-				mask_obj.select();
-				return false;
-			}
-		}
+	var o_min = document.form.dhcp_start;
+	var o_max = document.form.dhcp_end;
+	if(!matchSubnet(o_min.value, addr_obj.value, mask_obj.value) ||
+	!matchSubnet(o_max.value, addr_obj.value, mask_obj.value) ||
+	inet_network(o_min.value) <= snet_min ||
+	inet_network(o_max.value) >= snet_max) {
+	if(confirm("<#JS_DHCP1#>")){
+	var snet_pool = snet_max-snet_min;
+	o_min.value = num2ip4(snet_min+2);
+	if (snet_pool > 30)
+	o_max.value=num2ip4(snet_max-11);
+	else
+	o_max.value=num2ip4(snet_max-1);
+	}else{
+	mask_obj.focus();
+	mask_obj.select();
+	return false;
+	}
+	}
 	}
 
 	if(addr_obj.value != old_lan_addr)
-		alert("<#LANHostConfig_lanipaddr_changed_hint#>");
+	alert("<#LANHostConfig_lanipaddr_changed_hint#>");
 
 	return true;
 }
@@ -207,7 +207,7 @@ function done_validating(action){
                                             <th width="50%" style="border-top: 0 none;"><a class="help_tooltip" href="javascript: void(0)" onmouseover="openTooltip(this, 4, 1);"><#LANHostConfig_IPRouters_itemname#></a></th>
                                             <td style="border-top: 0 none;">
                                                 <input type="text" maxlength="15" class="input" size="15" id="lan_ipaddr" name="lan_ipaddr" value="<% nvram_get_x("LANHostConfig","lan_ipaddr"); %>" onKeyPress="return is_ipaddr(this,event);" />
-                                                &nbsp;<span style="color:#888;">192.168.1.1</span>
+                                                &nbsp;<span style="color:#888;">192.168.123.1</span>
                                             </td>
                                         </tr>
                                         <tr>
@@ -218,7 +218,7 @@ function done_validating(action){
                                             </td>
                                         </tr>
                                         <tr>
-                                            <th><a class="help_tooltip"  href="javascript:void(0);" onmouseover="openTooltip(this, 4,4);"><#LAN_STP_itemname#></a></th>
+                                            <th><#LAN_STP#></th>
                                             <td>
                                                 <div class="main_itoggle">
                                                     <div id="lan_stp_on_of">

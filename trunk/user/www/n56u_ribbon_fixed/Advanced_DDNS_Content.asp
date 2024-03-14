@@ -63,7 +63,7 @@ var ddns_list = [
 	[ 0x0f, "SPDYN.DE",             "", "https://spdyn.de/" ],
 	[ 0x0f, "WWW.STRATO.DE",        "", "https://www.strato.de/" ],
 	[ 0x0f, "CLOUDXNS.NET",         "", "https://www.cloudxns.net/" ],
-	[ 0x0f, "WWW.PUBYUN.COM",       "(3322.NET)", "http://www.pubyun.com/accounts/signin/" ],
+	[ 0x0f, "3322.ORG",             "", "http://www.pubyun.com/" ],
 	[ 0x0f, "DNSPOD.CN",            "", "https://www.dnspod.cn/" ],
 	[ 0x0f, "DYNU.COM",             "", "https://www.dynu.com/" ],
 	[ 0x0f, "SELFHOST.DE",          "", "https://selfhost.de/cgi-bin/selfhost" ],
@@ -77,9 +77,9 @@ function init()
 {
 	var id_menu = 5;
 	if(sw_mode == '4')
-		id_menu = 3;
+	id_menu = 3;
 	if(!support_ipv6())
-		id_menu--;
+	id_menu--;
 
 	show_banner(1);
 	show_footer();
@@ -101,20 +101,20 @@ function test_wan_ip()
 
 	var ip_obj = wanlink_ip4_wan();
 	if (ip_obj == '---')
-		ip_obj = "";
+	ip_obj = "";
 	var ip_num = inet_network(ip_obj);
 	var ip_class = "";
 
 	if(ip_num > A_class_start && ip_num < A_class_end)
-		ip_class = 'A';
+	ip_class = 'A';
 	else if(ip_num > B_class_start && ip_num < B_class_end)
-		ip_class = 'B';
+	ip_class = 'B';
 	else if(ip_num > C_class_start && ip_num < C_class_end)
-		ip_class = 'C';
+	ip_class = 'C';
 	else if(ip_num != 0){
-		showhide("wan_ip_hide2", 0);
-		showhide("wan_ip_hide3", 0);
-		return;
+	showhide("wan_ip_hide2", 0);
+	showhide("wan_ip_hide3", 0);
+	return;
 	}
 	showhide("wan_ip_hide2", 1);
 	showhide("wan_ip_hide3", 0);
@@ -124,12 +124,12 @@ function get_url_link(ddns)
 {
 	var url = "";
 	if (ddns == "")
-		return url;
+	return url;
 	for(var i = 0; i < ddns_list.length; i++){
-		if (ddns == ddns_list[i][1]){
-			url = ddns_list[i][3];
-			break;
-		}
+	if (ddns == ddns_list[i][1]){
+	url = ddns_list[i][3];
+	break;
+	}
 	}
 	return url;
 }
@@ -162,7 +162,7 @@ function change_ddns_server(man)
 	showhide_div("row_ddns_cst_svr", e);
 	showhide_div("row_ddns_cst_url", e);
 	if (man)
-		disable_update();
+	disable_update();
 }
 
 function change_ddns2_server(man)
@@ -178,7 +178,7 @@ function change_ddns2_server(man)
 	showhide_div("row_ddns2_wcard", e);
 	showhide_div("row_ddns2_ssl", (e && support_ddns_ssl()));
 	if (man)
-		disable_update();
+	disable_update();
 }
 
 function change_ddns_source(man)
@@ -187,7 +187,7 @@ function change_ddns_source(man)
 	showhide_div("row_ddns_checkip", e);
 	showhide_div("row_ddns2_checkip", e);
 	if (man)
-		disable_update();
+	disable_update();
 }
 
 function ddns_enable(man)
@@ -223,46 +223,46 @@ function ddns_disable()
 function change_ddns_enabled()
 {
 	if (document.form.ddns_enable_x[0].checked)
-		ddns_enable(1);
+	ddns_enable(1);
 	else
-		ddns_disable();
+	ddns_disable();
 }
 
 function ddns_init()
 {
 	if (ddns_prov1 == '')
-		ddns_prov1 = "WWW.DYNDNS.ORG";
+	ddns_prov1 = "WWW.DYNDNS.ORG";
 
 	fill_provider_list("ddns_server_x", ddns_prov1, 0x01);
 	fill_provider_list("ddns2_server",  ddns_prov2, 0x02);
 
 	if(document.form.ddns_server_x.selectedIndex == 0){
-		if(ddns_hname != '')
-			$("DDNSName").value = ddns_hname.substring(0, ddns_hname.indexOf('.'));
+	if(ddns_hname != '')
+	$("DDNSName").value = ddns_hname.substring(0, ddns_hname.indexOf('.'));
 	}else
-		$("ddns_hostname_x").value = ddns_hname;
+	$("ddns_hostname_x").value = ddns_hname;
 
 	if (document.form.ddns_enable_x[0].checked) {
-		ddns_enable(0);
-		if (ddns_prov1 == "WWW.ASUS.COM")
-			show_asus_alert(ddns_hname);
+	ddns_enable(0);
+	if (ddns_prov1 == "WWW.ASUS.COM")
+	show_asus_alert(ddns_hname);
 	}else
-		ddns_disable();
+	ddns_disable();
 }
 
 function fill_provider_list(oname,sel,mask){
 	var o = document.form[oname];
 	if(o === undefined)
-		return;
+	return;
 	if(!(mask&0x01))
-		add_option(o, "<#btn_Disable#>", "", (sel=="") ? 1 : 0);
+	add_option(o, "<#btn_Disable#>", "", (sel=="") ? 1 : 0);
 	for(var i = 0; i < ddns_list.length; i++){
-		if (!(ddns_list[i][0]&mask))
-			continue;
-		var caption = ddns_list[i][1].toLowerCase();
-		if(ddns_list[i][2] != "")
-			caption += " " + ddns_list[i][2];
-		add_option(o, caption, ddns_list[i][1], (sel==ddns_list[i][1]) ? 1 : 0);
+	if (!(ddns_list[i][0]&mask))
+	continue;
+	var caption = ddns_list[i][1].toLowerCase();
+	if(ddns_list[i][2] != "")
+	caption += " " + ddns_list[i][2];
+	add_option(o, caption, ddns_list[i][1], (sel==ddns_list[i][1]) ? 1 : 0);
 	}
 }
 
@@ -271,47 +271,47 @@ function show_asus_alert(hname)
 	var ddns_return_code = '<% nvram_get_ddns("","ddns_return_code"); %>';
 
 	if(ddns_return_code == 'register,-1')
-		alert("<#LANHostConfig_x_DDNS_alarm_2#>");
+	alert("<#LANHostConfig_x_DDNS_alarm_2#>");
 	else if(ddns_return_code == 'register,200') {
-		showhide("wan_ip_hide3", 1);
-		alert("<#LANHostConfig_x_DDNS_alarm_3#>");
+	showhide("wan_ip_hide3", 1);
+	alert("<#LANHostConfig_x_DDNS_alarm_3#>");
 	}
 	else if(ddns_return_code == 'register,203')
-		alert("<#LANHostConfig_x_DDNS_alarm_hostname#> '"+hname+"' <#LANHostConfig_x_DDNS_alarm_registered#>");
+	alert("<#LANHostConfig_x_DDNS_alarm_hostname#> '"+hname+"' <#LANHostConfig_x_DDNS_alarm_registered#>");
 	else if(ddns_return_code == 'register,220') {
-		showhide("wan_ip_hide3", 1);
-		alert("<#LANHostConfig_x_DDNS_alarm_4#>");
+	showhide("wan_ip_hide3", 1);
+	alert("<#LANHostConfig_x_DDNS_alarm_4#>");
 	}
 	else if(ddns_return_code == 'register,230') {
-		showhide("wan_ip_hide3", 1);
-		alert("<#LANHostConfig_x_DDNS_alarm_5#>");
+	showhide("wan_ip_hide3", 1);
+	alert("<#LANHostConfig_x_DDNS_alarm_5#>");
 	}
 	else if(ddns_return_code == 'register,233')
-		alert("<#LANHostConfig_x_DDNS_alarm_hostname#> '"+hname+"' <#LANHostConfig_x_DDNS_alarm_registered_2#>");
+	alert("<#LANHostConfig_x_DDNS_alarm_hostname#> '"+hname+"' <#LANHostConfig_x_DDNS_alarm_registered_2#>");
 	else if(ddns_return_code == 'register,296')
-		alert("<#LANHostConfig_x_DDNS_alarm_6#>");
+	alert("<#LANHostConfig_x_DDNS_alarm_6#>");
 	else if(ddns_return_code == 'register,297'){
-		document.form.ddns_hostname_x.value = "";
-		alert("<#LANHostConfig_x_DDNS_alarm_7#>");
+	document.form.ddns_hostname_x.value = ""; 
+	alert("<#LANHostConfig_x_DDNS_alarm_7#>");
 	}
 	else if(ddns_return_code == 'register,298'){
-		document.form.ddns_hostname_x.value = "";
-		alert("<#LANHostConfig_x_DDNS_alarm_8#>");
+	document.form.ddns_hostname_x.value = ""; 
+	alert("<#LANHostConfig_x_DDNS_alarm_8#>");
 	}
 	else if(ddns_return_code == 'register,299')
-		alert("<#LANHostConfig_x_DDNS_alarm_9#>");
+	alert("<#LANHostConfig_x_DDNS_alarm_9#>");
 	else if(ddns_return_code == 'register,401')
-		alert("<#LANHostConfig_x_DDNS_alarm_10#>");
+	alert("<#LANHostConfig_x_DDNS_alarm_10#>");
 	else if(ddns_return_code == 'register,407')
-		alert("<#LANHostConfig_x_DDNS_alarm_11#>");
+	alert("<#LANHostConfig_x_DDNS_alarm_11#>");
 	else if(ddns_return_code == 'time_out')
-		alert("<#LANHostConfig_x_DDNS_alarm_1#>");
+	alert("<#LANHostConfig_x_DDNS_alarm_1#>");
 	else if(ddns_return_code =='unknown_error')
-		alert("<#LANHostConfig_x_DDNS_alarm_2#>");
+	alert("<#LANHostConfig_x_DDNS_alarm_2#>");
 	else if(ddns_return_code =='connect_fail')
-		alert("<#LANHostConfig_x_DDNS_alarm_12#>");
+	alert("<#LANHostConfig_x_DDNS_alarm_12#>");
 	else if(ddns_return_code == 'inadyn_unsupport')
-		alert("inadyn does not support register to asuscomm.com");
+	alert("inadyn does not support register to asuscomm.com");
 }
 
 function openLink(s) {
@@ -319,59 +319,59 @@ function openLink(s) {
 	var o = (s == 'x_DDNSServer2') ? document.form.ddns2_server : document.form.ddns_server_x;
 	var tourl = get_url_link(o.value);
 	if (tourl == "")
-		return;
+	return;
 	link = window.open(tourl, "DDNSLink", link_params);
 	if (!link.opener) link.opener = self;
 }
 
 function validForm(){
 	if(document.form.ddns_enable_x[0].checked){
-		var o1 = document.form.ddns_server_x;
-		var o2 = document.form.ddns2_server;
-		var o3 = document.form.ddns_hostname_x;
-		if(o1.value == "WWW.ASUS.COM"){
-			var o4 = document.form.DDNSName;
-			if(o4.value == "" || !validate_ddns_hostname(o4)){
-				alert("<#LANHostConfig_x_DDNS_alarm_14#>");
-				o4.focus();
-				o4.select();
-				return false;
-			}else{
-				o3.value = o4.value+".asuscomm.com";
-			}
-		}else{
-			if(o3.value == ""){
-				alert("<#LANHostConfig_x_DDNS_alarm_14#>");
-				o3.focus();
-				o3.select();
-				return false;
-			}
-		}
-		if(o1.value == "CUSTOM"){
-			var o5 = document.form.ddns_cst_svr;
-			if(o5.value == ""){
-				alert("<#JS_fieldblank#>");
-				o5.focus();
-				o5.select();
-				return false;
-			}
-			var o6 = document.form.ddns_cst_url;
-			if(o6.value == ""){
-				alert("<#JS_fieldblank#>");
-				o6.focus();
-				o6.select();
-				return false;
-			}
-		}
-		if(document.form.ddns2_server.value != ""){
-			var o8 = document.form.ddns2_hname;
-			if(o8.value == ""){
-				alert("<#LANHostConfig_x_DDNS_alarm_14#>");
-				o8.focus();
-				o8.select();
-				return false;
-			}
-		}
+	var o1 = document.form.ddns_server_x;
+	var o2 = document.form.ddns2_server;
+	var o3 = document.form.ddns_hostname_x;
+	if(o1.value == "WWW.ASUS.COM"){
+	var o4 = document.form.DDNSName;
+	if(o4.value == "" || !validate_ddns_hostname(o4)){
+	alert("<#LANHostConfig_x_DDNS_alarm_14#>");
+	o4.focus();
+	o4.select();
+	return false;
+	}else{
+	o3.value = o4.value+".asuscomm.com";
+	}
+	}else{
+	if(o3.value == ""){
+	alert("<#LANHostConfig_x_DDNS_alarm_14#>");
+	o3.focus();
+	o3.select();
+	return false;
+	}
+	}
+	if(o1.value == "CUSTOM"){
+	var o5 = document.form.ddns_cst_svr;
+	if(o5.value == ""){
+	alert("<#JS_fieldblank#>");
+	o5.focus();
+	o5.select();
+	return false;
+	}
+	var o6 = document.form.ddns_cst_url;
+	if(o6.value == ""){
+	alert("<#JS_fieldblank#>");
+	o6.focus();
+	o6.select();
+	return false;
+	}
+	}
+	if(document.form.ddns2_server.value != ""){
+	var o8 = document.form.ddns2_hname;
+	if(o8.value == ""){
+	alert("<#LANHostConfig_x_DDNS_alarm_14#>");
+	o8.focus();
+	o8.select();
+	return false;
+	}
+	}
 	}
 
 	return true;
@@ -379,29 +379,29 @@ function validForm(){
 
 function applyRule(){
 	if(validForm()){
-		showLoading();
-
-		document.form.action_mode.value = " Apply ";
-		document.form.current_page.value = "/Advanced_DDNS_Content.asp";
-		document.form.next_page.value = "";
-
-		document.form.submit();
+	showLoading();
+	
+	document.form.action_mode.value = " Apply ";
+	document.form.current_page.value = "/Advanced_DDNS_Content.asp";
+	document.form.next_page.value = "";
+	
+	document.form.submit();
 	}
 }
 
 function checkDDNSReturnCode(){
 	$j.ajax({
-		url: '/ajax_ddnscode.asp',
-		dataType: 'script',
-		error: function(xhr){
-			checkDDNSReturnCode();
-		},
-		success: function(response){
-			if(ddns_return_code == 'ddns_query')
-				setTimeout("checkDDNSReturnCode();", 500);
-			else
-				refreshpage();
-		}
+	url: '/ajax_ddnscode.asp',
+	dataType: 'script',
+	error: function(xhr){
+	checkDDNSReturnCode();
+	},
+	success: function(response){
+	if(ddns_return_code == 'ddns_query')
+	setTimeout("checkDDNSReturnCode();", 500);
+	else
+	refreshpage();
+	}
 	});
 }
 </script>
@@ -455,7 +455,7 @@ function checkDDNSReturnCode(){
                             <div class="round_bottom">
                                 <div class="row-fluid">
                                     <div id="tabMenu" class="submenuBlock"></div>
-                                    <div class="alert alert-info" style="margin: 10px;"><#LANHostConfig_x_DDNSEnable_sectiondesc#></div>
+                                    <div class="alert alert-info" style="margin: 10px;"><#LANHostConfig_x_DDNSEnable_sectiondesc#><div>如何在路由器中设置花生壳服务：<a href="http://service.oray.com/question/868.html" target="blank">http://service.oray.com/question/868.html</a></div></div>
                                     <div id="wan_ip_hide2" class="alert alert-danger" style="display:none; margin: 10px;"><#LANHostConfig_x_DDNSEnable_sectiondesc2#></div>
                                     <div id="wan_ip_hide3" class="alert alert-danger" style="display:none; margin: 10px;"><#LANHostConfig_x_DDNSEnable_sectiondesc3#></div>
 
@@ -654,6 +654,7 @@ function checkDDNSReturnCode(){
                                                     <option value="27" <% nvram_match_x("", "ddns_checkip", "27","selected"); %>>checkip6.spdyn.de</option>
                                                     <option value="28" <% nvram_match_x("", "ddns_checkip", "28","selected"); %>>v4.ipv6-test.com/api/myip.php</option>
                                                     <option value="29" <% nvram_match_x("", "ddns_checkip", "29","selected"); %>>v6.ipv6-test.com/api/myip.php</option>
+                                                    <option value="30" <% nvram_match_x("", "ddns_checkip", "30","selected"); %>>members.3322.org/dyndns/getip</option>
                                                 </select>
                                             </td>
                                         </tr>
@@ -691,6 +692,7 @@ function checkDDNSReturnCode(){
                                                     <option value="27" <% nvram_match_x("", "ddns2_checkip", "27","selected"); %>>checkip6.spdyn.de</option>
                                                     <option value="28" <% nvram_match_x("", "ddns2_checkip", "28","selected"); %>>v4.ipv6-test.com/api/myip.php</option>
                                                     <option value="29" <% nvram_match_x("", "ddns2_checkip", "29","selected"); %>>v6.ipv6-test.com/api/myip.php</option>
+                                                    <option value="30" <% nvram_match_x("", "ddns2_checkip", "30","selected"); %>>members.3322.org/dyndns/getip</option>
                                                 </select>
                                             </td>
                                         </tr>

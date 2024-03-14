@@ -26,13 +26,13 @@ var FOLDER_WORK_TIME = 2;
 function initial(){
 	parent.show_help_iframe(4);
 	parent.hideLoading();
-
+	
 	parent.get_account_parameter();
-
+	
 	show_dummyshareway();
-
+	
 	showDDNS();
-
+	
 	clickevent();
 	parent.openHint(15, 4);
 }
@@ -76,13 +76,13 @@ function go_pre_page(){
 
 function compute_work_time(){
 	var total_folder_number = 0;
-
+	
 	for(var i = 0; i < parent.pool_names().length; ++i){
 		if(parent.pool_names()[i].indexOf("part") < 0)
 			continue;
 		total_folder_number += parent.get_sharedfolder_in_pool(parent.pool_names()[i]).length;
 	}
-
+	
 	if(parent.$("dummyShareway").value == "1")
 		return FOLDER_WORK_TIME*total_folder_number*2+SAFE_TIME;
 	else if(parent.$("dummyShareway").value == "2")

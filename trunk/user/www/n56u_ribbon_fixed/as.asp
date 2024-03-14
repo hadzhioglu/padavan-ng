@@ -34,45 +34,45 @@ function show_sitemap(){
 	if (l2 > 8) l2 = 8;
 
 	for(var i=0, j=0; i<l1, j<l2;){
-		if(tabtitle[i] == ""){
-			tabtitle.splice(i,1);
-			tablink.splice(i,1);
-		}
-		else
-			i++;
-		if(menuL2_title[j] == "")
-			menuL2_title.splice(j,1);
-		else
-			j++;
+	if(tabtitle[i] == ""){
+	tabtitle.splice(i,1);
+	tablink.splice(i,1);
+	}
+	else
+	i++;
+	if(menuL2_title[j] == "")
+	menuL2_title.splice(j,1);
+	else
+	j++;
 	}
 
 	l2 = menuL2_title.length;
 	if (l2 > 8) l2 = 8;
 
 	for(var i=0; i<l2; i++){
-		var k = (i/4 < 1)?0:3;
-		$("menu_body").rows[k].cells[i%4].innerHTML = "<b>" + menuL2_title[i] + "</b>";
-		$("menu_body").rows[k].cells[i%4].className = "head";
+	var k = (i/4 < 1)?0:3;
+	$("menu_body").rows[k].cells[i%4].innerHTML = "<b>" + menuL2_title[i] + "</b>";
+	$("menu_body").rows[k].cells[i%4].className = "head";
 	}
 
 	l1 = tabtitle.length;
 	if (l1 > 8) l1 = 8;
 
 	for(var l = 0; l < l1; l++){
-		map_code = '<ul class="nav nav-list">\n';
-		for(var m = 1; m < tabtitle[l].length; m++){
-			if(tablink[l][m] == "")
-				continue;
-
-			map_code += '    <li>\n';
-			map_code += '        <a href="'+tablink[l][m]+'">'
-			map_code += tabtitle[l][m];
-			map_code += '</a>\n    </li>\n';
-		}
-		map_code += '</ul>\n';
-
-		var n = (l/4 < 1)?0:3;
-		$("menu_body").rows[n+2].cells[l%4].innerHTML = map_code;
+	map_code = '<ul class="nav nav-list">\n';
+	for(var m = 1; m < tabtitle[l].length; m++){
+	if(tablink[l][m] == "")
+	continue;
+	
+	map_code += '    <li>\n';
+	map_code += '        <a href="'+tablink[l][m]+'">'
+	map_code += tabtitle[l][m];
+	map_code += '</a>\n    </li>\n';
+	}
+	map_code += '</ul>\n';
+	
+	var n = (l/4 < 1)?0:3;
+	$("menu_body").rows[n+2].cells[l%4].innerHTML = map_code;
 	}
 }
 </script>

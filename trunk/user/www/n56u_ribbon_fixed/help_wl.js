@@ -26,8 +26,8 @@ helpcontent[0] = new Array("",
 				"<#WLANConfig11b_x_RadioEnable_itemdesc#>",
 				"<#WLANConfig11b_x_RadioEnableDate_itemdesc#>",
 				"<#WLANConfig11b_x_RadioEnableTime_itemdesc#>",
-				"<#WLANConfig11b_KickStaRssiLow_itemdesc#>",
-				"<#WLANConfig11b_AssocReqRssiThres_itemdesc#>");
+				"<#WLANConfig11b_KickStaRssiLow_itemdesc#>(<#JS_validrange#> -100 <#JS_validrange_to#> 0 dBm)",
+				"<#WLANConfig11b_AssocReqRssiThres_itemdesc#>(<#JS_validrange#> -100 <#JS_validrange_to#> 0 dBm)");
 helpcontent[1] = new Array("",
 				"<#WLANConfig11b_x_APMode_itemdesc#>",
 				"<#WLANConfig11b_Channel_itemdesc#>",
@@ -55,16 +55,12 @@ helpcontent[3] = new Array("",
 				"<#WLANConfig11b_x_PktAggregate_itemdesc#>",
 				"<#WLANConfig11b_x_APSD_itemdesc#>",
 				"<#WLANConfig11b_x_DLS_itemdesc#>",
-				"[n Only]: <#WLANConfig11b_x_HT_OpMode_itemdesc#>",
-				"<#WLANConfig11n_band_steering_itemdesc#>",
-				"<#WLANConfig11n_mumimo_itemdesc#>",
-				"<#WLANConfig11n_txbf_itemdesc#>",
-				"<#WLANConfig11n_amsdu_itemdesc#>",
-				"<#WIFILDPC_itemdesc#>",
-				"<#WIFILDPC2_itemdesc#>");
+				"[n Only]: <#WLANConfig11b_x_HT_OpMode_itemdesc#>");
 // MAC filter
 helpcontent[4] = new Array("",
 				"<#FirewallConfig_MFMethod_itemdesc#>");
+helpcontent[5] = new Array("",
+				"<#VPNS_RNet_itemdesc#>");
 
 function openTooltip(obj, hint_array_id, hint_show_id)
 {

@@ -32,19 +32,19 @@ var page = parseInt('<% get_parameter("page"); %>'-'0');
 
 function initial(){
 	$("statusframe").style.display = "block";
-
+	
 	if(page == 2)
-		show_iframe("aidisk/Aidisk-2.asp");
+	show_iframe("aidisk/Aidisk-2.asp");
 	else if(page == 3)
-		show_iframe("aidisk/Aidisk-3.asp");
+	show_iframe("aidisk/Aidisk-3.asp");
 	else if(page == 4)
-		show_iframe("aidisk/Aidisk-4.asp");
+	show_iframe("aidisk/Aidisk-4.asp");
 	else
-		show_iframe("aidisk/Aidisk-1.asp");
-
+	show_iframe("aidisk/Aidisk-1.asp");
+	
 	if($("dummyShareway").value == "")
-		$("dummyShareway").value = 0;
-
+	$("dummyShareway").value = 0;
+	
 	show_banner(0);
 	show_menu(2, -1, 0);
 	show_footer();
@@ -58,9 +58,9 @@ function show_iframe(src){
 
 function show_iframe_page(iframe_id){
 	if(iframe_id)
-		if($(iframe_id))
-			return $(iframe_id).src;
-
+	if($(iframe_id))
+	return $(iframe_id).src;
+	
 	return "";
 }
 
@@ -71,23 +71,23 @@ function show_help_iframe(page_num){
 	$("hint_body").style.display = "none";
 	$("statusframe").style.display = "block";
 	if(page_num == 2){
-		page_title = "Account Management";
+	page_title = "Account Management";
 	}
 	else if(page_num == 3){
-		page_title = "DDNS";
+	page_title = "DDNS";
 	}
 	else if(page_num == 4){
-		page_title = "Advanced Setting";
+	page_title = "Advanced Setting";
 	}
 	else if(page_num == 5){
-		page_title = "ASUS DDNS - <#DDNS_termofservice_Title#>";
-		page_src = "/aidisk/ASUS_DDNS_TOS.asp";
+	page_title = "ASUS DDNS - <#DDNS_termofservice_Title#>";
+	page_src = "/aidisk/ASUS_DDNS_TOS.asp";
 	}
 	else{
-		page_src = "/aidisk/Aidisk-1_help.asp";
-		page_title = "<#menu3#>";
+	page_src = "/aidisk/Aidisk-1_help.asp";
+	page_title = "<#menu3#>";
 	}
-
+	
 	showtext($("helpname"), page_title);
 	setTimeout('$("statusframe").src = \"'+page_src+'\";', 1);
 }
@@ -96,13 +96,13 @@ function get_account_parameter(){
 	account_num = $("accountNum").value;
 	
 	accounts = new Array(account_num);
-
+	
 	for(var i = 0; i < account_num; ++i){
-		accounts[i] = new Array(3);
-
-		accounts[i][0] = $("account"+i).value;
-		accounts[i][1] = $("passwd"+i).value;
-		accounts[i][2] = $("permission"+i).value;
+	accounts[i] = new Array(3);
+	
+	accounts[i][0] = $("account"+i).value;
+	accounts[i][1] = $("passwd"+i).value;
+	accounts[i][2] = $("permission"+i).value;
 	}
 }
 
@@ -117,64 +117,64 @@ function resultOfInitialAccount(){
 
 function createAccount(){
 	if(accounts[0]){
-		document.applyForm.protocol.value = "";
-		document.applyForm.pool.value = "";
-		document.applyForm.folder.value = "";
-		document.applyForm.permission.value = "";
-
-		document.applyForm.action = "/aidisk/create_account.asp";
-		document.applyForm.account.value = accounts[0][0];
-		document.applyForm.password.value = accounts[0][1];
-
-		document.applyForm.submit();
+	document.applyForm.protocol.value = "";
+	document.applyForm.pool.value = "";
+	document.applyForm.folder.value = "";
+	document.applyForm.permission.value = "";
+	
+	document.applyForm.action = "/aidisk/create_account.asp";
+	document.applyForm.account.value = accounts[0][0];
+	document.applyForm.password.value = accounts[0][1];
+	
+	document.applyForm.submit();
 	}
 	else
-		alert("Wrong! No account!");	// No translate
+	alert("Wrong! No account!");	// No translate
 }
 
 function resultOfCreateAccount(){
 	pools = pool_names();
 	if(pools && pools.length > 0)
-		folderlist = get_sharedfolder_in_pool(pools[0]);
-
+	folderlist = get_sharedfolder_in_pool(pools[0]);
+	
 	submitChangePermission("ftp");
 }
 
 function submitChangePermission(protocol){
 	if(pools && pools.length > 0){
-		if(folderlist && folderlist.length > 0){
-			document.applyForm.password.value = "";
-
-			document.applyForm.action = "/aidisk/set_account_permission.asp";
-			document.applyForm.account.value = accounts[0][0];
-			document.applyForm.pool.value = pools[0];
-			document.applyForm.folder.value = folderlist[0];
-			document.applyForm.protocol.value = protocol;
-			document.applyForm.permission.value = accounts[0][2];
-			document.applyForm.flag.value = "aidisk_wizard";
-
-			folderlist.shift();
-			document.applyForm.submit();
-			return;
-		}
-		else{
-			pools.shift();
-			
-			if(pools && pools.length > 0){
-				folderlist = get_sharedfolder_in_pool(pools[0]);
-
-				submitChangePermission(protocol);
-				return;
-			}
-		}
+	if(folderlist && folderlist.length > 0){
+	document.applyForm.password.value = "";
+	
+	document.applyForm.action = "/aidisk/set_account_permission.asp";
+	document.applyForm.account.value = accounts[0][0];
+	document.applyForm.pool.value = pools[0];
+	document.applyForm.folder.value = folderlist[0];
+	document.applyForm.protocol.value = protocol;
+	document.applyForm.permission.value = accounts[0][2];
+	document.applyForm.flag.value = "aidisk_wizard";
+	
+	folderlist.shift();
+	document.applyForm.submit();
+	return;
+	}
+	else{
+	pools.shift();
+	
+	if(pools && pools.length > 0){
+	folderlist = get_sharedfolder_in_pool(pools[0]);
+	
+	submitChangePermission(protocol);
+	return;
+	}
+	}
 	}
 	
 	accounts.shift();
-
+	
 	if(accounts.length > 0)
-		createAccount();
+	createAccount();
 	else
-		switchShareMode("ftp", "account");
+	switchShareMode("ftp", "account");
 }
 
 function switchShareMode(protocol, mode){
@@ -183,7 +183,7 @@ function switchShareMode(protocol, mode){
 	document.applyForm.pool.value = "";
 	document.applyForm.folder.value = "";
 	document.applyForm.permission.value = "";
-
+	
 	document.applyForm.action = "/aidisk/switch_share_mode.asp";
 	document.applyForm.protocol.value = protocol;
 	document.applyForm.mode.value = mode;
@@ -197,7 +197,7 @@ function resultOfSwitchShareMode(){
 
 function switchAppStatus(protocol, flag){
 	document.applyForm.mode.value = "";
-
+	
 	document.applyForm.action = "/aidisk/switch_AiDisk_app.asp";
 	document.applyForm.protocol.value = protocol;
 	document.applyForm.flag.value = flag;
@@ -216,7 +216,7 @@ function finish_dummyway_setting(){
 function switchDDNS(){
 	document.ddnsForm.ddns_enable_x.value = getASUSDDNS_enable();
 	document.ddnsForm.current_page.value = document.parameterForm.next_page.value;
-
+	
 	document.ddnsForm.submit();
 }
 

@@ -27,32 +27,32 @@ function initial(){
 	show_footer();
 
 	if (!support_5g_radio()){
-		document.form.goto5.style.display = "none";
-		$("col_goto5").width = "33%";
+	document.form.goto5.style.display = "none";
+	$("col_goto5").width = "33%";
 	}
 }
 
 function applyRule(){
 	if(validForm()){
-		showLoading();
-
-		document.form.action_mode.value = " Apply ";
-		document.form.current_page.value = "/Advanced_WSecurity2g_Content.asp";
-		document.form.next_page.value = "";
-
-		document.form.submit();
+	showLoading();
+	
+	document.form.action_mode.value = " Apply ";
+	document.form.current_page.value = "/Advanced_WSecurity2g_Content.asp";
+	document.form.next_page.value = "";
+	
+	document.form.submit();
 	}
 }
 
 function validForm(){
 	if(!validate_ipaddr_final(document.form.rt_radius_ipaddr, 'radius_ipaddr'))
-		return false;
+	return false;
 
 	if(!validate_range(document.form.rt_radius_port, 0, 65535))
-		return false;
+	return false;
 
 	if(!validate_string(document.form.rt_radius_key))
-		return false;
+	return false;
 
 	return true;
 }

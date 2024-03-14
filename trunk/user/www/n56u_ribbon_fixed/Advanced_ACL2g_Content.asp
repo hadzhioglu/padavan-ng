@@ -44,8 +44,8 @@ function initial(){
 	show_footer();
 
 	if (!support_5g_radio()) {
-		document.form.goto5.style.display = "none";
-		$("col_goto5").width = "33%";
+	document.form.goto5.style.display = "none";
+	$("col_goto5").width = "33%";
 	}
 
 	change_mac_enabled();
@@ -56,45 +56,45 @@ function initial(){
 
 function applyRule(){
 	if(prevent_lock()){
-		showLoading();
-
-		if (document.form.rt_macmode.value == "disabled")
-			document.form.action_mode.value = " Apply ";
-		else
-			document.form.action_mode.value = " Restart ";
-		document.form.current_page.value = "/Advanced_ACL2g_Content.asp";
-		document.form.next_page.value = "";
-		document.form.submit();
+	showLoading();
+	
+	if (document.form.rt_macmode.value == "disabled")
+	document.form.action_mode.value = " Apply ";
+	else
+	document.form.action_mode.value = " Restart ";
+	document.form.current_page.value = "/Advanced_ACL2g_Content.asp";
+	document.form.next_page.value = "";
+	document.form.submit();
 	}
 	else
-		return false;
+	return false;
 }
 
 function change_mac_enabled(){
 	if (document.form.rt_macmode.value == "disabled"){
-		$("ACLList_Block").style.display = "none";
+	$("ACLList_Block").style.display = "none";
 	} else {
-		$("ACLList_Block").style.display = "";
+	$("ACLList_Block").style.display = "";
 	}
 }
 
 function prevent_lock(){
 	if(document.form.rt_macmode.value == "allow"){
-		if(document.form.rt_macnum_x_0.value < 1){
-			if(confirm("<#FirewallConfig_MFList_accept_hint1#>")){
-				document.form.rt_maclist_x_0.value = smac[0] + smac[1] + smac[2] + smac[3] + smac[4] + smac[5];
-				document.form.rt_macdesc_x_0.value = "";
-				markGroupACL(document.form.rt_ACLList2, 32, ' Add ');
-				document.form.submit();
-			}
-			else
-				return false;
-		}
-		else
-			return true;
+	if(document.form.rt_macnum_x_0.value < 1){
+	if(confirm("<#FirewallConfig_MFList_accept_hint1#>")){
+	document.form.rt_maclist_x_0.value = smac[0] + smac[1] + smac[2] + smac[3] + smac[4] + smac[5];
+	document.form.rt_macdesc_x_0.value = "";
+	markGroupACL(document.form.rt_ACLList2, 64, ' Add ');
+	document.form.submit();
 	}
 	else
-		return true;
+	return false;
+	}
+	else
+	return true;
+	}
+	else
+	return true;
 }
 
 function setClientMAC(num){
@@ -106,27 +106,27 @@ function setClientMAC(num){
 function showLANIPList(){
 	var code = "";
 	var show_name = "";
-
+	
 	for(var i = 0; i < clients_info.length ; i++){
-		if(clients_info[i][3] != 10)
-			continue;
-
-		if(clients_info[i][0] && clients_info[i][0].length > 20)
-			show_name = clients_info[i][0].substring(0, 18) + "..";
-		else
-			show_name = clients_info[i][0];
-
-		if(clients_info[i][2]){
-			code += '<a href="javascript:void(0)"><div onclick="setClientMAC('+i+');"><strong>'+clients_info[i][1]+'</strong>';
-			code += ' ['+clients_info[i][2]+']';
-			if(show_name && show_name.length > 0)
-				code += ' ('+show_name+')';
-			code += ' </div></a>';
-		}
+	if(clients_info[i][3] != 10)
+	continue;
+	
+	if(clients_info[i][0] && clients_info[i][0].length > 20)
+	show_name = clients_info[i][0].substring(0, 18) + "..";
+	else
+	show_name = clients_info[i][0];
+	
+	if(clients_info[i][2]){
+	code += '<a href="javascript:void(0)"><div onclick="setClientMAC('+i+');"><strong>'+clients_info[i][1]+'</strong>';
+	code += ' ['+clients_info[i][2]+']';
+	if(show_name && show_name.length > 0)
+	code += ' ('+show_name+')';
+	code += ' </div></a>';
+	}
 	}
 	if (code == "")
-		code = '<div style="text-align: center;" onclick="hideClients_Block();"><#Nodata#></div>';
-	code +='<!--[if lte IE 6.5]><iframe class="hackiframe2"></iframe><![endif]-->';
+	code = '<div style="text-align: center;" onclick="hideClients_Block();"><#Nodata#></div>';
+	code +='<!--[if lte IE 6.5]><iframe class="hackiframe2"></iframe><![endif]-->';	
 	$("ClientList_Block").innerHTML = code;
 }
 
@@ -138,41 +138,41 @@ function hideClients_Block(){
 
 function pullLANIPList(obj){
 	if(isMenuopen == 0){
-		$j(obj).children('i').removeClass('icon-chevron-down').addClass('icon-chevron-up');
-		$("ClientList_Block").style.display = 'block';
-		document.form.rt_maclist_x_0.focus();
-		isMenuopen = 1;
+	$j(obj).children('i').removeClass('icon-chevron-down').addClass('icon-chevron-up');
+	$("ClientList_Block").style.display = 'block';
+	document.form.rt_maclist_x_0.focus();
+	isMenuopen = 1;
 	}
 	else
-		hideClients_Block();
+	hideClients_Block();
 }
 
 function validNewRow(max_rows) {
 	if (document.form.rt_macnum_x_0.value >= max_rows){
-		alert("<#JS_itemlimit1#> " + max_rows + " <#JS_itemlimit2#>");
-		return false;
+	alert("<#JS_itemlimit1#> " + max_rows + " <#JS_itemlimit2#>");
+	return false;
 	}
 
 	if (document.form.rt_maclist_x_0.value==""){
-		alert("<#JS_fieldblank#>");
-		document.form.rt_maclist_x_0.focus();
-		document.form.rt_maclist_x_0.select();
-		return false;
+	alert("<#JS_fieldblank#>");
+	document.form.rt_maclist_x_0.focus();
+	document.form.rt_maclist_x_0.select();
+	return false;
 	}
 
 	if (!validate_hwaddr(document.form.rt_maclist_x_0)){
-		return false;
+	return false;
 	}
 
 	var mac_lower = document.form.rt_maclist_x_0.value.toLowerCase();
 
 	for(i=0; i<ACLList.length; i++){
-		if(mac_lower==ACLList[i][0].toLowerCase()) {
-			alert('<#JS_duplicate#>' + ' (MAC: ' + ACLList[i][0] + ')' );
-			document.form.rt_maclist_x_0.focus();
-			document.form.rt_maclist_x_0.select();
-			return false;
-		}
+	if(mac_lower==ACLList[i][0].toLowerCase()) {
+	alert('<#JS_duplicate#>' + ' (MAC: ' + ACLList[i][0] + ')' );
+	document.form.rt_maclist_x_0.focus();
+	document.form.rt_maclist_x_0.select();
+	return false;
+	}
 	}
 
 	return true;
@@ -181,8 +181,8 @@ function validNewRow(max_rows) {
 function markGroupACL(o, c, b) {
 	document.form.group_id.value = "rt_ACLList";
 	if(b == " Add "){
-		if (validNewRow(c) == false)
-			return false;
+	if (validNewRow(c) == false)
+	return false;
 	}
 	pageChanged = 0;
 	document.form.action_mode.value = b;
@@ -192,20 +192,20 @@ function markGroupACL(o, c, b) {
 function showACLList(){
 	var code = '';
 	if(ACLList.length == 0) {
-		code +='<tr><td colspan="3" style="text-align: center;"><div class="alert alert-info"><#IPConnection_VSList_Norule#></div></td></tr>';
+	code +='<tr><td colspan="3" style="text-align: center;"><div class="alert alert-info"><#IPConnection_VSList_Norule#></div></td></tr>';
 	}
 	else{
 	    for(var i = 0; i < ACLList.length; i++){
-		code +='<tr id="row' + i + '">';
-		code +='<td width="35%">&nbsp;' + ACLList[i][0] + '</td>';
-		code +='<td width="60%">&nbsp;' + ACLList[i][1] + '</td>';
-		code +='<td width="5%" style="text-align: center;"><input type="checkbox" name="rt_ACLList_s" value="' + i + '" onClick="changeBgColor(this,' + i + ');" id="check' + i + '"></td>';
-		code +='</tr>';
+	code +='<tr id="row' + i + '">';
+	code +='<td width="35%">&nbsp;' + ACLList[i][0] + '</td>';
+	code +='<td width="60%">&nbsp;' + ACLList[i][1] + '</td>';
+	code +='<td width="5%" style="text-align: center;"><input type="checkbox" name="rt_ACLList_s" value="' + i + '" onClick="changeBgColor(this,' + i + ');" id="check' + i + '"></td>';
+	code +='</tr>';
 	    }
-		code += '<tr>';
-		code += '<td colspan="2">&nbsp;</td>'
-		code += '<td><button class="btn btn-danger" type="submit" onclick="return markGroupACL(this, 32, \' Del \');" name="rt_ACLList"><i class="icon icon-minus icon-white"></i></button></td>';
-		code += '</tr>'
+	code += '<tr>';
+	code += '<td colspan="2">&nbsp;</td>'
+	code += '<td><button class="btn btn-danger" type="submit" onclick="return markGroupACL(this, 64, \' Del \');" name="rt_ACLList"><i class="icon icon-minus icon-white"></i></button></td>';
+	code += '</tr>'
 	}
 	$j('#ACLList_Block').append(code);
 }
@@ -322,7 +322,7 @@ function done_validating(action){
                                                 <input type="text" maxlength="32" class="span12" size="32" name="rt_macdesc_x_0" value="<% nvram_get_x("", "rt_macdesc_x_0"); %>" onKeyPress="return is_string(this,event);" />
                                             </td>
                                             <td width="5%">
-                                                <button class="btn" style="max-width: 219px" type="submit" onclick="return markGroupACL(this, 32, ' Add ');" name="rt_ACLList2" value="<#CTL_add#>" size="12"><i class="icon icon-plus"></i></button>
+                                                <button class="btn" style="max-width: 219px" type="submit" onclick="return markGroupACL(this, 64, ' Add ');" name="rt_ACLList2" value="<#CTL_add#>" size="12"><i class="icon icon-plus"></i></button>
                                             </td>
                                         </tr>
                                     </table>

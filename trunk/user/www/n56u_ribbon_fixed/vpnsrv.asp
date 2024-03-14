@@ -18,6 +18,7 @@
 <script type="text/javascript" src="/state.js"></script>
 <script type="text/javascript" src="/general.js"></script>
 <script type="text/javascript" src="/itoggle.js"></script>
+<script type="text/javascript" src="/help_wl.js"></script>
 <script type="text/javascript" src="/popup.js"></script>
 <script>
 var $j = jQuery.noConflict();
@@ -26,9 +27,9 @@ $j(document).ready(function() {
 	init_itoggle('vpns_enable', change_vpns_enabled);
 
 	$j("#tab_vpns_cfg, #tab_vpns_ssl, #tab_vpns_acl, #tab_vpns_cli").click(function(){
-		var newHash = $j(this).attr('href').toLowerCase();
-		showTab(newHash);
-		return false;
+	var newHash = $j(this).attr('href').toLowerCase();
+	showTab(newHash);
+	return false;
 	});
 });
 
@@ -57,23 +58,23 @@ function initial(){
 	show_footer();
 
 	if (!found_app_ovpn())
-		document.form.vpns_type.remove(2);
+	document.form.vpns_type.remove(2);
 	else
 	if (!support_ipv6() || ip6_service == ''){
-		var o = document.form.vpns_ov_prot;
-		for (var i = 0; i < 4; i++) {
-			o.remove(2);
-		}
+	var o = document.form.vpns_ov_prot;
+	for (var i = 0; i < 4; i++) {
+	o.remove(2);
+	}
 	}
 
 	if (openssl_util_found() && login_safe()) {
-		if (!support_openssl_ec()) {
-			var o = document.form.vpns_gen_rb;
-			for (var i=0;i<5;i++) {
-				o.remove(3);
-			}
-		}
-		showhide_div('tbl_vpns_gen', 1);
+	if (!support_openssl_ec()) {
+	var o = document.form.vpns_gen_rb;
+	for (var i=0;i<5;i++) {
+	o.remove(3);
+	}
+	}
+	showhide_div('tbl_vpns_gen', 1);
 	}
 
 	change_vpns_enabled();
@@ -85,40 +86,40 @@ function initial(){
 
 function applyRule(){
 	if(validForm()){
-		showLoading();
-
-		document.form.action_mode.value = " Restart ";
-		document.form.current_page.value = "/vpnsrv.asp";
-		document.form.next_page.value = "";
-
-		document.form.submit();
+	showLoading();
+	
+	document.form.action_mode.value = " Restart ";
+	document.form.current_page.value = "/vpnsrv.asp";
+	document.form.next_page.value = "";
+	
+	document.form.submit();
 	}
 }
 
 function valid_vpn_subnet(o){
 	var ip4v = parse_ipv4_addr(o.value);
 	if (ip4v == null){
-		alert(o.value + " <#JS_validip#>");
-		o.focus();
-		o.select();
-		return false;
+	alert(o.value + " <#JS_validip#>");
+	o.focus();
+	o.select();
+	return false;
 	}
 
 	if (!(ip4v[0] == 192 && ip4v[1] == 168) && !(ip4v[0] == 172 && (ip4v[1] & 240) == 16) && !(ip4v[0] == 10)){
-		alert("Please set VPN subnet to 10.x.x.x, 172.[16-31].x.x or 192.168.x.x !");
-		o.focus();
-		o.select();
-		return false;
+	alert("Please set VPN subnet to 10.x.x.x, 172.[16-31].x.x or 192.168.x.x !");
+	o.focus();
+	o.select();
+	return false;
 	}
 
 	var ip4l = parse_ipv4_addr(lan_ipaddr_x);
 	if (ip4l != null){
-		if ((ip4v[0] == ip4l[0]) && (ip4v[1] == ip4l[1]) && (ip4v[2] == ip4l[2])){
-			alert("Please set VPN subnet not equal LAN subnet (" + ip4l[0] + '.' + ip4l[1] + '.' + ip4l[2] + ".x)!");
-			o.focus();
-			o.select();
-			return false;
-		}
+	if ((ip4v[0] == ip4l[0]) && (ip4v[1] == ip4l[1]) && (ip4v[2] == ip4l[2])){
+	alert("Please set VPN subnet not equal LAN subnet (" + ip4l[0] + '.' + ip4l[1] + '.' + ip4l[2] + ".x)!");
+	o.focus();
+	o.select();
+	return false;
+	}
 	}
 
 	ip4v[3] = 0;
@@ -132,27 +133,27 @@ function valid_rlan_subnet(oa, om){
 	var ip4ra = parse_ipv4_addr(oa.value);
 	var ip4rm = parse_ipv4_addr(om.value);
 	if (ip4ra == null){
-		alert(oa.value + " <#JS_validip#>");
-		oa.focus();
-		oa.select();
-		return false;
+	alert(oa.value + " <#JS_validip#>");
+	oa.focus();
+	oa.select();
+	return false;
 	}
 	if (ip4rm == null || isMask(om.value) <= 0){
-		alert(om.value + " <#JS_validmask#>");
-		om.focus();
-		om.select();
-		return false;
+	alert(om.value + " <#JS_validmask#>");
+	om.focus();
+	om.select();
+	return false;
 	}
 
 	for (i=0;i<4;i++)
-		ip4ra[i] = ip4ra[i] & ip4rm[i];
+	ip4ra[i] = ip4ra[i] & ip4rm[i];
 	var r_str = ip4ra[0] + '.' + ip4ra[1] + '.' + ip4ra[2] + '.' + ip4ra[3];
 
 	if (matchSubnet2(oa.value, om.value, lan_ipaddr_x, lan_netmask_x)) {
-		alert("Please set remote subnet not equal LAN subnet (" + r_str + ")!");
-		oa.focus();
-		oa.select();
-		return false;
+	alert("Please set remote subnet not equal LAN subnet (" + r_str + ")!");
+	oa.focus();
+	oa.select();
+	return false;
 	}
 
 	oa.value = r_str;
@@ -162,24 +163,24 @@ function valid_rlan_subnet(oa, om){
 
 function validForm(){
 	if (!document.form.vpns_enable[0].checked)
-		return true;
+	return true;
 
 	var mode = document.form.vpns_type.value;
 	if (mode == "2") {
-		if(!validate_range(document.form.vpns_ov_port, 1, 65535))
-			return false;
-
-		if (document.form.vpns_ov_mode.value == "1")
-			return valid_vpn_subnet(document.form.vpns_vnet);
+	if(!validate_range(document.form.vpns_ov_port, 1, 65535))
+	return false;
+	
+	if (document.form.vpns_ov_mode.value == "1")
+	return valid_vpn_subnet(document.form.vpns_vnet);
 	}
 	else {
-		if(!validate_range(document.form.vpns_mtu, 1000, 1460))
-			return false;
-		if(!validate_range(document.form.vpns_mru, 1000, 1460))
-			return false;
-
-		if (document.form.vpns_vuse.value != "0")
-			return valid_vpn_subnet(document.form.vpns_vnet);
+	if(!validate_range(document.form.vpns_mtu, 1000, 1460))
+	return false;
+	if(!validate_range(document.form.vpns_mru, 1000, 1460))
+	return false;
+	
+	if (document.form.vpns_vuse.value != "0")
+	return valid_vpn_subnet(document.form.vpns_vnet);
 	}
 
 	var o_cli0 = document.form.vpns_cli0;
@@ -192,34 +193,34 @@ function validForm(){
 	var snet_max = get_subnet_num(lan_ipaddr_x, lan_netmask_x, 1);
 	var snet_pool = (snet_max-snet_min) - 1;
 	if (snet_pool > 254)
-		snet_pool = 254;
+	snet_pool = 254;
 
 	if(vpns_cli0_ip < 1 || vpns_cli0_ip >= snet_pool){
-		alert("Start IP value should be between 1 and "+(snet_pool-1)+"!");
-		o_cli0.focus();
-		o_cli0.select();
-		return false;
+	alert("Start IP value should be between 1 and "+(snet_pool-1)+"!");
+	o_cli0.focus();
+	o_cli0.select();
+	return false;
 	}
 
 	if(vpns_cli1_ip < 2 || vpns_cli1_ip > snet_pool){
-		alert("End IP value should be between 2 and "+snet_pool+"!");
-		o_cli1.focus();
-		o_cli1.select();
-		return false;
+	alert("End IP value should be between 2 and "+snet_pool+"!");
+	o_cli1.focus();
+	o_cli1.select();
+	return false;
 	}
 
 	if(vpns_cli0_ip >= vpns_cli1_ip){
-		alert("End IP value should higher than Start IP!");
-		o_cli1.focus();
-		o_cli1.select();
-		return false;
+	alert("End IP value should higher than Start IP!");
+	o_cli1.focus();
+	o_cli1.select();
+	return false;
 	}
 
 	if((vpns_cli1_ip - vpns_cli0_ip) > 50){
-		alert("VPN server allow max 50 clients!");
-		o_cli1.focus();
-		o_cli1.select();
-		return false;
+	alert("VPN server allow max 50 clients!");
+	o_cli1.focus();
+	o_cli1.select();
+	return false;
 	}
 
 	return true;
@@ -227,13 +228,13 @@ function validForm(){
 
 function done_validating(action){
 	if (action == " Del ")
-		refreshpage();
+	refreshpage();
 }
 
 function textarea_ovpn_enabled(v){
 	inputCtrl(document.form['ovpnsvr.server.conf'], v);
 	if (!login_safe())
-		v=0;
+	v=0;
 	inputCtrl(document.form['ovpnsvr.ca.crt'], v);
 	inputCtrl(document.form['ovpnsvr.dh1024.pem'], v);
 	inputCtrl(document.form['ovpnsvr.server.crt'], v);
@@ -250,11 +251,11 @@ function change_vpns_enabled(){
 	showhide_div('tbl_vpn_pool', v);
 
 	if (!v){
-		showhide_div('tab_vpns_ssl', 0);
-		showhide_div('tab_vpns_acl', 0);
-		textarea_ovpn_enabled(0);
+	showhide_div('tab_vpns_ssl', 0);
+	showhide_div('tab_vpns_acl', 0);
+	textarea_ovpn_enabled(0);
 	} else {
-		change_vpns_type();
+	change_vpns_type();
 	}
 }
 
@@ -265,7 +266,7 @@ function change_vpns_type(){
 	var o = document.form.vpns_vuse;
 	free_options(o);
 	if (!is_ov)
-		add_option(o, "<#VPNS_VUse_Item0#>", "0", (vpn_ipvuse_x == '0') ? 1 : 0);
+	add_option(o, "<#VPNS_VUse_Item0#>", "0", (vpn_ipvuse_x == '0') ? 1 : 0);
 	add_option(o, "<#VPNS_VUse_Item1#>", "1", (vpn_ipvuse_x == '1') ? 1 : 0);
 	add_option(o, "<#VPNS_VUse_Item2#>", "2", (vpn_ipvuse_x == '2') ? 1 : 0);
 
@@ -294,32 +295,32 @@ function change_vpns_type(){
 	textarea_ovpn_enabled(is_ov);
 
 	if (is_ov){
-		showhide_div('row_vpns_cast', 0);
-
-		$("col_pass").innerHTML = "";
-		$("div_acl_info").innerHTML = "<#VPNS_Accnt_Info2#></br><#VPNS_Accnt_Info3#>";
-		inputCtrl(document.form.vpns_pass_x_0, 0);
-		document.form.vpns_pass_x_0.value = "";
-
-		if (openssl_util_found() && login_safe() && openvpn_srv_cert_found()) {
-			if (!support_openssl_ec()) {
-				var o = document.form.vpns_exp_rb;
-				for (var i=0;i<5;i++) o.remove(3);
-			}
-			showhide_div('row_vpns_exp', 1);
-		}
-
-		change_vpns_ov_atls();
-		change_vpns_ov_tcv2();
+	showhide_div('row_vpns_cast', 0);
+	
+	$("col_pass").innerHTML = "";
+	$("div_acl_info").innerHTML = "<#VPNS_Accnt_Info2#></br><#VPNS_Accnt_Info3#>";
+	inputCtrl(document.form.vpns_pass_x_0, 0);
+	document.form.vpns_pass_x_0.value = "";
+	
+	if (openssl_util_found() && login_safe() && openvpn_srv_cert_found()) {
+	if (!support_openssl_ec()) {
+	var o = document.form.vpns_exp_rb;
+	for (var i=0;i<5;i++) o.remove(3);
+	}
+	showhide_div('row_vpns_exp', 1);
+	}
+	
+	change_vpns_ov_atls();
+	change_vpns_ov_tcv2();
 	}else{
-		showhide_div('tab_vpns_acl', 1);
-
-		$("col_pass").innerHTML = "<#ISP_Authentication_pass#>";
-		$("div_acl_info").innerHTML = "<#VPNS_Accnt_Info1#></br><#VPNS_Accnt_Info4#>";
-		inputCtrl(document.form.vpns_pass_x_0, 1);
-
-		showhide_div('row_vpns_vuse', 1);
-		showhide_div('row_vpns_actl', (fw_enable_x == "1"));
+	showhide_div('tab_vpns_acl', 1);
+	
+	$("col_pass").innerHTML = "<#ISP_Authentication_pass#>";
+	$("div_acl_info").innerHTML = "<#VPNS_Accnt_Info1#></br><#VPNS_Accnt_Info4#>";
+	inputCtrl(document.form.vpns_pass_x_0, 1);
+	
+	showhide_div('row_vpns_vuse', 1);
+	showhide_div('row_vpns_actl', (fw_enable_x == "1"));
 	}
 
 	change_vpns_vnet_enable();
@@ -333,11 +334,11 @@ function calc_vpn_addr(vnet_show,is_openvpn){
 
 	lastdot = lan_part.lastIndexOf(".");
 	if (lastdot > 3)
-		lan_part = lan_part.slice(0, lastdot+1);
+	lan_part = lan_part.slice(0, lastdot+1);
 
 	lastdot = vpn_part.lastIndexOf(".");
 	if (lastdot > 3)
-		vpn_part = vpn_part.slice(0, lastdot+1);
+	vpn_part = vpn_part.slice(0, lastdot+1);
 
 	$("lanip1").innerHTML = lan_part;
 	$("lanip2").innerHTML = lan_part;
@@ -346,11 +347,11 @@ function calc_vpn_addr(vnet_show,is_openvpn){
 	$("vpnip2").innerHTML = vpn_part + vpn_last;
 
 	if (vnet_show){
-		$("vpnip0").innerHTML = vpn_part + '1';
-		$("vpnip3").innerHTML = vpn_part;
+	$("vpnip0").innerHTML = vpn_part + '1';
+	$("vpnip3").innerHTML = vpn_part;
 	}else{
-		$("vpnip0").innerHTML = lan_part + document.form.vpns_cli0.value;
-		$("vpnip3").innerHTML = lan_part;
+	$("vpnip0").innerHTML = lan_part + document.form.vpns_cli0.value;
+	$("vpnip3").innerHTML = lan_part;
 	}
 }
 
@@ -364,8 +365,8 @@ function show_pool_controls(vnet_show,is_openvpn){
 	showhide_div('row_pool_edit', !vnet_show);
 
 	if (!vnet_show) {
-		if (dhcp_enable_x == "1")
-			dhcp_show = 1;
+	if (dhcp_enable_x == "1")
+	dhcp_show = 1;
 	}
 
 	showhide_div('row_lan_dhcp', dhcp_show);
@@ -377,20 +378,20 @@ function change_vpns_vnet_enable(){
 	var is_openvpn = (document.form.vpns_type.value == "2") ? 1 : 0;
 
 	if (is_openvpn){
-		vnet_show = (document.form.vpns_ov_mode.value == "1") ? 1 : 0;
-		rnet_show = vnet_show;
-		showhide_div('tab_vpns_acl', vnet_show);
-		showhide_div('row_vpns_vuse', vnet_show);
-		showhide_div('row_vpns_actl', (vnet_show && fw_enable_x == "1"));
+	vnet_show = (document.form.vpns_ov_mode.value == "1") ? 1 : 0;
+	rnet_show = vnet_show;
+	showhide_div('tab_vpns_acl', vnet_show);
+	showhide_div('row_vpns_vuse', vnet_show);
+	showhide_div('row_vpns_actl', (vnet_show && fw_enable_x == "1"));
 	}else{
-		vnet_show = (document.form.vpns_vuse.value != "0") ? 1 : 0;
-		rnet_show = 1;
-		showhide_div('row_vpns_cast', !vnet_show);
+	vnet_show = (document.form.vpns_vuse.value != "0") ? 1 : 0;
+	rnet_show = 1;
+	showhide_div('row_vpns_cast', !vnet_show);
 	}
 
 	if (!rnet_show){
-		document.form.vpns_rnet_x_0.value = "";
-		document.form.vpns_rmsk_x_0.value = "";
+	document.form.vpns_rnet_x_0.value = "";
+	document.form.vpns_rmsk_x_0.value = "";
 	}
 
 	inputCtrl(document.form.vpns_rnet_x_0, rnet_show);
@@ -405,7 +406,7 @@ function change_vpns_ov_atls() {
 
 	showhide_div('row_ta_key', v);
 	if (!login_safe())
-		v=0;
+	v=0;
 	inputCtrl(document.form['ovpnsvr.ta.key'], v);
 
 }
@@ -415,7 +416,7 @@ function change_vpns_ov_tcv2() {
 
 	showhide_div('row_stc2_key', v);
 	if (!login_safe())
-		v=0;
+	v=0;
 	inputCtrl(document.form['ovpnsvr.stc2.key'], v);
 }
 
@@ -423,53 +424,53 @@ function markGroupACL(o, c, b) {
 	var acl_addr;
 	document.form.group_id.value = "VPNSACLList";
 	if(b == " Add "){
-		if (document.form.vpns_num_x_0.value >= c){
-			alert("<#JS_itemlimit1#> " + c + " <#JS_itemlimit2#>");
-			return false;
-		}
-
-		if (document.form.vpns_user_x_0.value==""){
-			alert("<#JS_fieldblank#>");
-			document.form.vpns_user_x_0.focus();
-			document.form.vpns_user_x_0.select();
-			return false;
-		}
-
-		if (document.form.vpns_type.value == "2" && document.form.vpns_addr_x_0.value == "") {
-			alert("<#JS_fieldblank#>");
-			document.form.vpns_addr_x_0.focus();
-			document.form.vpns_addr_x_0.select();
-			return false;
-		}
-
-		acl_addr = parseInt(document.form.vpns_addr_x_0.value);
-		if ((document.form.vpns_addr_x_0.value != "") && (acl_addr<2 || acl_addr>254)){
-			alert("IP octet value should be between 2 and 254!");
-			document.form.vpns_addr_x_0.focus();
-			document.form.vpns_addr_x_0.select();
-			return false;
-		}
-
-		if (document.form.vpns_rnet_x_0.value.length > 0 || document.form.vpns_rmsk_x_0.value.length > 0) {
-			if (!valid_rlan_subnet(document.form.vpns_rnet_x_0, document.form.vpns_rmsk_x_0))
-				return false;
-		}
-
-		for(i=0; i< ACLList.length; i++){
-			if(document.form.vpns_user_x_0.value==ACLList[i][0]) {
-				alert('<#JS_duplicate#>' + ' (' + ACLList[i][0] + ')' );
-				document.form.vpns_user_x_0.focus();
-				document.form.vpns_user_x_0.select();
-				return false;
-			}
-			if((document.form.vpns_addr_x_0.value!="") &&
-			   (document.form.vpns_addr_x_0.value==ACLList[i][2])) {
-				alert('<#JS_duplicate#>' + ' (' + ACLList[i][0] + ')' );
-				document.form.vpns_addr_x_0.focus();
-				document.form.vpns_addr_x_0.select();
-				return false;
-			}
-		}
+	if (document.form.vpns_num_x_0.value >= c){
+	alert("<#JS_itemlimit1#> " + c + " <#JS_itemlimit2#>");
+	return false;
+	}
+	
+	if (document.form.vpns_user_x_0.value==""){
+	alert("<#JS_fieldblank#>");
+	document.form.vpns_user_x_0.focus();
+	document.form.vpns_user_x_0.select();
+	return false;
+	}
+	
+	if (document.form.vpns_type.value == "2" && document.form.vpns_addr_x_0.value == "") {
+	alert("<#JS_fieldblank#>");
+	document.form.vpns_addr_x_0.focus();
+	document.form.vpns_addr_x_0.select();
+	return false;
+	}
+	
+	acl_addr = parseInt(document.form.vpns_addr_x_0.value);
+	if ((document.form.vpns_addr_x_0.value != "") && (acl_addr<2 || acl_addr>254)){
+	alert("IP octet value should be between 2 and 254!");
+	document.form.vpns_addr_x_0.focus();
+	document.form.vpns_addr_x_0.select();
+	return false;
+	}
+	
+	if (document.form.vpns_rnet_x_0.value.length > 0 || document.form.vpns_rmsk_x_0.value.length > 0) {
+	if (!valid_rlan_subnet(document.form.vpns_rnet_x_0, document.form.vpns_rmsk_x_0))
+	return false;
+	}
+	
+	for(i=0; i< ACLList.length; i++){
+	if(document.form.vpns_user_x_0.value==ACLList[i][0]) {
+	alert('<#JS_duplicate#>' + ' (' + ACLList[i][0] + ')' );
+	document.form.vpns_user_x_0.focus();
+	document.form.vpns_user_x_0.select();
+	return false;
+	}
+	if((document.form.vpns_addr_x_0.value!="") &&
+	   (document.form.vpns_addr_x_0.value==ACLList[i][2])) {
+	alert('<#JS_duplicate#>' + ' (' + ACLList[i][0] + ')' );
+	document.form.vpns_addr_x_0.focus();
+	document.form.vpns_addr_x_0.select();
+	return false;
+	}
+	}
 	}
 	pageChanged = 0;
 	document.form.current_page.value = "/vpnsrv.asp#acl";
@@ -481,9 +482,9 @@ var id_timeout_btn_gen;
 function flashing_btn_gen(btn_id,is_shown){
 	var $btn=$j(btn_id);
 	if (is_shown)
-		$btn.val('Please wait...');
+	$btn.val('Please wait...');
 	else
-		$btn.val('');
+	$btn.val('');
 	id_timeout_btn_gen = setTimeout("flashing_btn_gen('"+btn_id+"',"+!is_shown+")", 250);
 }
 
@@ -492,7 +493,7 @@ function reset_btn_gen(is_refresh){
 	$btn.removeClass('alert-error').removeClass('alert-success');
 	$btn.val('<#VPNS_GenNew#>');
 	if (is_refresh)
-		location.href = "vpnsrv.asp";
+	location.href = "vpnsrv.asp";
 }
 
 function reset_btn_exp(){
@@ -503,75 +504,75 @@ function reset_btn_exp(){
 
 function create_server_cert(){
 	if(!confirm('<#VPNS_Query#>'))
-		return false;
+	return false;
 	var $btn=$j('#vpns_gen_bn');
 	flashing_btn_gen('#vpns_gen_bn',1);
 	$btn.addClass('alert-error');
 	$j.ajax({
-		type: "post",
-		url: "/apply.cgi",
-		data: {
-			action_mode: " CreateCertOVPNS ",
-			common_name: $('vpns_gen_cn').value,
-			rsa_bits: $('vpns_gen_rb').value,
-			days_valid: $('vpns_gen_dv').value
-		},
-		dataType: "json",
-		error: function(xhr) {
-			clearTimeout(id_timeout_btn_gen);
-			$btn.val('Failed!');
-			setTimeout("reset_btn_gen(0)", 1500);
-		},
-		success: function(response) {
-			var sys_result = (response != null && typeof response === 'object' && "sys_result" in response)
-				? response.sys_result : -1;
-			clearTimeout(id_timeout_btn_gen);
-			if(sys_result == 0){
-				$btn.removeClass('alert-error').addClass('alert-success');
-				$btn.val('Success!');
-				setTimeout("reset_btn_gen(1)", 1000);
-			}else{
-				$btn.val('Failed!');
-				setTimeout("reset_btn_gen(0)", 1500);
-			}
-		}
+	type: "post",
+	url: "/apply.cgi",
+	data: {
+	action_mode: " CreateCertOVPNS ",
+	common_name: $('vpns_gen_cn').value,
+	rsa_bits: $('vpns_gen_rb').value,
+	days_valid: $('vpns_gen_dv').value
+	},
+	dataType: "json",
+	error: function(xhr) {
+	clearTimeout(id_timeout_btn_gen);
+	$btn.val('Failed!');
+	setTimeout("reset_btn_gen(0)", 1500);
+	},
+	success: function(response) {
+	var sys_result = (response != null && typeof response === 'object' && "sys_result" in response)
+	? response.sys_result : -1;
+	clearTimeout(id_timeout_btn_gen);
+	if(sys_result == 0){
+	$btn.removeClass('alert-error').addClass('alert-success');
+	$btn.val('Success!');
+	setTimeout("reset_btn_gen(1)", 1000);
+	}else{
+	$btn.val('Failed!');
+	setTimeout("reset_btn_gen(0)", 1500);
+	}
+	}
 	});
 }
 
 function export_client_ovpn(cn){
 	if (cn == '')
-		cn = $('vpns_exp_cn').value;
+	cn = $('vpns_exp_cn').value;
 	var $btn=$j('#vpns_exp_bn');
 	flashing_btn_gen('#vpns_exp_bn',1);
 	$btn.addClass('alert-error');
 	$j.ajax({
-		type: "post",
-		url: "/apply.cgi",
-		data: {
-			action_mode: " ExportConfOVPNC ",
-			common_name: cn,
-			rsa_bits: $('vpns_exp_rb').value,
-			days_valid: $('vpns_exp_dv').value
-		},
-		dataType: "json",
-		error: function(xhr) {
-			clearTimeout(id_timeout_btn_gen);
-			$btn.val('Failed!');
-			setTimeout("reset_btn_exp()", 1500);
-		},
-		success: function(response) {
-			var sys_result = (response != null && typeof response === 'object' && "sys_result" in response)
-				? response.sys_result : -1;
-			clearTimeout(id_timeout_btn_gen);
-			if(sys_result == 0){
-				$btn.removeClass('alert-error');
-				$btn.val('<#VPNS_Export#>');
-				location.href = 'client.ovpn';
-			}else{
-				$btn.val('Failed!');
-				setTimeout("reset_btn_exp()", 1500);
-			}
-		}
+	type: "post",
+	url: "/apply.cgi",
+	data: {
+	action_mode: " ExportConfOVPNC ",
+	common_name: cn,
+	rsa_bits: $('vpns_exp_rb').value,
+	days_valid: $('vpns_exp_dv').value
+	},
+	dataType: "json",
+	error: function(xhr) {
+	clearTimeout(id_timeout_btn_gen);
+	$btn.val('Failed!');
+	setTimeout("reset_btn_exp()", 1500);
+	},
+	success: function(response) {
+	var sys_result = (response != null && typeof response === 'object' && "sys_result" in response)
+	? response.sys_result : -1;
+	clearTimeout(id_timeout_btn_gen);
+	if(sys_result == 0){
+	$btn.removeClass('alert-error');
+	$btn.val('<#VPNS_Export#>');
+	location.href = 'client.ovpn';
+	}else{
+	$btn.val('Failed!');
+	setTimeout("reset_btn_exp()", 1500);
+	}
+	}
 	});
 }
 
@@ -582,46 +583,46 @@ function showACLList(vnet_show,rnet_show,is_openvpn){
 	var acl_rnet;
 	var addr_part = lan_ipaddr_x;
 	if (vnet_show)
-		addr_part = vpn_ipvnet_x;
+	addr_part = vpn_ipvnet_x;
 	var lastdot = addr_part.lastIndexOf(".");
 	if (lastdot > 3)
-		addr_part = addr_part.slice(0, lastdot+1);
+	addr_part = addr_part.slice(0, lastdot+1);
 
 	code = '<table width="100%" cellspacing="0" cellpadding="3" class="table table-list">';
 	if(ACLList.length == 0)
-		code +='<tr><td colspan="5" style="text-align: center; padding-bottom: 0px;"><div class="alert alert-info"><#IPConnection_VSList_Norule#></div></td></tr>';
+	code +='<tr><td colspan="5" style="text-align: center; padding-bottom: 0px;"><div class="alert alert-info"><#IPConnection_VSList_Norule#></div></td></tr>';
 	else{
-		for(var i = 0; i < ACLList.length; i++){
-			acl_pass = '';
-			acl_rnet = '';
-			if (rnet_show) {
-				if (ACLList[i][3] != "" && ACLList[i][4] != "")
-					acl_rnet = ACLList[i][3] + ' / ' + ACLList[i][4];
-			}
-
-			if (is_openvpn){
-				if (openssl_util_found() && openvpn_srv_cert_found() && login_safe())
-					acl_pass = '<a href="javascript:export_client_ovpn(\'' + ACLList[i][0] + '\');"><#VPNS_Export#></a>';
-			}else
-				acl_pass = '*****';
-
-			if (ACLList[i][2] == "")
-				acl_addr = '*';
-			else
-				acl_addr = addr_part + ACLList[i][2];
-
-			code += '<tr id="row' + i + '">';
-			code += '<td width="20%">&nbsp;' + ACLList[i][0] + '</td>';
-			code += '<td width="20%">&nbsp;' + acl_pass + '</td>';
-			code += '<td width="20%">&nbsp;' + acl_addr + '</td>';
-			code += '<td width="35%">&nbsp;' + acl_rnet + '</td>';
-			code += '<td width="5%" style="text-align: center;"><input type="checkbox" name="VPNSACLList_s" value="' + i + '" onClick="changeBgColor(this,' + i + ');" id="check' + i + '"></td>';
-			code += '</tr>';
-		}
-		code += '<tr>';
-		code += '<td colspan="4" style="padding-bottom: 0px;">&nbsp;</td>'
-		code += '<td style="padding-bottom: 0px;"><button class="btn btn-danger" type="submit" onclick="markGroupACL(this, 50, \' Del \');" name="VPNSACLList"><i class="icon icon-minus icon-white"></i></button></td>';
-		code += '</tr>'
+	for(var i = 0; i < ACLList.length; i++){
+	acl_pass = '';
+	acl_rnet = '';
+	if (rnet_show) {
+	if (ACLList[i][3] != "" && ACLList[i][4] != "")
+	acl_rnet = ACLList[i][3] + ' / ' + ACLList[i][4];
+	}
+	
+	if (is_openvpn){
+	if (openssl_util_found() && openvpn_srv_cert_found() && login_safe())
+	acl_pass = '<a href="javascript:export_client_ovpn(\'' + ACLList[i][0] + '\');"><#VPNS_Export#></a>';
+	}else
+	acl_pass = '*****';
+	
+	if (ACLList[i][2] == "")
+	acl_addr = '*';
+	else
+	acl_addr = addr_part + ACLList[i][2];
+	
+	code += '<tr id="row' + i + '">';
+	code += '<td width="20%">&nbsp;' + ACLList[i][0] + '</td>';
+	code += '<td width="20%">&nbsp;' + acl_pass + '</td>';
+	code += '<td width="20%">&nbsp;' + acl_addr + '</td>';
+	code += '<td width="35%">&nbsp;' + acl_rnet + '</td>';
+	code += '<td width="5%" style="text-align: center;"><input type="checkbox" name="VPNSACLList_s" value="' + i + '" onClick="changeBgColor(this,' + i + ');" id="check' + i + '"></td>';
+	code += '</tr>';
+	}
+	code += '<tr>';
+	code += '<td colspan="4" style="padding-bottom: 0px;">&nbsp;</td>'
+	code += '<td style="padding-bottom: 0px;"><button class="btn btn-danger" type="submit" onclick="markGroupACL(this, 50, \' Del \');" name="VPNSACLList"><i class="icon icon-minus icon-white"></i></button></td>';
+	code += '</tr>'
 	}
 	code += '</table>';
 
@@ -635,21 +636,21 @@ function changeBgColor(obj, num){
 function createBodyTable(){
 	var t_body = '';
 	if(vpn_clients.length > 0){
-		try{
-			$j.each(vpn_clients, function(i, client){
-				t_body += '<tr class="client">\n';
-				t_body += '  <td>'+client[0]+'</td>\n';
-				t_body += '  <td>'+client[1]+'</td>\n';
-				t_body += '  <td>'+client[2]+'</td>\n';
-				t_body += '  <td>'+client[3]+'</td>\n';
-				t_body += '</tr>\n';
-			});
-		}
-		catch(err){}
+	try{
+	$j.each(vpn_clients, function(i, client){
+	t_body += '<tr class="client">\n';
+	t_body += '  <td>'+client[0]+'</td>\n';
+	t_body += '  <td>'+client[1]+'</td>\n';
+	t_body += '  <td>'+client[2]+'</td>\n';
+	t_body += '  <td>'+client[3]+'</td>\n';
+	t_body += '</tr>\n';
+	});
+	}
+	catch(err){}
 	}else{
-		t_body += '<tr class="client">\n';
-		t_body += '  <td colspan="4" style="text-align: center;"><div class="alert alert-info"><#Nodata#></div></td>\n';
-		t_body += '</tr>\n';
+	t_body += '<tr class="client">\n';
+	t_body += '  <td colspan="4" style="text-align: center;"><div class="alert alert-info"><#Nodata#></div></td>\n';
+	t_body += '</tr>\n';
 	}
 	$j('#wnd_vpns_cli table tr.client').remove();
 	$j('#wnd_vpns_cli table:first').append(t_body);
@@ -660,21 +661,21 @@ var arrHashes = ["cfg", "ssl", "acl", "cli"];
 function showTab(curHash){
 	var obj = $('tab_vpns_'+curHash.slice(1));
 	if (obj == null || obj.style.display == 'none')
-		curHash = '#cfg';
+	curHash = '#cfg';
 	if(curHash == ('#'+arrHashes[3])){
-		$j.get('/vpn_clients.asp', function(response){
-			vpn_clients = eval(response);
-			createBodyTable();
-		});
+	$j.get('/vpn_clients.asp', function(response){
+	vpn_clients = eval(response);
+	createBodyTable();
+	});
 	}
 	for(var i = 0; i < arrHashes.length; i++){
-		if(curHash == ('#'+arrHashes[i])){
-			$j('#tab_vpns_'+arrHashes[i]).parents('li').addClass('active');
-			$j('#wnd_vpns_'+arrHashes[i]).show();
-		}else{
-			$j('#wnd_vpns_'+arrHashes[i]).hide();
-			$j('#tab_vpns_'+arrHashes[i]).parents('li').removeClass('active');
-		}
+	if(curHash == ('#'+arrHashes[i])){
+	$j('#tab_vpns_'+arrHashes[i]).parents('li').addClass('active');
+	$j('#wnd_vpns_'+arrHashes[i]).show();
+	}else{
+	$j('#wnd_vpns_'+arrHashes[i]).hide();
+	$j('#tab_vpns_'+arrHashes[i]).parents('li').removeClass('active');
+	}
 	}
 	window.location.hash = curHash;
 }
@@ -682,8 +683,8 @@ function showTab(curHash){
 function getHash(){
 	var curHash = window.location.hash.toLowerCase();
 	for(var i = 0; i < arrHashes.length; i++){
-		if(curHash == ('#'+arrHashes[i]))
-			return curHash;
+	if(curHash == ('#'+arrHashes[i]))
+	return curHash;
 	}
 	return ('#'+arrHashes[0]);
 }
@@ -804,7 +805,7 @@ function getHash(){
                                     <td>
                                         <select name="vpns_type" class="input" onchange="change_vpns_type();">
                                             <option value="0" <% nvram_match_x("", "vpns_type", "0","selected"); %>>PPTP</option>
-                                            <option value="1" <% nvram_match_x("", "vpns_type", "1","selected"); %>>L2TP (w/o IPSec)</option>
+                                            <option value="1" <% nvram_match_x("", "vpns_type", "1","selected"); %>>L2TP (不含(w/o) IPSec)</option>
                                             <option value="2" <% nvram_match_x("", "vpns_type", "2","selected"); %>>OpenVPN</option>
                                         </select>
                                         <span id="certs_hint" style="display:none" class="label label-warning"><#OVPN_Hint#></span>
@@ -849,7 +850,7 @@ function getHash(){
                                     <td>
                                         <select name="vpns_ov_mode" class="input" onchange="change_vpns_vnet_enable();">
                                             <option value="0" <% nvram_match_x("", "vpns_ov_mode", "0","selected"); %>>L2 - TAP (Ethernet)</option>
-                                            <option value="1" <% nvram_match_x("", "vpns_ov_mode", "1","selected"); %>>L3 - TUN (IP) (*)</option>
+                                            <option value="1" <% nvram_match_x("", "vpns_ov_mode", "1","selected"); %>>L3 - TUN (IP)</option>
                                         </select>
                                     </td>
                                 </tr>
@@ -857,8 +858,8 @@ function getHash(){
                                     <th><#OVPN_Prot#></th>
                                     <td>
                                         <select name="vpns_ov_prot" class="input">
-                                            <option value="0" <% nvram_match_x("", "vpns_ov_prot", "0","selected"); %>>UDP over IPv4</option>
-                                            <option value="1" <% nvram_match_x("", "vpns_ov_prot", "1","selected"); %>>TCP over IPv4 (*)</option>
+                                            <option value="0" <% nvram_match_x("", "vpns_ov_prot", "0","selected"); %>>UDP over IPv4 (*)</option>
+                                            <option value="1" <% nvram_match_x("", "vpns_ov_prot", "1","selected"); %>>TCP over IPv4</option>
                                             <option value="2" <% nvram_match_x("", "vpns_ov_prot", "2","selected"); %>>UDP over IPv6</option>
                                             <option value="3" <% nvram_match_x("", "vpns_ov_prot", "3","selected"); %>>TCP over IPv6</option>
                                             <option value="4" <% nvram_match_x("", "vpns_ov_prot", "4","selected"); %>>UDP both</option>
@@ -887,25 +888,25 @@ function getHash(){
                                     </td>
                                 </tr>
                                 <tr id="row_vpns_ov_ciph" style="display:none">
-                                    <th><#VPNS_Ciph#></th>
+                                    <th><#OVPN_Cipher#></th>
                                     <td>
                                         <select name="vpns_ov_ciph" class="input">
                                             <option value="0" <% nvram_match_x("", "vpns_ov_ciph", "0","selected"); %>>[none]</option>
                                             <option value="1" <% nvram_match_x("", "vpns_ov_ciph", "1","selected"); %>>[DES-CBC] DES, 64 bit</option>
                                             <option value="2" <% nvram_match_x("", "vpns_ov_ciph", "2","selected"); %>>[DES-EDE-CBC] 3DES, 128 bit</option>
-                                            <option value="3" <% nvram_match_x("", "vpns_ov_ciph", "3","selected"); %>>[BF-CBC] Blowfish, 128 bit</option>
-                                            <option value="4" <% nvram_match_x("", "vpns_ov_ciph", "4","selected"); %>>[AES-128-CBC] AES, 128 bit (*)</option>
+                                            <option value="3" <% nvram_match_x("", "vpns_ov_ciph", "3","selected"); %>>[BF-CBC] Blowfish, 128 bit (*)</option>
+                                            <option value="4" <% nvram_match_x("", "vpns_ov_ciph", "4","selected"); %>>[AES-128-CBC] AES, 128 bit</option>
                                             <option value="5" <% nvram_match_x("", "vpns_ov_ciph", "5","selected"); %>>[AES-192-CBC] AES, 192 bit</option>
                                             <option value="6" <% nvram_match_x("", "vpns_ov_ciph", "6","selected"); %>>[DES-EDE3-CBC] 3DES, 192 bit</option>
                                             <option value="7" <% nvram_match_x("", "vpns_ov_ciph", "7","selected"); %>>[DESX-CBC] DES-X, 192 bit</option>
                                             <option value="8" <% nvram_match_x("", "vpns_ov_ciph", "8","selected"); %>>[AES-256-CBC] AES, 256 bit</option>
-                                            <option value="9" <% nvram_match_x("", "vpns_ov_ciph", "9","selected"); %>>[CAMELLIA-128-CBC] CAM, 128 bit</option>
-                                            <option value="10" <% nvram_match_x("", "vpns_ov_ciph", "10","selected"); %>>[CAMELLIA-192-CBC] CAM, 192 bit</option>
-                                            <option value="11" <% nvram_match_x("", "vpns_ov_ciph", "11","selected"); %>>[CAMELLIA-256-CBC] CAM, 256 bit</option>
-                                            <option value="12" <% nvram_match_x("", "vpns_ov_ciph", "12","selected"); %>>[AES-128-GCM] AES-GCM, 128 bit</option>
-                                            <option value="13" <% nvram_match_x("", "vpns_ov_ciph", "13","selected"); %>>[AES-192-GCM] AES-GCM, 192 bit</option>
-                                            <option value="14" <% nvram_match_x("", "vpns_ov_ciph", "14","selected"); %>>[AES-256-GCM] AES-GCM, 256 bit</option>
-                                            <option value="15" <% nvram_match_x("", "vpns_ov_ciph", "15","selected"); %>>[CHACHA20-POLY1305], 256 bit</option>
+                                            <option value="9" <% nvram_match_x("", "vpns_ov_ciph", "9","selected"); %>>[CAMELLIA-128-CBC] CAM, 128 bit</option>
+                                            <option value="10" <% nvram_match_x("", "vpns_ov_ciph", "10","selected"); %>>[CAMELLIA-192-CBC] CAM, 192 bit</option>
+                                            <option value="11" <% nvram_match_x("", "vpns_ov_ciph", "11","selected"); %>>[CAMELLIA-256-CBC] CAM, 256 bit</option>
+                                            <option value="12" <% nvram_match_x("", "vpns_ov_ciph", "12","selected"); %>>[AES-128-GCM] AES-GCM, 128 bit</option>
+                                            <option value="13" <% nvram_match_x("", "vpns_ov_ciph", "13","selected"); %>>[AES-192-GCM] AES-GCM, 192 bit</option>
+                                            <option value="14" <% nvram_match_x("", "vpns_ov_ciph", "14","selected"); %>>[AES-256-GCM] AES-GCM, 256 bit</option>
+                                            <option value="15" <% nvram_match_x("", "vpns_ov_ciph", "15","selected"); %>>[CHACHA20-POLY1305], 256 bit</option>
                                         </select>
                                     </td>
                                 </tr>
@@ -920,8 +921,8 @@ function getHash(){
                                     <td>
                                         <select name="vpns_ov_compress" class="input">
                                             <option value="0" <% nvram_match_x("", "vpns_ov_compress", "0","selected"); %>><#btn_Disable#></option>
-                                            <option value="1" <% nvram_match_x("", "vpns_ov_compress", "1","selected"); %>><#checkbox_No#> (*)</option>
-                                            <option value="2" <% nvram_match_x("", "vpns_ov_compress", "2","selected"); %>><#OVPN_COMPRESS_Item2#></option>
+                                            <option value="1" <% nvram_match_x("", "vpns_ov_compress", "1","selected"); %>><#checkbox_No#></option>
+                                            <option value="2" <% nvram_match_x("", "vpns_ov_compress", "2","selected"); %>><#OVPN_COMPRESS_Item2#> (*)</option>
                                             <option value="3" <% nvram_match_x("", "vpns_ov_compress", "3","selected"); %>><#OVPN_COMPRESS_Item3#></option>
                                             <option value="4" <% nvram_match_x("", "vpns_ov_compress", "4","selected"); %>><#OVPN_COMPRESS_Item4#></option>
                                         </select>
@@ -948,17 +949,17 @@ function getHash(){
                                 </tr>
                                 <tr id="row_vpns_ov_conf" style="display:none">
                                     <td colspan="2" style="padding-bottom: 15px;">
-                                        <a href="javascript:spoiler_toggle('spoiler_vpns_ov_conf')"><span><#OVPN_User#></span></a>
+                                        <i class="icon-hand-right"></i> <a href="javascript:spoiler_toggle('spoiler_vpns_ov_conf')"><span><#OVPN_User#></span></a>
                                         <div id="spoiler_vpns_ov_conf" style="display:none;">
-                                            <textarea rows="16" wrap="off" spellcheck="false" maxlength="8192" class="span12" name="ovpnsvr.server.conf" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("ovpnsvr.server.conf",""); %></textarea>
+                                            <textarea rows="16" wrap="off" spellcheck="false" maxlength="2097152" class="span12" name="ovpnsvr.server.conf" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("ovpnsvr.server.conf",""); %></textarea>
                                         </div>
                                     </td>
                                 </tr>
                                 <tr id="row_vpns_script">
                                     <td colspan="2" style="padding-bottom: 15px;">
-                                        <a href="javascript:spoiler_toggle('spoiler_script')"><span><#RunPostVPNS#></span></a>
+                                        <i class="icon-hand-right"></i> <a href="javascript:spoiler_toggle('spoiler_script')"><span><#RunPostVPNS#></span></a>
                                         <div id="spoiler_script" style="display:none;">
-                                            <textarea rows="16" wrap="off" spellcheck="false" maxlength="8192" class="span12" name="scripts.vpns_client_script.sh" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("scripts.vpns_client_script.sh",""); %></textarea>
+                                            <textarea rows="16" wrap="off" spellcheck="false" maxlength="2097152" class="span12" name="scripts.vpns_client_script.sh" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("scripts.vpns_client_script.sh",""); %></textarea>
                                         </div>
                                     </td>
                                 </tr>
@@ -1118,37 +1119,37 @@ function getHash(){
                                 <tr>
                                     <td style="padding-bottom: 0px; border-top: 0 none;">
                                         <span class="caption-bold">Root CA Certificate (ca.crt):</span>
-                                        <textarea rows="4" wrap="off" spellcheck="false" maxlength="8192" class="span12" name="ovpnsvr.ca.crt" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("ovpnsvr.ca.crt",""); %></textarea>
+                                        <textarea rows="4" wrap="off" spellcheck="false" maxlength="2097152" class="span12" name="ovpnsvr.ca.crt" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("ovpnsvr.ca.crt",""); %></textarea>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td style="padding-bottom: 0px; border-top: 0 none;">
                                         <span class="caption-bold">Diffie-Hellman PEM (dh1024.pem):</span>
-                                        <textarea rows="4" wrap="off" spellcheck="false" maxlength="4096" class="span12" name="ovpnsvr.dh1024.pem" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("ovpnsvr.dh1024.pem",""); %></textarea>
+                                        <textarea rows="4" wrap="off" spellcheck="false" maxlength="2097152" class="span12" name="ovpnsvr.dh1024.pem" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("ovpnsvr.dh1024.pem",""); %></textarea>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td style="padding-bottom: 0px; border-top: 0 none;">
                                         <span class="caption-bold">Server Certificate (server.crt):</span>
-                                        <textarea rows="4" wrap="off" spellcheck="false" maxlength="8192" class="span12" name="ovpnsvr.server.crt" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("ovpnsvr.server.crt",""); %></textarea>
+                                        <textarea rows="4" wrap="off" spellcheck="false" maxlength="2097152" class="span12" name="ovpnsvr.server.crt" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("ovpnsvr.server.crt",""); %></textarea>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td style="padding-bottom: 0px; border-top: 0 none;">
                                         <span class="caption-bold">Server Private Key (server.key) - secret:</span>
-                                        <textarea rows="4" wrap="off" spellcheck="false" maxlength="8192" class="span12" name="ovpnsvr.server.key" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("ovpnsvr.server.key",""); %></textarea>
+                                        <textarea rows="4" wrap="off" spellcheck="false" maxlength="2097152" class="span12" name="ovpnsvr.server.key" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("ovpnsvr.server.key",""); %></textarea>
                                     </td>
                                 </tr>
                                 <tr id="row_ta_key">
                                     <td style="padding-bottom: 0px; border-top: 0 none;">
                                         <span class="caption-bold">TLS Auth/Crypt Key (ta.key/tc.key) - secret:</span>
-                                        <textarea rows="4" wrap="off" spellcheck="false" maxlength="8192" class="span12" name="ovpnsvr.ta.key" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("ovpnsvr.ta.key",""); %></textarea>
+                                        <textarea rows="4" wrap="off" spellcheck="false" maxlength="2097152" class="span12" name="ovpnsvr.ta.key" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("ovpnsvr.ta.key",""); %></textarea>
                                     </td>
                                 </tr>
                                 <tr id="row_stc2_key">
                                     <td style="padding-bottom: 0px; border-top: 0 none;">
                                         <span class="caption-bold">TLS Crypt v2 Key (stc2.key) - secret:</span>
-                                        <textarea rows="4" wrap="off" spellcheck="false" maxlength="8192" class="span12" name="ovpnsvr.stc2.key" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("ovpnsvr.stc2.key",""); %></textarea>
+                                        <textarea rows="4" wrap="off" spellcheck="false" maxlength="2097152" class="span12" name="ovpnsvr.stc2.key" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("ovpnsvr.stc2.key",""); %></textarea>
                                     </td>
                                 </tr>
                             </table>
@@ -1166,7 +1167,7 @@ function getHash(){
                                     <th width="20%" style="border-top: 0 none;"><#VPNS_CName#>:</th>
                                     <th width="20%" style="border-top: 0 none;" id="col_pass"><#ISP_Authentication_pass#></th>
                                     <th width="20%" style="border-top: 0 none;"><#VPNS_FixIP#></th>
-                                    <th width="35%" style="border-top: 0 none;"><#VPNS_RNet#></th>
+                                    <th width="35%" style="border-top: 0 none;"><a class="help_tooltip" href="javascript: void(0)" onmouseover="openTooltip(this, 5, 1);"><#VPNS_RNet#></a></th>
                                     <th width="5%"  style="border-top: 0 none;">&nbsp;</th>
                                 </tr>
                                 <tr>

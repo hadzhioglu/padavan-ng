@@ -75,7 +75,7 @@ function prepare_clients(){
 			if(!checkDuplicateName(list_of_BlockedClient[i][0], clients)){
 				k = clients.length;
 				clients[k] = new Array(8);
-
+				
 				clients[k][0] = "*";
 				clients[k][1] = "*";
 				clients[k][2] = list_of_BlockedClient[i][0];
@@ -84,9 +84,9 @@ function prepare_clients(){
 				clients[k][5] = "6";
 				clients[k][6] = "0";
 				clients[k][7] = "b";
-
+				
 				var mac_up = list_of_BlockedClient[i][0].toUpperCase();
-
+				
 				for(j = 0; j < m_dhcp.length; ++j){
 					if (mac_up == m_dhcp[j][0].toUpperCase()){
 						if (m_dhcp[j][2] != null && m_dhcp[j][2].length > 0)
@@ -97,7 +97,7 @@ function prepare_clients(){
 				}
 			}
 		}
-
+		
 		for(i = 0; i < clients.length; ++i){
 			if(!checkDuplicateName(clients[i][2], list_of_BlockedClient)){
 				clients[i][7] = "u";
@@ -117,11 +117,15 @@ function check_full_scan_done(){
 		$("LoadingBar").style.display = "none";
 		$("refresh_list").disabled = false;
 		if (sw_mode == "3") {
-			$j('.popover_top').popover({placement: 'top'});
-			$j('.popover_bottom').popover({placement: 'bottom'});
+			$j(document).ready(function() {
+				$j('.popover_top').popover({placement: 'top'});
+				$j('.popover_bottom').popover({placement: 'bottom'});
+			});
 		}else {
-			$j('.popover_top').popover({placement: 'right'});
-			$j('.popover_bottom').popover({placement: 'right'});
+			$j(document).ready(function() {
+				$j('.popover_top').popover({placement: 'right'});
+				$j('.popover_bottom').popover({placement: 'right'});
+			});
 		}
 	}else{
 		$("LoadingBar").style.display = "block";
@@ -149,6 +153,30 @@ function update_clients(e) {
 	});
 }
 
+
+function get_ip6_neighbor(mac_key){
+if(document.macfilterForm.ip6_service.value != "" && document.macfilterForm.ip6_show_clients.value == "1"){
+	var ip6_neighbor = `<% nvram_dump("ip6_neighbor.log",""); %>`
+	var ip6_t = "";
+	var ip6_n_t = "";
+	mac_key=mac_key.toLowerCase();
+	if(ip6_neighbor.indexOf(mac_key) != -1){
+		ip6_n_t1 = ip6_neighbor.match(new RegExp(".*"+mac_key,"gm"));
+		for(var i = 0; i < ip6_n_t1.length; ++i){
+			ip6_n_t2 = ip6_n_t1[i];
+			ip6_n_t2 = String(ip6_n_t2).split(' ')[0];
+			if (String(ip6_n_t2) != "" && String(ip6_n_t2) != "undefined" && String(ip6_n_t2) != "null"){
+			ip6_n_t= ip6_n_t + "<div>" + ip6_n_t2 + "</div>";
+			}
+		}
+		ip6_t = ip6_n_t;
+	}
+	return ip6_t;
+}else{
+	return "";
+}
+}
+
 function add_client_row(table, atIndex, client, blocked, j){
 	var row = table.insertRow(atIndex);
 	var typeCell = row.insertCell(0);
@@ -158,24 +186,11 @@ function add_client_row(table, atIndex, client, blocked, j){
 	var rssiCell = row.insertCell(4);
 	var blockCell = row.insertCell(5);
 
-	var arpon = <% nvram_get_x("","dhcp_static_arp"); %>;
-	var mdhcp = <% nvram_get_x("","dhcp_static_x"); %>;
-	if (arpon == 1 && mdhcp == 1){
-	   var j;
-	   for(j = 0; j < m_dhcp.length; ++j){
-	      if (client[2] == m_dhcp[j][0]){
-	         client[0] = m_dhcp[j][2];
-	         if (client[1] == m_dhcp[j][1]){
-	            client[1] = m_dhcp[j][1];
-	         }
-	      }
-	   }    
-	}
-
 	typeCell.style.textAlign = "center";
 	typeCell.innerHTML = "<img title='"+ DEVICE_TYPE[client[5]]+"' src='/bootstrap/img/wl_device/" + client[5] +".gif'>";
 	nameCell.innerHTML = (client[6] == "1") ? "<a href=http://" + client[0] + " target='blank'>" + client[0] + "</a>" : client[0];
-	ipCell.innerHTML = (client[6] == "1") ? "<a href=http://" + client[1] + " target='blank'>" + client[1] + "</a>" : client[1];
+	var ipCell_tmp = (client[6] == "1") ? "<a href=http://" + client[1] + " target='blank'>" + client[1] + "</a>" : client[1];
+	ipCell.innerHTML = ipCell_tmp + get_ip6_neighbor(mac_add_delimiters(client[2]));
 	macCell.innerHTML = "<a target='_blank' href='https://services13.ieee.org/RST/standards-ra-web/rest/assignments/?registry=MAC&text=" + client[2].substr(0,6) + "'>" + mac_add_delimiters(client[2]) + "</a>";
 	if (client[3] == 10){
 		rssiCell.innerHTML = client[4].toString();
@@ -190,17 +205,33 @@ function show_clients(){
 	var i, j, k;
 	var table1, table2;
 	var addClient, clientType, clientName, clientIP, clientMAC, clientBlock;
-
+	
 	table1 = $('Clients_table');
 	table2 = $('xClients_table');
-
+	
 	while (table1.rows.length > 2)
 		table1.deleteRow(-1);
 	while (table2.rows.length > 2)
 		table2.deleteRow(-1);
-
+	
 	var hasBlocked = false;
 	for(j=0, i=0, k=0; j < clients.length; j++){
+		for(j2=0; j2 < m_dhcp.length && clients[j][0] == "*"; j2++){
+			if (clients[j][2].toUpperCase() == m_dhcp[j2][0].toUpperCase()){
+				if (m_dhcp[j2][2] != "" && m_dhcp[j2][2] != null && m_dhcp[j2][2].length > 0){
+					clients[j][0] = m_dhcp[j2][2];
+					break;
+				}
+			}
+		}
+		for(j3=0; j3 < clients.length && clients[j][0] == "*"; j3++){
+			if (clients[j][2].toUpperCase() == clients[j3][2].toUpperCase()){
+				if (clients[j3][0] != "*" && clients[j3][0] != null && clients[j3][0].length > 0){
+					clients[j][0] = clients[j3][0];
+					break;
+				}
+			}
+		}
 		if(clients[j][7] == "u" || sw_mode == "3"){
 			add_client_row(table1, k+2, clients[j], false, j);
 			k++;
@@ -221,6 +252,16 @@ function show_clients(){
 
 	if (table2.rows.length < 3 && sw_mode != "3")
 		$j("#xClients_table tbody").append(NDRow);
+
+	if(document.macfilterForm.ip6_service.value != ""){
+		document.querySelector("#ip6_show_ipv6").style.display = "";
+		document.querySelector("#ip6_show_ip").style.display = "none";
+		document.querySelector("#ip6_show_clients_fake").style.display = "";
+	}else{
+		document.querySelector("#ip6_show_ipv6").style.display = "none";
+		document.querySelector("#ip6_show_ip").style.display = "";
+		document.querySelector("#ip6_show_clients_fake").style.display = "none";
+	}
 }
 
 function sort(mode) {
@@ -321,8 +362,8 @@ function submit_macfilter(){
 }
 
 function build_submitrule(){
-	if(document.macfilterForm.modified.value == "1"){
-		if(list_type != "1")
+	if(document.macfilterForm.modified.value == "1" || document.macfilterForm.ip6_show_clients.value !=document.macfilterForm.ip6_show_clients_tmp.value){
+		if(list_type != "1" || document.macfilterForm.ip6_show_clients.value !=document.macfilterForm.ip6_show_clients_tmp.value)
 			submit_macfilter();
 		else
 			refreshpage();
@@ -332,7 +373,7 @@ function build_submitrule(){
 }
 
 function applyRule(){
-	parent.showLoading();
+	//parent.showLoading();
 	build_submitrule();
 }
 
@@ -345,6 +386,12 @@ function networkmap_update(s){
 	document.form.action_script.value = s;
 	document.form.flag.value = "nodetect";
 	document.form.submit();
+}
+
+function click_ip6_show_clients(o) {
+	var v = (o.checked) ? "1" : "0";
+	document.macfilterForm.ip6_show_clients.value = v;
+	show_clients();
 }
 
 </script>
@@ -367,7 +414,7 @@ function networkmap_update(s){
 
 <form method="post" name="macfilterForm" id="macfilterForm" action="/start_apply.htm" target="applyFrame" style="position: absolute; margin-left: -10000px;">
 <input type="hidden" name="action_mode" value="">
-<input type="hidden" name="sid_list" value="FirewallConfig;General;">
+<input type="hidden" name="sid_list" value="FirewallConfig;General;IP6Connection;">
 <input type="hidden" name="group_id" value="MFList">
 <input type="hidden" name="current_page" value="/device-map/clients.asp">
 <input type="hidden" name="next_page" value="/device-map/clients.asp">
@@ -376,6 +423,9 @@ function networkmap_update(s){
 <input type="hidden" name="macfilter_list_x_0" value="">
 <input type="hidden" name="macfilter_time_x_0" value="00002359">
 <input type="hidden" name="macfilter_date_x_0" value="1111111">
+<input type="hidden" name="ip6_service" value="<% nvram_get_x("", "ip6_service"); %>">
+<input type="hidden" id="ip6_show_clients" name="ip6_show_clients" value="<% nvram_get_x("", "ip6_show_clients"); %>">
+<input type="hidden" id="ip6_show_clients_tmp" name="ip6_show_clients_tmp" value="<% nvram_get_x("", "ip6_show_clients"); %>">
 <select name="MFList_s" id="MFList_s" multiple="true" style="visibility:hidden; width:0px; height:0px;"></select>
 </form>
 
@@ -387,12 +437,12 @@ function networkmap_update(s){
             <th colspan="5" style="text-align: center;"><#ConnectedClient#></th>
         </tr>
         <tr>
-            <th width="10%"><a href="javascript:sort(0)"><#Type#></a></th>
-            <th id="col_hname" width="35%"><a href="javascript:sort(1)"><#Computer_Name#></a></th>
-            <th width="20%"><a href="javascript:sort(2)"><#IP_Address#></a></th>
-            <th width="24%"><a href="javascript:sort(3)"><#MAC_Address#></a></th>
-            <th id="col_rssi"><a href="javascript:sort(4)"><#Rssi#></a></th>
-            <th id="col_block"></th>
+            <th width="8%"><a href="javascript:sort(0)"><#Type#></a></th>
+            <th><a href="javascript:sort(1)"><#Computer_Name#></a></th>
+            <th width="20%"><a href="javascript:sort(2)" id="ip6_show_ip" name="ip6_show_ip">IP</a><a href="javascript:sort(2)" id="ip6_show_ipv6" name="ip6_show_ipv6">IP&nbsp;&nbsp; IPv6 </a><input type="checkbox" id="ip6_show_clients_fake" name="ip6_show_clients_fake" value="" style="float:right;" onclick="click_ip6_show_clients(this);" <% nvram_match_x("", "ip6_show_clients", "1", "checked"); %>/></th>
+            <th width="24%"><a href="javascript:sort(3)">MAC</a></th>
+            <th width="8%" id="col_rssi"><a href="javascript:sort(4)">RSSI</a></th>
+            <th width="0%" id="col_block"></th>
         </tr>
     </thead>
     <tbody>
@@ -406,12 +456,12 @@ function networkmap_update(s){
             <th colspan="5" style="text-align: center;"><#BlockedClient#></th>
         </tr>
         <tr>
-            <th width="10%"><#Type#></th>
-            <th id="col_unhname" width="35%"><#Computer_Name#></th>
-            <th width="20%"><#IP_Address#></th>
-            <th width="24%"><#MAC_Address#></th>
-            <th id="col_unrssi"><#Rssi#></th>
-            <th id="col_unblock"></th>
+            <th width="8%"><#Type#></th>
+            <th><#Computer_Name#></th>
+            <th width="20%">IP</th>
+            <th width="24%">MAC</th>
+            <th width="8%" id="col_unrssi">RSSI</th>
+            <th width="0%" id="col_unblock"></th>
         </tr>
     </thead>
     <tbody>
@@ -439,18 +489,16 @@ function networkmap_update(s){
 
 <script>
 	if (!support_2g_radio() && !support_5g_radio()) {
-		$("col_rssi").width = "10%";
-		$("col_rssi").innerHTML = "<#Rssi#>";
-		$("col_unrssi").width = "10%";
-		$("col_unrssi").innerText = "<#unRssi#>";
+		$("col_rssi").width = "0%";
+		$("col_rssi").innerHTML = "";
+		$("col_unrssi").width = "0%";
+		$("col_unrssi").innerText = "";
 	}
 	if (sw_mode != "3") {
 		if (list_type != "1") {
-			$("col_hname").width = "35%";
-			$("col_unhname").width = "35%";
-			$("col_block").width = "10%";
+			$("col_block").width = "12%";
+			$("col_unblock").width = "12%";
 			$("col_block").innerHTML = "<#Block#>";
-			$("col_unblock").width = "10%";
 			$("col_unblock").innerHTML = "<#unBlock#>";
 		}
 	} else {
@@ -472,5 +520,6 @@ function networkmap_update(s){
 </script>
 </body>
 </html>
+
 
 

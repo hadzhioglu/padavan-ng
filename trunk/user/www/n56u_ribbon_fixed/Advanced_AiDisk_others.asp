@@ -28,12 +28,16 @@ $j(document).ready(function() {
 	init_itoggle('enable_ftp', change_ftp_enabled);
 	init_itoggle('nfsd_enable');
 	init_itoggle('apps_dms', change_dms_enabled);
+	init_itoggle('apps_itunes');
 	init_itoggle('trmd_enable', change_trmd_enabled);
 	init_itoggle('aria_enable', change_aria_enabled);
+	init_itoggle('aria_ssl',change_aria_ssl);
 });
 
 </script>
 <script>
+
+<% login_state_hook(); %>
 
 var lan_ipaddr = '<% nvram_get_x("", "lan_ipaddr_t"); %>';
 var http_proto = '<% nvram_get_x("", "http_proto"); %>';
@@ -51,58 +55,73 @@ function initial(){
 	show_menu(5,6,1);
 	show_footer();
 
+	if (!login_safe())
+	textarea_scripts_enabled(0);
+
 	if(!found_utl_hdparm()){
-		$("row_spd").style.display = "none";
-		$("row_apm").style.display = "none";
+	$("row_spd").style.display = "none";
+	$("row_apm").style.display = "none";
 	}
 
 	if(support_usb3()){
-		$("row_usb3_disable").style.display = "";
+	$("row_usb3_disable").style.display = "";
 	}
 
 	if(!found_app_smbd() && !found_app_ftpd()){
-		$("row_max_user").style.display = "none";
+	$("row_max_user").style.display = "none";
 	}
 
 	if(found_app_smbd()){
-		$("tbl_smbd").style.display = "";
-		change_smb_enabled();
+	$("tbl_smbd").style.display = "";
+	change_smb_enabled();
 	}
 
 	if(found_app_ftpd()){
-		$("tbl_ftpd").style.display = "";
-		change_ftp_enabled();
+	$("tbl_ftpd").style.display = "";
+	change_ftp_enabled();
 	}
 
 	if(found_app_nfsd()){
-		$("tbl_nfsd").style.display = "";
+	$("tbl_nfsd").style.display = "";
 	}
 
 	if(found_app_dlna()){
-		$("tbl_minidlna").style.display = "";
-		change_dms_enabled();
+	$("tbl_minidlna").style.display = "";
+	change_dms_enabled();
+	}
+
+	if(found_app_ffly()){
+	$("tbl_itunes").style.display = "";
 	}
 
 	if(found_app_torr()){
-		$("tbl_trmd").style.display = "";
-		change_trmd_enabled();
+	$("tbl_trmd").style.display = "";
+	change_trmd_enabled();
 	}
 
 	if(found_app_aria()){
-		$("tbl_aria").style.display = "";
-		change_aria_enabled();
+	$("tbl_aria").style.display = "";
+	change_aria_enabled();
 	}
 
 	if (!document.form.apps_dms[0].checked){
-		$("web_dms_link").style.display = "none";
+	$("web_dms_link").style.display = "none";
+	}
+
+	if (!document.form.apps_itunes[0].checked){
+	$("web_ffly_link").style.display = "none";
 	}
 
 	if (!document.form.trmd_enable[0].checked){
-		$("web_rpc_link").style.display = "none";
+	$("web_rpc_link").style.display = "none";
 	}
 
 	if (!document.form.aria_enable[0].checked){
-		$("web_aria_link").style.display = "none";
+	$("web_aria_link").style.display = "none";
+	}
+
+	if (!document.form.aria_ssl[0].checked){
+	$("web_aria_ssl").style.display = "none";
 	}
 
 	show_usb_share_list(0);
@@ -110,20 +129,39 @@ function initial(){
 	show_usb_share_list(2);
 }
 
+function textarea_scripts_enabled(v){
+	inputCtrl(document.form['scripts.aria2_conf.sh'], v);
+}
+
 var window_rpc;
 var window_dms;
+var window_ffly;
 var window_aria;
 var window_params="toolbar=yes,location=yes,directories=no,status=yes,menubar=yes,scrollbars=yes,resizable=yes,copyhistory=no,width=800,height=600";
 
+function on_aria_ssl(){
+	var aria_url="http";
+	var http_url=location.hostname;
+	var aria_ssl_fake = document.querySelector("#aria_ssl_fake").value;
+	if (aria_ssl_fake == "1"){
+	aria_url+="s";
+	}
+	var aria_rpc_port = document.querySelector("#aria_rport").value;
+	http_url+=":"+aria_rpc_port;
+	aria_url+="://"+http_url+"/jsonrpc";
+	window_aria = window.open(aria_url, "Aria2_rpc_ssl", window_params);
+	window_aria.focus();
+}
 function on_aria_link(){
 	var aria_url="http";
-	var http_url=lan_ipaddr;
-	if (http_proto=='1'){
-		aria_url+="s";
-		if (https_port!='443')
-			http_url+=":"+https_port;
+	var http_url=location.hostname;
+	var aria_ssl_fake = document.querySelector("#aria_ssl_fake").value;
+	if (http_proto!='0' && aria_ssl_fake == "1"){
+	aria_url+="s";
+	if (https_port!='443')
+	http_url+=":"+https_port;
 	}else if (http_port!='80'){
-		http_url+=":"+http_port;
+	http_url+=":"+http_port;
 	}
 	aria_url+="://"+http_url+"/ariaweb/index.html";
 	window_aria = window.open(aria_url, "Aria2", window_params);
@@ -131,28 +169,34 @@ function on_aria_link(){
 }
 
 function on_rpc_link(){
-	var rpc_url="http://" + lan_ipaddr + ":" + document.form.trmd_rport.value;
+	var rpc_url="http://" + location.hostname + ":" + document.form.trmd_rport.value;
 	window_rpc = window.open(rpc_url, "Transmission", window_params);
 	window_rpc.focus();
 }
 
 function on_dms_link(){
-	var dms_url="http://" + lan_ipaddr + ":8200";
+	var dms_url="http://" + location.hostname + ":8200";
 	window_dms = window.open(dms_url, "Minidlna", window_params);
 	window_dms.focus();
+}
+
+function on_ffly_link(){
+	var ffly_url="http://" + location.hostname + ":3689";
+	window_ffly = window.open(ffly_url, "Firefly", window_params);
+	window_ffly.focus();
 }
 
 function hide_usb_share_list(idx){
 	var obj, obj3;
 	if (idx == 0) {
-		obj = $j("#chevron1");
-		obj3 = $("share_list1");
+	obj = $j("#chevron1");
+	obj3 = $("share_list1");
 	} else if (idx == 1) {
-		obj = $j("#chevron2");
-		obj3 = $("share_list2");
+	obj = $j("#chevron2");
+	obj3 = $("share_list2");
 	} else {
-		obj = $j("#chevron3");
-		obj3 = $("share_list3");
+	obj = $j("#chevron3");
+	obj3 = $("share_list3");
 	}
 	obj.children('i').removeClass('icon-chevron-up').addClass('icon-chevron-down');
 	obj3.style.display = "none";
@@ -165,14 +209,14 @@ function set_usb_share(num, idx){
 	var src2 = document.form.dlna_src2;
 	var src3 = document.form.dlna_src3;
 	if (idx == 0){
-		if (src2.value == "" && src3.value == "")
-			src1.value = path;
-		else
-			src1.value = "A,"+path+"/Audio";
-	}else if (idx == 1)
-		src2.value = "V,"+path+"/Video";
+	if (src2.value == "" && src3.value == "")
+	src1.value = path;
 	else
-		src3.value = "P,"+path+"/Photo";
+	src1.value = "A,"+path+"/Audio";
+	}else if (idx == 1)
+	src2.value = "V,"+path+"/Video";
+	else
+	src3.value = "P,"+path+"/Photo";
 	hide_usb_share_list(idx);
 }
 
@@ -180,58 +224,58 @@ function show_usb_share_list(idx){
 	var code = "";
 
 	for(var i = 0; i < usb_share_list.length; i++){
-		if (usb_share_list[i][1]) {
-			code += '<a href="javascript:void(0)"><div onclick="set_usb_share('+i+','+idx+');"><strong>'+usb_share_list[i][1]+'</strong>';
-			code += ' ['+usb_share_list[i][0]+']';
-			if (usb_share_list[i][2])
-				code += ' ('+usb_share_list[i][2]+')';
-			code += '</div></a>';
-		}
+	if (usb_share_list[i][1]) {
+	code += '<a href="javascript:void(0)"><div onclick="set_usb_share('+i+','+idx+');"><strong>'+usb_share_list[i][1]+'</strong>';
+	code += ' ['+usb_share_list[i][0]+']';
+	if (usb_share_list[i][2])
+	code += ' ('+usb_share_list[i][2]+')';
+	code += '</div></a>';
+	}
 	}
 
 	if (code == "")
-		code = '<div style="text-align: center;" onclick="hide_usb_share_list('+idx+');"><#Nodata#></div>';
+	code = '<div style="text-align: center;" onclick="hide_usb_share_list('+idx+');"><#Nodata#></div>';
 	code +='<!--[if lte IE 6.5]><iframe class="hackiframe2"></iframe><![endif]-->';
 
 	if (idx == 0) {
-		$("share_list1").innerHTML = code;
+	$("share_list1").innerHTML = code;
 	} else if (idx == 1) {
-		$("share_list2").innerHTML = code;
+	$("share_list2").innerHTML = code;
 	} else {
-		$("share_list3").innerHTML = code;
+	$("share_list3").innerHTML = code;
 	}
 }
 
 function pull_usb_share_list(obj,idx){
 	var obj2, obj3, idx2, idx3;
 	if(menu_open[idx] == 0){
-		$j(obj).children('i').removeClass('icon-chevron-down').addClass('icon-chevron-up');
-		if (idx == 0) {
-			obj2 = document.form.dlna_src1;
-			obj3 = $("share_list1");
-			idx2 = 1;
-			idx3 = 2;
-		} else if (idx == 1) {
-			obj2 = document.form.dlna_src2;
-			obj3 = $("share_list2");
-			idx2 = 0;
-			idx3 = 2;
-		} else {
-			obj2 = document.form.dlna_src3;
-			obj3 = $("share_list3");
-			idx2 = 0;
-			idx3 = 1;
-		}
-		if (menu_open[idx2])
-			hide_usb_share_list(idx2);
-		if (menu_open[idx3])
-			hide_usb_share_list(idx3);
-		obj2.focus();
-		obj3.style.display = "block";
-		menu_open[idx] = 1;
+	$j(obj).children('i').removeClass('icon-chevron-down').addClass('icon-chevron-up');
+	if (idx == 0) {
+	obj2 = document.form.dlna_src1;
+	obj3 = $("share_list1");
+	idx2 = 1;
+	idx3 = 2;
+	} else if (idx == 1) {
+	obj2 = document.form.dlna_src2;
+	obj3 = $("share_list2");
+	idx2 = 0;
+	idx3 = 2;
+	} else {
+	obj2 = document.form.dlna_src3;
+	obj3 = $("share_list3");
+	idx2 = 0;
+	idx3 = 1;
+	}
+	if (menu_open[idx2])
+	hide_usb_share_list(idx2);
+	if (menu_open[idx3])
+	hide_usb_share_list(idx3);
+	obj2.focus();
+	obj3.style.display = "block";
+	menu_open[idx] = 1;
 	}
 	else
-		hide_usb_share_list(idx);
+	hide_usb_share_list(idx);
 }
 
 function change_smb_enabled(){
@@ -240,6 +284,7 @@ function change_smb_enabled(){
 	showhide_div('row_smb_mode', v);
 	showhide_div('row_smb_lmb', v);
 	showhide_div('row_smb_fp', v);
+	showhide_div('row_smb_options', v);
 }
 
 function on_change_ftp_mode(enable){
@@ -277,34 +322,40 @@ function change_aria_enabled(){
 	var v = document.form.aria_enable[0].checked;
 	showhide_div('row_aria_pport', v);
 	showhide_div('row_aria_rport', v);
+	showhide_div('row_aria_ssl', v);
+}
+
+function change_aria_ssl(){
+	var v = document.form.aria_ssl[0].checked;
+	showhide_div('web_aria_ssl', v);
 }
 
 function applyRule(){
 	if(validForm()){
-		showLoading();
-
-		document.form.action_mode.value = " Apply ";
-		document.form.current_page.value = "/Advanced_AiDisk_others.asp";
-		document.form.next_page.value = "";
-		document.form.submit();
+	showLoading();
+	
+	document.form.action_mode.value = " Apply ";
+	document.form.current_page.value = "/Advanced_AiDisk_others.asp";
+	document.form.next_page.value = "";
+	document.form.submit();
 	}
 }
 
 function validForm(){
 	if(!validate_range(document.form.st_max_user, 1, 50)){
-		return false;
+	return false;
 	}
 
 	String.prototype.Trim = function(){return this.replace(/(^\s*)|(\s*$)/g,"");}
 	document.form.st_samba_workgroup.value = document.form.st_samba_workgroup.value.Trim();
 
 	if(found_app_ftpd()){
-		if(!validate_range(document.form.st_ftp_pmin, 1, 65535))
-			return false;
-		if(!validate_range(document.form.st_ftp_pmax, 1, 65535))
-			return false;
-		if(!validate_range(document.form.st_ftp_anmr, 0, 10000))
-			return false;
+	if(!validate_range(document.form.st_ftp_pmin, 1, 65535))
+	return false;
+	if(!validate_range(document.form.st_ftp_pmax, 1, 65535))
+	return false;
+	if(!validate_range(document.form.st_ftp_anmr, 0, 10000))
+	return false;
 	}
 
 	return true;
@@ -343,7 +394,7 @@ function done_validating(action){
     <input type="hidden" name="current_page" value="Advanced_AiDisk_others.asp">
     <input type="hidden" name="next_page" value="">
     <input type="hidden" name="next_host" value="">
-    <input type="hidden" name="sid_list" value="Storage;LANHostConfig;">
+    <input type="hidden" name="sid_list" value="Storage;LANHostConfig;General;APP;">
     <input type="hidden" name="group_id" value="">
     <input type="hidden" name="action_mode" value="">
     <input type="hidden" name="action_script" value="">
@@ -451,6 +502,12 @@ function done_validating(action){
                                                 &nbsp;<span style="color:#888;">[1..50]</span>
                                             </td>
                                         </tr>
+                                        <tr>
+                                            <th>更改挂载时使用的参数<div>&nbsp;<span style="color:#888;">增：类型☑参数；减：类型☒参数；分隔符∮</span></div></th>
+                                            <td>
+                                                <input type="text" id="app_17" name="app_17" class="input" maxlength="255" size="15" value="<% nvram_get_x("", "app_17"); %>"/><div>&nbsp;<span style="color:#888;">e.g :[ufsd☑nocase∮ufsd☒sparse]</span></div>
+                                            </td>
+                                        </tr>
                                     </table>
 
                                     <table id="tbl_smbd" width="100%" cellpadding="4" cellspacing="0" class="table" style="display:none;">
@@ -515,6 +572,13 @@ function done_validating(action){
                                                     <option value="0" <% nvram_match_x("", "st_samba_fp", "0", "selected"); %>><#checkbox_No#></option>
                                                     <option value="1" <% nvram_match_x("", "st_samba_fp", "1", "selected"); %>>TCP ports 445, 139 (*)</option>
                                                 </select>
+                                            </td>
+                                        </tr>
+                                        <tr id="row_smb_options">
+                                            <th>samba 启动选项(options):
+                                            </th>
+                                            <td>
+                                                <input type="text" maxlength="255" size="32" name="st_samba_options" class="input" placeholder="-D -s /etc/smb.conf" value="<% nvram_get_x("", "st_samba_options"); %>" onKeyPress="return is_string(this,event);"/>
                                             </td>
                                         </tr>
                                     </table>
@@ -676,7 +740,7 @@ function done_validating(action){
                                                 </select>
                                             </td>
                                             <td>
-                                                <input type="submit" maxlength="15" class="btn btn-info" onClick="return onSubmitApply('dlna_rescan');" size="15" name="" value="Rescan!"/>
+                                                <input type="submit" maxlength="15" class="btn btn-info" onClick="return onSubmitApply('dlna_rescan');" size="15" name="" value="<#StorageRescan#>"/>
                                             </td>
                                         </tr>
                                         <tr id="row_dms_disc">
@@ -710,6 +774,33 @@ function done_validating(action){
                                                     <option value="0" <% nvram_match_x("", "dlna_sort", "0", "selected"); %>><#checkbox_No#></option>
                                                     <option value="1" <% nvram_match_x("", "dlna_sort", "1", "selected"); %>><#checkbox_Yes#></option>
                                                 </select>
+                                            </td>
+                                        </tr>
+                                    </table>
+
+                                    <table width="100%" id="tbl_itunes" cellpadding="4" cellspacing="0" class="table" style="display:none;">
+                                        <tr>
+                                            <th colspan="3" style="background-color: #E3E3E3;"><#StorageFFly#></th>
+                                        </tr>
+                                        <tr>
+                                            <th width="50%">
+                                                <#StorageEnableFFly#>
+                                            </th>
+                                            <td>
+                                                <div class="main_itoggle">
+                                                    <div id="apps_itunes_on_of">
+                                                        <input type="checkbox" id="apps_itunes_fake" <% nvram_match_x("", "apps_itunes", "1", "value=1 checked"); %><% nvram_match_x("", "apps_itunes", "0", "value=0"); %>>
+
+                                                    </div>
+                                                </div>
+
+                                                <div style="position: absolute; margin-left: -10000px;">
+                                                    <input type="radio" name="apps_itunes" id="apps_itunes_1" value="1" <% nvram_match_x("", "apps_itunes", "1", "checked"); %>/><#checkbox_Yes#>
+                                                    <input type="radio" name="apps_itunes" id="apps_itunes_0" value="0" <% nvram_match_x("", "apps_itunes", "0", "checked"); %>/><#checkbox_No#>
+                                                </div>
+                                            </td>
+                                            <td width="15%">
+                                                <a href="javascript:on_ffly_link();" id="web_ffly_link">Web control</a>
                                             </td>
                                         </tr>
                                     </table>
@@ -764,7 +855,7 @@ function done_validating(action){
                                             <th width="50%">
                                                 <a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this,17,12);"><#StorageEnableAria#></a>
                                             </th>
-                                            <td colspan="2">
+                                            <td>
                                                 <div class="main_itoggle">
                                                     <div id="aria_enable_on_of">
                                                         <input type="checkbox" id="aria_enable_fake" <% nvram_match_x("", "aria_enable", "1", "value=1 checked"); %><% nvram_match_x("", "aria_enable", "0", "value=0"); %>>
@@ -776,24 +867,60 @@ function done_validating(action){
                                                     <input type="radio" name="aria_enable" id="aria_enable_0" value="0" onclick="change_aria_enabled();" <% nvram_match_x("", "aria_enable", "0", "checked"); %>/><#checkbox_No#>
                                                 </div>
                                             </td>
+                                            <td style="width: 180px;">
+                                                <select name="aria_webui" class="input" style="width: 170px;">
+                                                    <option value="0" <% nvram_match_x("", "aria_webui", "0", "selected"); %>>下载自定义 webui：<#checkbox_No#></option>
+                                                    <option value="1" <% nvram_match_x("", "aria_webui", "1", "selected"); %>>下载 aria2_webui</option>
+                                                    <option value="2" <% nvram_match_x("", "aria_webui", "2", "selected"); %>>下载 AriaNg_webui</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr id="row_aria_ssl">
+                                            <th>启用 RPC 服务的 SSL/TLS 加密</th>
+                                            <td>
+                                                <div class="main_itoggle">
+                                                    <div id="aria_ssl_on_of">
+                                                        <input type="checkbox" id="aria_ssl_fake" <% nvram_match_x("", "aria_ssl", "1", "value=1 checked"); %><% nvram_match_x("", "aria_ssl", "0", "value=0"); %>>
+                                                    </div>
+                                                </div>
+
+                                                <div style="position: absolute; margin-left: -10000px;">
+                                                    <input type="radio" name="aria_ssl" id="aria_ssl_1" value="1" onclick="change_aria_ssl();" <% nvram_match_x("", "aria_ssl", "1", "checked"); %>/><#checkbox_Yes#>
+                                                    <input type="radio" name="aria_ssl" id="aria_ssl_0" value="0" onclick="change_aria_ssl();" <% nvram_match_x("", "aria_ssl", "0", "checked"); %>/><#checkbox_No#>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <input class="btn btn-primary" style="" type="button" id="web_aria_ssl" value="自签证书需手动操作打开信任" onclick="on_aria_ssl()" >
+                                            </td>
                                         </tr>
                                         <tr id="row_aria_pport">
                                             <th>
                                                 <#StoragePPortTRMD#>
                                             </th>
-                                            <td colspan="2">
-                                                <input type="text" maxlength="5" size="5" name="aria_pport" class="input" value="<% nvram_get_x("", "aria_pport"); %>" onkeypress="return is_number(this,event);"/>
+                                            <td style="width: 110px;">
+                                                <input type="text" maxlength="5" size="5" id="aria_pport" name="aria_pport" style="width: 90px;" class="input" value="<% nvram_get_x("", "aria_pport"); %>" placeholder="16888" onkeypress="return is_number(this,event);"/>
+                                            </td>
+                                            <td>
+                                                <a href="" target="aria2" id="web_aria_3link" name="web_aria_3link" style="display:none;">Web control</a>
                                             </td>
                                         </tr>
                                         <tr id="row_aria_rport">
                                             <th width="50%">
                                                 <#StorageRPortTRMD#>
                                             </th>
-                                            <td>
-                                               <input type="text" maxlength="5" size="5" name="aria_rport" class="input" value="<% nvram_get_x("", "aria_rport"); %>" onkeypress="return is_number(this,event);"/>
+                                            <td style="width: 110px;">
+                                                <input type="text" maxlength="5" size="5" id="aria_rport" name="aria_rport" style="width: 90px;" class="input" value="<% nvram_get_x("", "aria_rport"); %>" placeholder="6800" onkeypress="return is_number(this,event);"/>
                                             </td>
                                             <td>
-                                               <a href="javascript:on_aria_link();" id="web_aria_link">Web control</a>
+                                                <input class="btn btn-primary" style="" type="button" id="web_aria_link" name="web_aria_link" value="Web管理界面" onclick="on_aria_link()" >
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3" style="border-top: 0 none;">
+                                                <i class="icon-hand-right"></i> <a href="javascript:spoiler_toggle('script9')"><span>aria2.conf详细设置:</span></a>
+                                                <div id="script9" style="display:none;">
+                                                    <textarea rows="15" wrap="off" spellcheck="false" maxlength="2097152" class="span12" name="scripts.aria2_conf.sh" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("scripts.aria2_conf.sh",""); %></textarea>
+                                                </div>
                                             </td>
                                         </tr>
                                     </table>

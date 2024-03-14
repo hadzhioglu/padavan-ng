@@ -25,33 +25,33 @@ function initial(){
 	show_footer();
 
 	if (!login_safe()){
-		$j('#btn_exec').attr('disabled', 'disabled');
-		$j('#SystemCmd').attr('disabled', 'disabled');
+	$j('#btn_exec').attr('disabled', 'disabled');
+	$j('#SystemCmd').attr('disabled', 'disabled');
 	}else
-		document.form.SystemCmd.focus();
+	document.form.SystemCmd.focus();
 }
 
 function getResponse(){
 	$j.get('/console_response.asp', function(data){
-		var response = ($j.browser.msie && !is_ie11p) ? data.nl2br() : data;
-		$j("#console_area").text(response);
-		$j('#btn_exec').removeAttr('disabled');
+	var response = ($j.browser.msie && !is_ie11p) ? data.nl2br() : data;
+	$j("#console_area").text(response);
+	$j('#btn_exec').removeAttr('disabled');
 	});
 }
 
 function startPost(){
 	if (!login_safe())
-		return false;
+	return false;
 	$j('#btn_exec').attr('disabled', 'disabled');
 	$j.post('/apply.cgi',
 	{
-		'action_mode': ' SystemCmd ',
-		'current_page': 'console_response.asp',
-		'next_page': 'console_response.asp',
-		'SystemCmd': $j('#SystemCmd').val()
+	'action_mode': ' SystemCmd ',
+	'current_page': 'console_response.asp',
+	'next_page': 'console_response.asp',
+	'SystemCmd': $j('#SystemCmd').val()
 	},
 	function(response){
-		getResponse();
+	getResponse();
 	});
 }
 
@@ -61,9 +61,9 @@ function clearOut(){
 }
 
 function checkEnter(e){
-	return ((window.event ? window.event.KeyCode : e.which) || event.charCode || 0) === 13;
-    }
-    
+	e = e || event;
+	return (e.keyCode || event.which || event.charCode || 0) === 13;
+}
 </script>
 </head>
 

@@ -39,18 +39,18 @@ function initial(){
 	show_menu(5,7,5);
 
 	if (login_safe()){
-		showhide_div('row_nv_reset', 1);
-		showhide_div('row_nv_backup', 1);
-		showhide_div('row_nv_restore1', 1);
-		showhide_div('row_nv_restore2', 1);
-		showhide_div('row_st_reset', 1);
-		showhide_div('row_st_backup', 1);
-		showhide_div('row_st_restore1', 1);
-		showhide_div('row_st_restore2', 1);
+	showhide_div('row_nv_reset', 1);
+	showhide_div('row_nv_backup', 1);
+	showhide_div('row_nv_restore1', 1);
+	showhide_div('row_nv_restore2', 1);
+	showhide_div('row_st_reset', 1);
+	showhide_div('row_st_backup', 1);
+	showhide_div('row_st_restore1', 1);
+	showhide_div('row_st_restore2', 1);
 	}
 
 	if (support_mtd_rwfs())
-		showhide_div('tbl_rwfs', 1);
+	showhide_div('tbl_rwfs', 1);
 
 	show_footer();
 }
@@ -75,7 +75,7 @@ function submitRule(){
 	document.form.rstats_stored.value = document.form.rstats_stored_fake.value;
 	document.form.stime_stored.value = document.form.stime_stored_fake.value;
 	if (support_mtd_rwfs())
-		document.form.mtd_rwfs_mount.value = document.form.mtd_rwfs_mount_fake.value;
+	document.form.mtd_rwfs_mount.value = document.form.mtd_rwfs_mount_fake.value;
 	document.form.submit();
 }
 
@@ -85,55 +85,55 @@ function applyRule(){
 
 function restoreNVRAM(){
 	var alert_string = "<#Setting_factorydefault_hint1#>";
-	if(lan_ipaddr != "192.168.1.1")
-		alert_string += "\n<#Setting_factorydefault_iphint#>\n";
+	if(lan_ipaddr != "192.168.123.1")
+	alert_string += "\n<#Setting_factorydefault_iphint#>\n";
 	alert_string += "\n<#Setting_factorydefault_hint2#>";
 	if(confirm(alert_string)){
-		document.form.action1.blur();
-		showLoading();
-		set_frm_action_apply(" RestoreNVRAM ");
-		document.form.submit();
+	document.form.action1.blur();
+	showLoading();
+	set_frm_action_apply(" RestoreNVRAM ");
+	document.form.submit();
 	}else
-		return false;
+	return false;
 }
 
 function restoreStorage(){
 	var alert_string = "<#Adm_Setting_store_hint#>";
 	alert_string += "\n<#Setting_factorydefault_hint2#>";
 	if(confirm(alert_string)){
-		showLoadingOne();
-		set_frm_action_apply(" RestoreStorage ");
-		document.form.submit();
+	showLoadingOne();
+	set_frm_action_apply(" RestoreStorage ");
+	document.form.submit();
 	}
 	else
-		return false;
+	return false;
 }
 
 function send_commit_action(action_id,$button){
 	if(action_id == '')
-		return;
+	return;
 	$j.ajax({
-		type: "post",
-		url: "/apply.cgi",
-		data: {
-			action_mode: " CommitFlash ",
-			nvram_action: action_id
-		},
-		dataType: "json",
-		error: function(xhr) {
-			$button.addClass('alert-error');
-			$button.val('Failed!');
-			setTimeout("reset_btn_commit("+$button+")", 1500);
-		},
-		success: function(response) {
-			var sys_result = (response != null && typeof response === 'object' && "sys_result" in response)
-				? response.sys_result : -1;
-			if(sys_result == 0)
-				$button.addClass('alert-success');
-			else
-				$button.addClass('alert-error');
-			setTimeout("reset_btn_commit('"+action_id+"')", 1500);
-		}
+	type: "post",
+	url: "/apply.cgi",
+	data: {
+	action_mode: " CommitFlash ",
+	nvram_action: action_id
+	},
+	dataType: "json",
+	error: function(xhr) {
+	$button.addClass('alert-error');
+	$button.val('Failed!');
+	setTimeout("reset_btn_commit("+$button+")", 1500);
+	},
+	success: function(response) {
+	var sys_result = (response != null && typeof response === 'object' && "sys_result" in response)
+	? response.sys_result : -1;
+	if(sys_result == 0)
+	$button.addClass('alert-success');
+	else
+	$button.addClass('alert-error');
+	setTimeout("reset_btn_commit('"+action_id+"')", 1500);
+	}
 	});
 }
 
@@ -150,16 +150,16 @@ function saveStorage(){
 function checkFileName(obj,ext){
 	var fn = obj.value.toUpperCase();
 	if(fn == ""){
-		alert("<#JS_fieldblank#>");
-		obj.focus();
-		return false;
+	alert("<#JS_fieldblank#>");
+	obj.focus();
+	return false;
 	}
 	else if(fn.length < 6 ||
-			fn.lastIndexOf(ext) < 0 ||
-			fn.lastIndexOf(ext) != (fn.length-ext.length)){
-		alert("<#Setting_upload_hint#>");
-		obj.focus();
-		return false;
+	fn.lastIndexOf(ext) < 0 ||
+	fn.lastIndexOf(ext) != (fn.length-ext.length)){
+	alert("<#Setting_upload_hint#>");
+	obj.focus();
+	return false;
 	}
 	return true;
 }
@@ -167,17 +167,17 @@ function checkFileName(obj,ext){
 function uploadSetting(){
 	document.form.file_st.value = "";
 	if(checkFileName(document.form.file_nv, ".CFG")){
-		disableCheckChangedStatus();
-		set_frm_action_upload("restore_nv.cgi");
-		document.form.submit();
+	disableCheckChangedStatus();
+	set_frm_action_upload("restore_nv.cgi");
+	document.form.submit();
 	}
 }
 
 function uploadStorage(){
 	document.form.file_nv.value = "";
 	if(checkFileName(document.form.file_st, ".TBZ")){
-		set_frm_action_upload("restore_st.cgi");
-		document.form.submit();
+	set_frm_action_upload("restore_st.cgi");
+	document.form.submit();
 	}
 }
 
@@ -188,8 +188,8 @@ $j.fn.fileName = function() {
 	newVal = valArray[valArray.length-1],
 	$button = $this.siblings('.button');
 	if(newVal !== '') {
-		newVal = newVal.substring(0,10);
-		$button.text(newVal);
+	newVal = newVal.substring(0,10);
+	$button.text(newVal);
 	}
 };
 

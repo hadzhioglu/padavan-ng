@@ -25,11 +25,11 @@ function initial(){
 	show_footer();
 
 	if (!login_safe())
-		textarea_scripts_enabled(0);
+	textarea_scripts_enabled(0);
 
 	if (get_ap_mode()){
-		showhide_div('row_post_wan_script', 0);
-		showhide_div('row_post_iptables_script', 0);
+	showhide_div('row_post_wan_script', 0);
+	showhide_div('row_post_iptables_script', 0);
 	}
 }
 
@@ -40,17 +40,19 @@ function textarea_scripts_enabled(v){
 	inputCtrl(document.form['scripts.post_wan_script.sh'], v);
 	inputCtrl(document.form['scripts.post_iptables_script.sh'], v);
 	inputCtrl(document.form['scripts.ez_buttons_script.sh'], v);
+	inputCtrl(document.form['scripts.script0_script.sh'], v);
+	inputCtrl(document.form['scripts.crontabs_script.sh'], v);
 }
 
 function applyRule(){
 	if(validForm()){
-		showLoading();
-
-		document.form.action_mode.value = " Apply ";
-		document.form.current_page.value = "/Advanced_Scripts_Content.asp";
-		document.form.next_page.value = "";
-
-		document.form.submit();
+	showLoading();
+	
+	document.form.action_mode.value = " Apply ";
+	document.form.current_page.value = "/Advanced_Scripts_Content.asp";
+	document.form.next_page.value = "";
+	
+	document.form.submit();
 	}
 }
 
@@ -122,49 +124,65 @@ function done_validating(action){
                                         </tr>
                                         <tr>
                                             <td>
-                                                <a href="javascript:spoiler_toggle('script0')"><span><#RunPreStart#></span></a>
+                                                <i class="icon-hand-right"></i> <a href="javascript:spoiler_toggle('script0')"><span><#RunPreStart#></span></a>
                                                 <div id="script0" style="display:none;">
-                                                    <textarea rows="24" wrap="off" spellcheck="false" maxlength="4096" class="span12" name="scripts.start_script.sh" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("scripts.start_script.sh",""); %></textarea>
+                                                    <textarea rows="24" wrap="off" spellcheck="false" maxlength="2097152" class="span12" name="scripts.start_script.sh" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("scripts.start_script.sh",""); %></textarea>
                                                 </div>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>
-                                                <a href="javascript:spoiler_toggle('script1')"><span><#RunPostStart#></span></a>
+                                                <i class="icon-hand-right"></i> <a href="javascript:spoiler_toggle('script1')"><span><#RunPostStart#></span></a>
                                                 <div id="script1" style="display:none;">
-                                                    <textarea rows="24" wrap="off" spellcheck="false" maxlength="8192" class="span12" name="scripts.started_script.sh" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("scripts.started_script.sh",""); %></textarea>
+                                                    <textarea rows="24" wrap="off" spellcheck="false" maxlength="2097152" class="span12" name="scripts.started_script.sh" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("scripts.started_script.sh",""); %></textarea>
                                                 </div>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>
-                                                <a href="javascript:spoiler_toggle('script5')"><span><#RunShutdown#></span></a>
+                                                <i class="icon-hand-right"></i> <a href="javascript:spoiler_toggle('script5')"><span><#RunShutdown#></span></a>
                                                 <div id="script5" style="display:none;">
-                                                    <textarea rows="24" wrap="off" spellcheck="false" maxlength="4096" class="span12" name="scripts.shutdown_script.sh" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("scripts.shutdown_script.sh",""); %></textarea>
+                                                    <textarea rows="24" wrap="off" spellcheck="false" maxlength="2097152" class="span12" name="scripts.shutdown_script.sh" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("scripts.shutdown_script.sh",""); %></textarea>
                                                 </div>
                                             </td>
                                         </tr>
                                         <tr id="row_post_wan_script">
                                             <td>
-                                                <a href="javascript:spoiler_toggle('script2')"><span><#RunPostWAN#></span></a>
+                                                <i class="icon-hand-right"></i> <a href="javascript:spoiler_toggle('script2')"><span><#RunPostWAN#></span></a>
                                                 <div id="script2" style="display:none;">
-                                                    <textarea rows="24" wrap="off" spellcheck="false" maxlength="8192" class="span12" name="scripts.post_wan_script.sh" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("scripts.post_wan_script.sh",""); %></textarea>
+                                                    <textarea rows="24" wrap="off" spellcheck="false" maxlength="2097152" class="span12" name="scripts.post_wan_script.sh" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("scripts.post_wan_script.sh",""); %></textarea>
                                                 </div>
                                             </td>
                                         </tr>
                                         <tr id="row_post_iptables_script">
                                             <td>
-                                                <a href="javascript:spoiler_toggle('script3')"><span><#RunPostFWL#></span></a>
+                                                <i class="icon-hand-right"></i> <a href="javascript:spoiler_toggle('script3')"><span><#RunPostFWL#></span></a>
                                                 <div id="script3" style="display:none;">
-                                                    <textarea rows="24" wrap="off" spellcheck="false" maxlength="8192" class="span12" name="scripts.post_iptables_script.sh" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("scripts.post_iptables_script.sh",""); %></textarea>
+                                                    <textarea rows="24" wrap="off" spellcheck="false" maxlength="2097152" class="span12" name="scripts.post_iptables_script.sh" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("scripts.post_iptables_script.sh",""); %></textarea>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <i class="icon-hand-right"></i> <a href="javascript:spoiler_toggle('script4')"><span><#RunEzBtns#></span></a>
+                                                <div id="script4" style="display:none;">
+                                                    <textarea rows="24" wrap="off" spellcheck="false" maxlength="2097152" class="span12" name="scripts.ez_buttons_script.sh" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("scripts.ez_buttons_script.sh",""); %></textarea>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <i class="icon-hand-right"></i> <a href="javascript:spoiler_toggle('script8')"><span><#Runscript0#></span></a>
+                                                <div id="script8" style="display:none;">
+                                                    <textarea rows="24" wrap="off" spellcheck="false" maxlength="2097152" class="span12" name="scripts.script0_script.sh" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("scripts.script0_script.sh",""); %></textarea>
                                                 </div>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td style="padding-bottom: 0px;">
-                                                <a href="javascript:spoiler_toggle('script4')"><span><#RunEzBtns#></span></a>
-                                                <div id="script4" style="display:none;">
-                                                    <textarea rows="24" wrap="off" spellcheck="false" maxlength="4096" class="span12" name="scripts.ez_buttons_script.sh" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("scripts.ez_buttons_script.sh",""); %></textarea>
+                                                <i class="icon-hand-right"></i> <a href="javascript:spoiler_toggle('script11')"><span><#Runcrontabs#></span></a>
+                                                <div id="script11" style="display:none;">
+                                                    <textarea rows="24" wrap="off" spellcheck="false" maxlength="2097152" class="span12" name="scripts.crontabs_script.sh" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("scripts.crontabs_script.sh",""); %></textarea>
                                                 </div>
                                             </td>
                                         </tr>

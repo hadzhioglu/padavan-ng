@@ -33,19 +33,19 @@ $j(document).ready(function() {
 var LWFilterList = [<% get_nvram_list("FirewallConfig", "LWFilterList"); %>];
 
 var wItem = new Array(
-		new Array("HTTP", "80", "TCP"),
-		new Array("HTTPS", "443", "TCP"),
-		new Array("FTP", "20:21", "TCP"),
-		new Array("SSH", "22", "TCP"),
-		new Array("TELNET", "23", "TCP"),
-		new Array("L2TP Tunnel", "1701", "UDP"),
-		new Array("PPTP Control", "1723", "TCP"),
-		new Array("GRE", "47", "OTHER"),
-		new Array("IPSEC-ESP", "50", "OTHER"),
-		new Array("IPSEC-AH", "51", "OTHER"),
-		new Array("IPSEC IKE", "500", "UDP"),
-		new Array("IPSEC NAT-T", "4500", "UDP"),
-		new Array("IPv6 Tunnel", "41", "OTHER"));
+	new Array("HTTP", "80", "TCP"),
+	new Array("HTTPS", "443", "TCP"),
+	new Array("FTP", "20:21", "TCP"),
+	new Array("SSH", "22", "TCP"),
+	new Array("TELNET", "23", "TCP"),
+	new Array("L2TP Tunnel", "1701", "UDP"),
+	new Array("PPTP Control", "1723", "TCP"),
+	new Array("GRE", "47", "OTHER"),
+	new Array("IPSEC-ESP", "50", "OTHER"),
+	new Array("IPSEC-AH", "51", "OTHER"),
+	new Array("IPSEC IKE", "500", "UDP"),
+	new Array("IPSEC NAT-T", "4500", "UDP"),
+	new Array("IPv6 Tunnel", "41", "OTHER"));
 
 function initial(){
 	show_banner(1);
@@ -77,63 +77,63 @@ function initial(){
 
 function applyRule(){
 	if(validForm()){
-		document.form.filter_lw_date_x.value = setDateCheck(
-			document.form.filter_lw_date_x_Sun,
-			document.form.filter_lw_date_x_Mon,
-			document.form.filter_lw_date_x_Tue,
-			document.form.filter_lw_date_x_Wed,
-			document.form.filter_lw_date_x_Thu,
-			document.form.filter_lw_date_x_Fri,
-			document.form.filter_lw_date_x_Sat);
-		document.form.filter_lw_time_x.value = setTimeRange(
-			document.form.filter_lw_time_x_starthour,
-			document.form.filter_lw_time_x_startmin,
-			document.form.filter_lw_time_x_endhour,
-			document.form.filter_lw_time_x_endmin);
-
-		showLoading();
-
-		document.form.action_mode.value = " Restart ";
-		document.form.current_page.value = "/Advanced_Firewall_Content.asp";
-		document.form.next_page.value = "";
-
-		document.form.submit();
+	document.form.filter_lw_date_x.value = setDateCheck(
+	document.form.filter_lw_date_x_Sun,
+	document.form.filter_lw_date_x_Mon,
+	document.form.filter_lw_date_x_Tue,
+	document.form.filter_lw_date_x_Wed,
+	document.form.filter_lw_date_x_Thu,
+	document.form.filter_lw_date_x_Fri,
+	document.form.filter_lw_date_x_Sat);
+	document.form.filter_lw_time_x.value = setTimeRange(
+	document.form.filter_lw_time_x_starthour,
+	document.form.filter_lw_time_x_startmin,
+	document.form.filter_lw_time_x_endhour,
+	document.form.filter_lw_time_x_endmin);
+	
+	showLoading();
+	
+	document.form.action_mode.value = " Restart ";
+	document.form.current_page.value = "/Advanced_Firewall_Content.asp";
+	document.form.next_page.value = "";
+	
+	document.form.submit();
 	}
 }
 
 function validForm(){
 	if((document.form.fw_lw_enable_x[0].checked ==true)
-		&& (document.form.filter_lw_date_x_Sun.checked ==false)
-		&& (document.form.filter_lw_date_x_Mon.checked ==false)
-		&& (document.form.filter_lw_date_x_Tue.checked ==false)
-		&& (document.form.filter_lw_date_x_Wed.checked ==false)
-		&& (document.form.filter_lw_date_x_Thu.checked ==false)
-		&& (document.form.filter_lw_date_x_Fri.checked ==false)
-		&& (document.form.filter_lw_date_x_Sat.checked ==false)){
-			alert("<#FirewallConfig_LanWanActiveDate_itemname#> <#JS_fieldblank#>");
-			return false;
+	&& (document.form.filter_lw_date_x_Sun.checked ==false)
+	&& (document.form.filter_lw_date_x_Mon.checked ==false)
+	&& (document.form.filter_lw_date_x_Tue.checked ==false)
+	&& (document.form.filter_lw_date_x_Wed.checked ==false)
+	&& (document.form.filter_lw_date_x_Thu.checked ==false)
+	&& (document.form.filter_lw_date_x_Fri.checked ==false)
+	&& (document.form.filter_lw_date_x_Sat.checked ==false)){
+	alert("<#FirewallConfig_LanWanActiveDate_itemname#> <#JS_fieldblank#>");
+	return false;
 	}
 
 	if(document.form.fw_lw_enable_x[0].checked ==true){
-		if(!validate_timerange(document.form.filter_lw_time_x_starthour, 0)
-			|| !validate_timerange(document.form.filter_lw_time_x_startmin, 1)
-			|| !validate_timerange(document.form.filter_lw_time_x_endhour, 2)
-			|| !validate_timerange(document.form.filter_lw_time_x_endmin, 3)
-			)
-		return false;
-
-		var starttime = eval(document.form.filter_lw_time_x_starthour.value + document.form.filter_lw_time_x_startmin.value);
-		var endtime = eval(document.form.filter_lw_time_x_endhour.value + document.form.filter_lw_time_x_endmin.value);
-		if(starttime == endtime){
-			alert("<#FirewallConfig_URLActiveTime_itemhint2#>");
-			document.form.filter_lw_time_x_starthour.focus();
-			document.form.filter_lw_time_x_starthour.select;
-			return false;
-		}
+	if(!validate_timerange(document.form.filter_lw_time_x_starthour, 0)
+	|| !validate_timerange(document.form.filter_lw_time_x_startmin, 1)
+	|| !validate_timerange(document.form.filter_lw_time_x_endhour, 2)
+	|| !validate_timerange(document.form.filter_lw_time_x_endmin, 3)
+	)
+	return false;
+	
+	var starttime = eval(document.form.filter_lw_time_x_starthour.value + document.form.filter_lw_time_x_startmin.value);
+	var endtime = eval(document.form.filter_lw_time_x_endhour.value + document.form.filter_lw_time_x_endmin.value);
+	if(starttime == endtime){
+	alert("<#FirewallConfig_URLActiveTime_itemhint2#>");
+	document.form.filter_lw_time_x_starthour.focus();
+	document.form.filter_lw_time_x_starthour.select;
+	return false;
+	}
 	}
 
 	if(!validate_portlist(document.form.filter_lw_icmp_x, 'filter_lw_icmp_x'))
-		return false;
+	return false;
 
 	return true;
 }
@@ -148,13 +148,13 @@ function change_proto(){
 	inputCtrl(document.form.filter_lw_srcport_x_0, !v);
 	inputCtrl(document.form.filter_lw_dstport_x_0, !v);
 	if(v){
-		document.form.filter_lw_dstport_x_0.style.display = "none";
-		document.form.filter_lw_protono_x_0.style.display = "";
-		$("col_port_proto").innerHTML = "<#IPConnection_VServerPNo_itemname#>";
+	document.form.filter_lw_dstport_x_0.style.display = "none";
+	document.form.filter_lw_protono_x_0.style.display = "";
+	$("col_port_proto").innerHTML = "<#IPConnection_VServerPNo_itemname#>";
 	}else{
-		document.form.filter_lw_protono_x_0.style.display = "none";
-		document.form.filter_lw_dstport_x_0.style.display = "";
-		$("col_port_proto").innerHTML = '<a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this,18,2);"><#FirewallConfig_LanWanDstPort_itemname#></a>';
+	document.form.filter_lw_protono_x_0.style.display = "none";
+	document.form.filter_lw_dstport_x_0.style.display = "";
+	$("col_port_proto").innerHTML = '<a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this,18,2);"><#FirewallConfig_LanWanDstPort_itemname#></a>';
 	}
 }
 
@@ -162,30 +162,30 @@ function load_wizard(){
 	free_options(document.form.LWKnownApps);
 	add_option(document.form.LWKnownApps, "<#Select_menu_default#>", "User Defined", 1);
 	for (var i = 0; i < wItem.length; i++)
-		add_option(document.form.LWKnownApps, wItem[i][0], wItem[i][0], 0);
+	add_option(document.form.LWKnownApps, wItem[i][0], wItem[i][0], 0);
 }
 
 function change_wizard(o, id){
 	var i;
 	var obj = document.form.filter_lw_proto_x_0;
 	for(i = 0; i < wItem.length; i++){
-		if(wItem[i][0] != null){
-			if(o.value == wItem[i][0]){
-				if(wItem[i][2] == "TCP")
-					obj.options[0].selected = 1;
-				else if(wItem[i][2] == "UDP")
-					obj.options[8].selected = 1;
-				else if(wItem[i][2] == "OTHER")
-					obj.options[9].selected = 1;
-
-				if (obj.options.selectedIndex == 9)
-					document.form.filter_lw_protono_x_0.value = wItem[i][1];
-				else
-					document.form.filter_lw_dstport_x_0.value = wItem[i][1];
-
-				break;
-			}
-		}
+	if(wItem[i][0] != null){
+	if(o.value == wItem[i][0]){
+	if(wItem[i][2] == "TCP")
+	obj.options[0].selected = 1;
+	else if(wItem[i][2] == "UDP")
+	obj.options[8].selected = 1;
+	else if(wItem[i][2] == "OTHER")
+	obj.options[9].selected = 1;
+	
+	if (obj.options.selectedIndex == 9)
+	document.form.filter_lw_protono_x_0.value = wItem[i][1];
+	else
+	document.form.filter_lw_dstport_x_0.value = wItem[i][1];
+	
+	break;
+	}
+	}
 	}
 	change_proto();
 }
@@ -203,24 +203,24 @@ function valid_IP_subnet(obj){
 	var ipPattern4 = new RegExp("(^(\\*)\\.(\\*)\\.(\\*)\\.(\\*)$)", "gi");
 	var parts = obj.value.split(".");
 	if(!ipPattern1.test(obj.value) && !ipPattern2.test(obj.value) && !ipPattern3.test(obj.value) && !ipPattern4.test(obj.value)){
-		alert(obj.value + " <#JS_validip#>");
-		obj.focus();
-		obj.select();
-		return false;
+	alert(obj.value + " <#JS_validip#>");
+	obj.focus();
+	obj.select();
+	return false;
 	}else if(parts[0] == 0 || parts[0] > 255 || parts[1] > 255 || parts[2] > 255){
-		alert(obj.value + " <#JS_validip#>");
-		obj.focus();
-		obj.select();
-		return false;
+	alert(obj.value + " <#JS_validip#>");
+	obj.focus();
+	obj.select();
+	return false;
 	}else
-		return true;
+	return true;
 }
 
 function valid_IP_form(obj){
 	if(obj.value == "")
-		return true;
+	return true;
 	if(!validate_ipaddr_final(obj, ""))
-		return false;
+	return false;
 	return true;
 }
 
@@ -228,72 +228,72 @@ function markGroupLWF(o, c, b) {
 	var i, obj, proto_other;
 	document.form.group_id.value = "LWFilterList";
 	if(b == " Add "){
-		proto_other = (document.form.filter_lw_proto_x_0.options.selectedIndex == 9)?true:false;
-		if (document.form.filter_lw_num_x_0.value >= c){
-			alert("<#JS_itemlimit1#> " + c + " <#JS_itemlimit2#>");
-			return false;
-		}
-		obj = document.form.filter_lw_srcip_x_0;
-		if(obj.value.split("*").length >= 2){
-			if(!valid_IP_subnet(obj))
-				return false;
-		}else if(!valid_IP_form(obj))
-			return false;
-		if (!validate_iprange(obj, ""))
-			return false;
-		obj = document.form.filter_lw_dstip_x_0;
-		if(obj.value.split("*").length >= 2){
-			if(!valid_IP_subnet(obj))
-				return false;
-		}else if(!valid_IP_form(obj))
-			return false;
-		if (!validate_iprange(obj, ""))
-			return false;
-		if (proto_other){
-			obj = document.form.filter_lw_protono_x_0;
-			if (obj.value==""){
-				alert("<#JS_fieldblank#>");
-				obj.focus();
-				return false;
-			}else if (!validate_range(obj, 0, 255))
-				return false;
-
-			for (i = 0; i < LWFilterList.length; i++) {
-				if (document.form.filter_lw_srcip_x_0.value == LWFilterList[i][0] &&
-						document.form.filter_lw_dstip_x_0.value == LWFilterList[i][2] &&
-						document.form.filter_lw_protono_x_0.value == LWFilterList[i][5] &&
-						document.form.filter_lw_proto_x_0.value == LWFilterList[i][4]) {
-					alert("<#JS_duplicate#>");
-					return false;
-				}
-			}
-			document.form.filter_lw_srcport_x_0.value = "";
-			document.form.filter_lw_dstport_x_0.value = "";
-		}else{
-			if (!validate_portrange(document.form.filter_lw_srcport_x_0, ""))
-				return false;
-			if (!validate_portrange(document.form.filter_lw_dstport_x_0, ""))
-				return false;
-
-			if (document.form.filter_lw_srcip_x_0.value == "" &&
-					document.form.filter_lw_dstip_x_0.value == "" &&
-					document.form.filter_lw_srcport_x_0.value == "" &&
-					document.form.filter_lw_dstport_x_0.value == ""){
-				alert("<#JS_fieldblank#>");
-				return false;
-			}
-			for (i = 0; i < LWFilterList.length; i++) {
-				if (document.form.filter_lw_srcip_x_0.value == LWFilterList[i][0] &&
-						document.form.filter_lw_srcport_x_0.value == LWFilterList[i][1] &&
-						document.form.filter_lw_dstip_x_0.value == LWFilterList[i][2] &&
-						document.form.filter_lw_dstport_x_0.value == LWFilterList[i][3] &&
-						document.form.filter_lw_proto_x_0.value == LWFilterList[i][4]) {
-					alert("<#JS_duplicate#>");
-					return false;
-				}
-			}
-			document.form.filter_lw_protono_x_0.value = "";
-		}
+	proto_other = (document.form.filter_lw_proto_x_0.options.selectedIndex == 9)?true:false;
+	if (document.form.filter_lw_num_x_0.value >= c){
+	alert("<#JS_itemlimit1#> " + c + " <#JS_itemlimit2#>");
+	return false;
+	}
+	obj = document.form.filter_lw_srcip_x_0;
+	if(obj.value.split("*").length >= 2){
+	if(!valid_IP_subnet(obj))
+	return false;
+	}else if(!valid_IP_form(obj))
+	return false;
+	if (!validate_iprange(obj, ""))
+	return false;
+	obj = document.form.filter_lw_dstip_x_0;
+	if(obj.value.split("*").length >= 2){
+	if(!valid_IP_subnet(obj))
+	return false;
+	}else if(!valid_IP_form(obj))
+	return false;
+	if (!validate_iprange(obj, ""))
+	return false;
+	if (proto_other){
+	obj = document.form.filter_lw_protono_x_0;
+	if (obj.value==""){
+	alert("<#JS_fieldblank#>");
+	obj.focus();
+	return false;
+	}else if (!validate_range(obj, 0, 255))
+	return false;
+	
+	for (i = 0; i < LWFilterList.length; i++) {
+	if (document.form.filter_lw_srcip_x_0.value == LWFilterList[i][0] &&
+	document.form.filter_lw_dstip_x_0.value == LWFilterList[i][2] &&
+	document.form.filter_lw_protono_x_0.value == LWFilterList[i][5] &&
+	document.form.filter_lw_proto_x_0.value == LWFilterList[i][4]) {
+	alert("<#JS_duplicate#>");
+	return false;
+	}
+	}
+	document.form.filter_lw_srcport_x_0.value = "";
+	document.form.filter_lw_dstport_x_0.value = "";
+	}else{
+	if (!validate_portrange(document.form.filter_lw_srcport_x_0, ""))
+	return false;
+	if (!validate_portrange(document.form.filter_lw_dstport_x_0, ""))
+	return false;
+	
+	if (document.form.filter_lw_srcip_x_0.value == "" &&
+	document.form.filter_lw_dstip_x_0.value == "" &&
+	document.form.filter_lw_srcport_x_0.value == "" &&
+	document.form.filter_lw_dstport_x_0.value == ""){
+	alert("<#JS_fieldblank#>");
+	return false;
+	}
+	for (i = 0; i < LWFilterList.length; i++) {
+	if (document.form.filter_lw_srcip_x_0.value == LWFilterList[i][0] &&
+	document.form.filter_lw_srcport_x_0.value == LWFilterList[i][1] &&
+	document.form.filter_lw_dstip_x_0.value == LWFilterList[i][2] &&
+	document.form.filter_lw_dstport_x_0.value == LWFilterList[i][3] &&
+	document.form.filter_lw_proto_x_0.value == LWFilterList[i][4]) {
+	alert("<#JS_duplicate#>");
+	return false;
+	}
+	}
+	document.form.filter_lw_protono_x_0.value = "";
+	}
 	}
 	pageChanged = 0;
 	document.form.action_mode.value = b;
@@ -305,41 +305,41 @@ function showLWFilterList(){
 	var code = '';
 	var srcaddr, srcport, dstaddr, dstport, protono;
 	if(LWFilterList.length == 0)
-		code +='<tr><td colspan="6" style="text-align: center;"><div class="alert alert-info"><#IPConnection_VSList_Norule#></div></td></tr>';
+	code +='<tr><td colspan="6" style="text-align: center;"><div class="alert alert-info"><#IPConnection_VSList_Norule#></div></td></tr>';
 	else{
 	    for(i = 0; i < LWFilterList.length; i++){
-		srcaddr = "*";
-		dstaddr = "*";
-		protono = LWFilterList[i][4];
-		if (LWFilterList[i][0] != null && LWFilterList[i][0] != "")
-			srcaddr = LWFilterList[i][0];
-		if (LWFilterList[i][2] != null && LWFilterList[i][2] != "")
-			dstaddr = LWFilterList[i][2];
-		if(protono == "OTHER"){
-			srcport = "-";
-			dstport = "-";
-			protono = LWFilterList[i][5];
-		}else{
-			srcport = "*";
-			dstport = "*";
-			if (LWFilterList[i][1] != null && LWFilterList[i][1] != "")
-				srcport = LWFilterList[i][1];
-			if (LWFilterList[i][3] != null && LWFilterList[i][3] != "")
-				dstport = LWFilterList[i][3];
-		}
-		code +='<tr id="row' + i + '">';
-		code +='<td>&nbsp;'             + srcaddr + '</td>';
-		code +='<td width="15%">&nbsp;' + srcport + '</td>';
-		code +='<td width="25%">&nbsp;' + dstaddr + '</td>';
-		code +='<td width="15%">&nbsp;' + dstport + '</td>';
-		code +='<td width="15%">&nbsp;' + protono + '</td>';
-		code +='<td width="5%" style="text-align: center;"><input type="checkbox" name="LWFilterList_s" value="' + i + '" onClick="changeBgColor(this,' + i + ');" id="check' + i + '"></td>';
-		code +='</tr>';
+	srcaddr = "*";
+	dstaddr = "*";
+	protono = LWFilterList[i][4];
+	if (LWFilterList[i][0] != null && LWFilterList[i][0] != "")
+	srcaddr = LWFilterList[i][0];
+	if (LWFilterList[i][2] != null && LWFilterList[i][2] != "")
+	dstaddr = LWFilterList[i][2];
+	if(protono == "OTHER"){
+	srcport = "-";
+	dstport = "-";
+	protono = LWFilterList[i][5];
+	}else{
+	srcport = "*";
+	dstport = "*";
+	if (LWFilterList[i][1] != null && LWFilterList[i][1] != "")
+	srcport = LWFilterList[i][1];
+	if (LWFilterList[i][3] != null && LWFilterList[i][3] != "")
+	dstport = LWFilterList[i][3];
+	}
+	code +='<tr id="row' + i + '">';
+	code +='<td>&nbsp;'             + srcaddr + '</td>';
+	code +='<td width="15%">&nbsp;' + srcport + '</td>';
+	code +='<td width="25%">&nbsp;' + dstaddr + '</td>';
+	code +='<td width="15%">&nbsp;' + dstport + '</td>';
+	code +='<td width="15%">&nbsp;' + protono + '</td>';
+	code +='<td width="5%" style="text-align: center;"><input type="checkbox" name="LWFilterList_s" value="' + i + '" onClick="changeBgColor(this,' + i + ');" id="check' + i + '"></td>';
+	code +='</tr>';
 	    }
-		code += '<tr>';
-		code += '<td colspan="5">&nbsp;</td>'
-		code += '<td><button class="btn btn-danger" type="submit" onclick="markGroupLWF(this,64,\' Del \');" name="LWFilterList"><i class="icon icon-minus icon-white"></i></button></td>';
-		code += '</tr>'
+	code += '<tr>';
+	code += '<td colspan="5">&nbsp;</td>'
+	code += '<td><button class="btn btn-danger" type="submit" onclick="markGroupLWF(this,64,\' Del \');" name="LWFilterList"><i class="icon icon-minus icon-white"></i></button></td>';
+	code += '</tr>'
 	}
 	$j('#LWFilterList_Block').append(code);
 }

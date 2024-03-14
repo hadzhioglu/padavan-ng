@@ -26,6 +26,7 @@ var $j = jQuery.noConflict();
 
 $j(document).ready(function() {
 	init_itoggle('url_enable', change_url_enable);
+	init_itoggle('fw_mac_drop');
 });
 
 </script>
@@ -65,64 +66,64 @@ function initial(){
 
 function applyRule(){
 	if(validForm()){
-		document.form.url_date_x.value = setDateCheck(
-			document.form.url_date_x_Sun,
-			document.form.url_date_x_Mon,
-			document.form.url_date_x_Tue,
-			document.form.url_date_x_Wed,
-			document.form.url_date_x_Thu,
-			document.form.url_date_x_Fri,
-			document.form.url_date_x_Sat);
-		document.form.url_time_x.value = setTimeRange(
-			document.form.url_time_x_starthour,
-			document.form.url_time_x_startmin,
-			document.form.url_time_x_endhour,
-			document.form.url_time_x_endmin);
-
-		showLoading();
-
-		document.form.action_mode.value = " Restart ";
-		document.form.current_page.value = "/Advanced_URLFilter_Content.asp";
-		document.form.next_page.value = "";
-
-		document.form.submit();
+	document.form.url_date_x.value = setDateCheck(
+	document.form.url_date_x_Sun,
+	document.form.url_date_x_Mon,
+	document.form.url_date_x_Tue,
+	document.form.url_date_x_Wed,
+	document.form.url_date_x_Thu,
+	document.form.url_date_x_Fri,
+	document.form.url_date_x_Sat);
+	document.form.url_time_x.value = setTimeRange(
+	document.form.url_time_x_starthour,
+	document.form.url_time_x_startmin,
+	document.form.url_time_x_endhour,
+	document.form.url_time_x_endmin);
+	
+	showLoading();
+	
+	document.form.action_mode.value = " Restart ";
+	document.form.current_page.value = "/Advanced_URLFilter_Content.asp";
+	document.form.next_page.value = "";
+	
+	document.form.submit();
 	}
 }
 
 function validForm(){
 	if((document.form.url_enable_x[0].checked ==true)
-		&& (document.form.url_date_x_Sun.checked ==false)
-		&& (document.form.url_date_x_Mon.checked ==false)
-		&& (document.form.url_date_x_Tue.checked ==false)
-		&& (document.form.url_date_x_Wed.checked ==false)
-		&& (document.form.url_date_x_Thu.checked ==false)
-		&& (document.form.url_date_x_Fri.checked ==false)
-		&& (document.form.url_date_x_Sat.checked ==false)){
-			alert("<#FirewallConfig_URLActiveDate_itemname#><#JS_fieldblank#>");
-			return false;
+	&& (document.form.url_date_x_Sun.checked ==false)
+	&& (document.form.url_date_x_Mon.checked ==false)
+	&& (document.form.url_date_x_Tue.checked ==false)
+	&& (document.form.url_date_x_Wed.checked ==false)
+	&& (document.form.url_date_x_Thu.checked ==false)
+	&& (document.form.url_date_x_Fri.checked ==false)
+	&& (document.form.url_date_x_Sat.checked ==false)){
+	alert("<#FirewallConfig_URLActiveDate_itemname#><#JS_fieldblank#>");
+	return false;
 	}
 
 	if(document.form.url_enable_x[0].checked ==true){
-		if(!validate_timerange(document.form.url_time_x_starthour, 0)
-			|| !validate_timerange(document.form.url_time_x_startmin, 1)
-			|| !validate_timerange(document.form.url_time_x_endhour, 2)
-			|| !validate_timerange(document.form.url_time_x_endmin, 3)
-			){
-			return false;
-		}
-
-		var starttime = eval(document.form.url_time_x_starthour.value + document.form.url_time_x_startmin.value);
-		var endtime = eval(document.form.url_time_x_endhour.value + document.form.url_time_x_endmin.value);
-		if(starttime == endtime){
-			alert("<#FirewallConfig_URLActiveTime_itemhint2#>");
-			document.form.url_time_x_starthour.focus();
-			document.form.url_time_x_starthour.select();
-			return false;
-		}
+	if(!validate_timerange(document.form.url_time_x_starthour, 0)
+	|| !validate_timerange(document.form.url_time_x_startmin, 1)
+	|| !validate_timerange(document.form.url_time_x_endhour, 2)
+	|| !validate_timerange(document.form.url_time_x_endmin, 3)
+	){
+	return false;
+	}
+	
+	var starttime = eval(document.form.url_time_x_starthour.value + document.form.url_time_x_startmin.value);
+	var endtime = eval(document.form.url_time_x_endhour.value + document.form.url_time_x_endmin.value);
+	if(starttime == endtime){
+	alert("<#FirewallConfig_URLActiveTime_itemhint2#>");
+	document.form.url_time_x_starthour.focus();
+	document.form.url_time_x_starthour.select();
+	return false;
+	}
 	}
 
 	if (!validate_hwaddr(document.form.url_mac_x))
-		return false;
+	return false;
 
 	return true;
 }
@@ -130,6 +131,7 @@ function validForm(){
 function change_url_enable(){
 	var v = document.form.url_enable_x[0].checked;
 	showhide_div('tbl_urlf_main', v);
+	showhide_div('mac_drop_row', v);
 }
 
 function click_mac_inv(o){
@@ -144,24 +146,24 @@ function setClientMAC(num){
 function showLANIPList(){
 	var code = "";
 	var show_name = "";
-
+	
 	for(var i = 0; i < clients_info.length ; i++){
-		if(clients_info[i][0] && clients_info[i][0].length > 20)
-			show_name = clients_info[i][0].substring(0, 18) + "..";
-		else
-			show_name = clients_info[i][0];
-
-		if(clients_info[i][2]){
-			code += '<a href="javascript:void(0)"><div onclick="setClientMAC('+i+');"><strong>'+clients_info[i][1]+'</strong>';
-			code += ' ['+clients_info[i][2]+']';
-			if(show_name && show_name.length > 0)
-				code += ' ('+show_name+')';
-			code += ' </div></a>';
-		}
+	if(clients_info[i][0] && clients_info[i][0].length > 20)
+	show_name = clients_info[i][0].substring(0, 18) + "..";
+	else
+	show_name = clients_info[i][0];
+	
+	if(clients_info[i][2]){
+	code += '<a href="javascript:void(0)"><div onclick="setClientMAC('+i+');"><strong>'+clients_info[i][1]+'</strong>';
+	code += ' ['+clients_info[i][2]+']';
+	if(show_name && show_name.length > 0)
+	code += ' ('+show_name+')';
+	code += ' </div></a>';
+	}
 	}
 	if (code == "")
-		code = '<div style="text-align: center;" onclick="hideClients_Block();"><#Nodata#></div>';
-	code +='<!--[if lte IE 6.5]><iframe class="hackiframe2"></iframe><![endif]-->';
+	code = '<div style="text-align: center;" onclick="hideClients_Block();"><#Nodata#></div>';
+	code +='<!--[if lte IE 6.5]><iframe class="hackiframe2"></iframe><![endif]-->';	
 	$("ClientList_Block").innerHTML = code;
 }
 
@@ -173,13 +175,13 @@ function hideClients_Block(){
 
 function pullLANIPList(obj){
 	if(isMenuopen == 0){
-		$j(obj).children('i').removeClass('icon-chevron-down').addClass('icon-chevron-up');
-		$("ClientList_Block").style.display = 'block';
-		document.form.url_mac_x.focus();
-		isMenuopen = 1;
+	$j(obj).children('i').removeClass('icon-chevron-down').addClass('icon-chevron-up');
+	$("ClientList_Block").style.display = 'block';
+	document.form.url_mac_x.focus();
+	isMenuopen = 1;
 	}
 	else
-		hideClients_Block();
+	hideClients_Block();
 }
 
 function done_validating(action){
@@ -256,7 +258,7 @@ function done_validating(action){
 
                                     <table width="100%" cellpadding="4" cellspacing="0" class="table">
                                         <tr>
-                                            <th width="50%" style="padding-bottom: 0px; border-top: 0 none;"><#FirewallConfig_UrlFilterEnable_itemname#>?</th>
+                                            <th width="50%" style="padding-bottom: 0px; border-top: 0 none;"><#FirewallConfig_UrlFilterEnable_itemname#></th>
                                             <td style="padding-bottom: 0px; border-top: 0 none;">
                                                 <div class="main_itoggle">
                                                     <div id="url_enable_on_of">
@@ -269,6 +271,22 @@ function done_validating(action){
                                                 </div>
                                             </td>
                                         </tr>
+	
+	<tr id="mac_drop_row" style="display:none;">
+                                            <th><#MAC_BlockHost#><div>&nbsp;<span style="color:#FF0000;">若启动adbyby、SS，需要开启</span></div></th>
+                                            <td>
+                                                <div class="main_itoggle">
+                                                    <div id="fw_mac_drop_on_of">
+                                                        <input type="checkbox" id="fw_mac_drop_fake" <% nvram_match_x("", "fw_mac_drop", "1", "value=1 checked"); %><% nvram_match_x("", "fw_mac_drop", "0", "value=0"); %>>
+                                                    </div>
+                                                </div>
+                                                <div style="position: absolute; margin-left: -10000px;">
+                                                    <input type="radio" value="1" name="fw_mac_drop" id="fw_mac_drop_1" <% nvram_match_x("","fw_mac_drop", "1", "checked"); %>><#checkbox_Yes#>
+                                                    <input type="radio" value="0" name="fw_mac_drop" id="fw_mac_drop_0" <% nvram_match_x("","fw_mac_drop", "0", "checked"); %>><#checkbox_No#>
+                                                </div>
+                                            </td>
+                                        </tr>
+	
                                     </table>
 
                                     <table width="100%" cellpadding="4" cellspacing="0" class="table" id="tbl_urlf_main" style="display:none">

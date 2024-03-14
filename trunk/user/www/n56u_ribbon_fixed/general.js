@@ -404,6 +404,28 @@ function is_string2(o,e) {
     return false;
 }
 
+function validate_ssidchar(ch) {
+    //if (ch >= 32 && ch <= 126)
+    if (ch >= 32)
+        return true;
+    return false;
+}
+
+function validate_string_ssid(o) {
+    var i,c;
+    for (i = 0; i < o.value.length; ++i) {
+        c = o.value.charCodeAt(i);
+        if (!validate_ssidchar(c)) {
+            alert("<#JS_validSSID1#> " + o.value.charAt(i) + " <#JS_validSSID2#>");
+            o.value = "";
+            o.focus();
+            o.select();
+            return false;
+        }
+    }
+    return true;
+}
+
 function is_number(o,e) {
     e = e || event;
     if (is_control_key(e))
@@ -564,7 +586,7 @@ function validate_ipaddr_final(o, v) {
                 document.form.wan_netmask.value = "255.0.0.0";
             }
             else if (v == 'lan_ipaddr') {
-                document.form.lan_ipaddr.value = "192.168.1.1";
+                document.form.lan_ipaddr.value = "192.168.123.1";
                 document.form.lan_netmask.value = "255.255.255.0";
             }
             o.focus();
@@ -842,7 +864,7 @@ function validate_portrange(o,v) {
             o.select();
             return false;
         }
-    } // wrong port
+    } // wrong port 
     else {
         if (prev == -2) {
             if (num == 65535) o.value = num;
@@ -1295,22 +1317,4 @@ function showhide_div(e, sh) {
         document.all[e].style.display = status;
     else if (document.layers)
         document.layers[e].display = status;
-}
-
-function decodeSSID(s) {
-    var out, len, i;
-    out = "";
-    len = s.length;
-    i = 2;
-
-    if (s[0] == "0" && s[1] == "x") {
-        while(i < len) {
-            out += "%";
-            out += s[i++];
-            out += s[i++];
-        }
-        return decodeURIComponent(out);
-    }
-
-    return decodeURIComponent(s);
 }

@@ -13,9 +13,9 @@ function getclients(flag_mac,flag_all){
 			if (ipmonitor[i][5] == "1")
 				continue;
 		}
-
+		
 		clients[j] = new Array(8);
-
+		
 		clients[j][0] = ipmonitor[i][2];	// Device name
 		clients[j][1] = ipmonitor[i][0];	// IP
 		clients[j][2] = ipmonitor[i][1];	// MAC
@@ -32,10 +32,10 @@ function getclients(flag_mac,flag_all){
 				break;
 			}
 		}
-
+		
 		if(clients[j][0] == null || clients[j][0].length < 1)
 			clients[j][0] = "*";
-
+		
 		if (flag_mac == 1)
 			clients[j][2] = simplyMAC(clients[j][2]);
 		++j;
@@ -68,22 +68,22 @@ function simplyMAC(fullMAC){
 	var ptr;
 	var tempMAC;
 	var pos1, pos2;
-
+	
 	ptr = fullMAC;
 	tempMAC = "";
 	pos1 = pos2 = 0;
-
+	
 	for(var i = 0; i < 5; ++i){
 		pos2 = pos1+ptr.indexOf(":");
-
+		
 		tempMAC += fullMAC.substring(pos1, pos2);
-
+		
 		pos1 = pos2+1;
 		ptr = fullMAC.substring(pos1);
 	}
-
+	
 	tempMAC += fullMAC.substring(pos1);
-
+	
 	return tempMAC;
 }
 

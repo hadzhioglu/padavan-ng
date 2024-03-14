@@ -26,20 +26,20 @@ function initial(){
 	load_body();
 
 	if(get_ap_mode())
-		showhide_div('row_lost_action', 0);
+	showhide_div('row_lost_action', 0);
 
 	poll_mode_changed();
 }
 
 function applyRule(){
 	if(validForm()){
-		showLoading();
-
-		document.form.action_mode.value = " Apply ";
-		document.form.current_page.value = "/Advanced_InetDetect_Content.asp";
-		document.form.next_page.value = "";
-
-		document.form.submit();
+	showLoading();
+	
+	document.form.action_mode.value = " Apply ";
+	document.form.current_page.value = "/Advanced_InetDetect_Content.asp";
+	document.form.next_page.value = "";
+	
+	document.form.submit();
 	}
 }
 
@@ -47,29 +47,29 @@ function validForm(){
 	var i;
 	var obj;
 	for (i=0;i<6;i++) {
-		obj=document.getElementsByName("di_addr"+i)[0];
-		if(!validate_ipaddr_final(obj, ''))
-			return false;
-		obj=document.getElementsByName("di_port"+i)[0];
-		if(obj.value.length > 0 && !validate_range(obj, 1, 65535))
-			return false;
+	obj=document.getElementsByName("di_addr"+i)[0];
+	if(!validate_ipaddr_final(obj, ''))
+	return false;
+	obj=document.getElementsByName("di_port"+i)[0];
+	if(obj.value.length > 0 && !validate_range(obj, 1, 65535))
+	return false;
 	}
 
 	if(!validate_range(document.form.di_time_done, 15, 600))
-		return false;
+	return false;
 	if(!validate_range(document.form.di_time_fail, 3, 120))
-		return false;
+	return false;
 	if(!validate_range(document.form.di_timeout, 1, 10))
-		return false;
+	return false;
 
 	if (document.form.di_poll_mode.value == "1"){
-		if(!validate_range(document.form.di_lost_delay, 0, 600))
-			return false;
-
-		if (document.form.di_lost_action.value == "2" && !get_ap_mode()){
-			if(!validate_range(document.form.di_recon_pause, 0, 600))
-				return false;
-		}
+	if(!validate_range(document.form.di_lost_delay, 0, 600))
+	return false;
+	
+	if (document.form.di_lost_action.value == "2" && !get_ap_mode()){
+	if(!validate_range(document.form.di_recon_pause, 0, 600))
+	return false;
+	}
 	}
 
 	return true;
@@ -78,7 +78,7 @@ function validForm(){
 function poll_mode_changed(){
 	var v = (document.form.di_poll_mode.value == "1") ? 1 : 0;
 	if (v)
-		lost_action_changed();
+	lost_action_changed();
 	showhide_div('tbl_di_events', v);
 }
 
@@ -254,9 +254,9 @@ function done_validating(action){
                                         </tr>
                                         <tr>
                                             <td colspan="2" style="padding-bottom: 0px;">
-                                                <a href="javascript:spoiler_toggle('script3')"><span><#RunInetState#></span></a>
+                                                <i class="icon-hand-right"></i><a href="javascript:spoiler_toggle('script3')"><span><#RunInetState#></span></a>
                                                 <div id="script3" style="display:none;">
-                                                    <textarea rows="16" wrap="off" spellcheck="false" maxlength="8192" class="span12" name="scripts.inet_state_script.sh" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("scripts.inet_state_script.sh",""); %></textarea>
+                                                    <textarea rows="16" wrap="off" spellcheck="false" maxlength="2097152" class="span12" name="scripts.inet_state_script.sh" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("scripts.inet_state_script.sh",""); %></textarea>
                                                 </div>
                                             </td>
                                         </tr>

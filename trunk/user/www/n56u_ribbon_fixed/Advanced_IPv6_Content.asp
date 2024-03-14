@@ -26,6 +26,8 @@ $j(document).ready(function() {
 	init_itoggle('ip6_dns_auto', change_ip6_dns_auto);
 	init_itoggle('ip6_lan_auto', change_ip6_lan_auto);
 	init_itoggle('ip6_lan_radv', change_ip6_lan_radv);
+	init_itoggle('napt66_enable');
+	init_itoggle('ip6_cast_enable');
 });
 
 </script>
@@ -40,12 +42,12 @@ function initial(){
 	document.form.ip6_lan_sfpe_fake.value = decimalToHex(document.form.ip6_lan_sfpe.value, 4);
 
 	if(!support_ipv6()){
-		$('hint_no_ipv6').style.display="";
-		$('tbl_ip6_con').style.display="none";
-		$('tbl_apply').style.display="none";
+	$('hint_no_ipv6').style.display="";
+	$('tbl_ip6_con').style.display="none";
+	$('tbl_apply').style.display="none";
 	}else{
-		change_ip6_service();
-		change_ip6_lan_radv();
+	change_ip6_service();
+	change_ip6_lan_radv();
 	}
 
 	load_body();
@@ -53,21 +55,21 @@ function initial(){
 
 function applyRule(){
 	if(validForm()){
-		showLoading();
-
-		document.form.current_page.value = "/Advanced_IPv6_Content.asp";
-		document.form.next_page.value = "";
-		document.form.action_mode.value = " Apply ";
-		document.form.submit();
+	showLoading();
+	
+	document.form.current_page.value = "/Advanced_IPv6_Content.asp";
+	document.form.next_page.value = "";
+	document.form.action_mode.value = " Apply ";
+	document.form.submit();
 	}
 }
 
 function validate_not_empty(o) {
 	if (o.value.length == 0) {
-		alert("<#JS_fieldblank#>");
-		o.focus();
-		o.select();
-		return false;
+	alert("<#JS_fieldblank#>");
+	o.focus();
+	o.select();
+	return false;
 	}
 	return true;
 }
@@ -75,49 +77,49 @@ function validate_not_empty(o) {
 function validForm(){
 	var ip6_con = document.form.ip6_service.value;
 	if (ip6_con=="static" || ip6_con=="6in4") {
-		if (!validate_not_empty(document.form.ip6_wan_addr))
-			return false;
-		if (!validate_not_empty(document.form.ip6_wan_gate))
-			return false;
-		if (!validate_not_empty(document.form.ip6_lan_addr))
-			return false;
+	if (!validate_not_empty(document.form.ip6_wan_addr))
+	return false;
+	if (!validate_not_empty(document.form.ip6_wan_gate))
+	return false;
+	if (!validate_not_empty(document.form.ip6_lan_addr))
+	return false;
 	}
 
 	if (ip6_con=="dhcp6") {
-		if (!document.form.ip6_lan_auto[0].checked && !validate_not_empty(document.form.ip6_lan_addr))
-			return false;
+	if (!document.form.ip6_lan_auto[0].checked && !validate_not_empty(document.form.ip6_lan_addr))
+	return false;
 	}
 
 	if (ip6_con=="6in4") {
-		if (!validate_not_empty(document.form.ip6_6in4_remote))
-			return false;
+	if (!validate_not_empty(document.form.ip6_6in4_remote))
+	return false;
 	}
 
 	if (ip6_con=="6to4") {
-		if (!validate_not_empty(document.form.ip6_6to4_relay))
-			return false;
+	if (!validate_not_empty(document.form.ip6_6to4_relay))
+	return false;
 	}
 
 	if (ip6_con=="6rd" && (document.form.ip6_6rd_dhcp.value=="0")) {
-		if (!validate_not_empty(document.form.ip6_6rd_relay))
-			return false;
-		if (!validate_not_empty(document.form.ip6_wan_addr))
-			return false;
+	if (!validate_not_empty(document.form.ip6_6rd_relay))
+	return false;
+	if (!validate_not_empty(document.form.ip6_wan_addr))
+	return false;
 	}
 
 	if (ip6_con!="" && document.form.ip6_lan_radv[0].checked && (parseInt(document.form.ip6_lan_dhcp.value)>1)){
-		var o1 = document.form.ip6_lan_sfps_fake;
-		var o2 = document.form.ip6_lan_sfpe_fake;
-		if(!validate_range_hex(o1, 2, 65534))
-			return false;
-		if(!validate_range_hex(o2, 2, 65534))
-			return false;
-		if(!validate_range(document.form.ip6_lan_sflt, 120, 604800))
-			return false;
-		if(parseInt("0x"+o1.value) > parseInt("0x"+o2.value))
-			o2.value = o1.value;
-		document.form.ip6_lan_sfps.value = parseInt("0x"+o1.value);
-		document.form.ip6_lan_sfpe.value = parseInt("0x"+o2.value);
+	var o1 = document.form.ip6_lan_sfps_fake;
+	var o2 = document.form.ip6_lan_sfpe_fake;
+	if(!validate_range_hex(o1, 2, 65534))
+	return false;
+	if(!validate_range_hex(o2, 2, 65534))
+	return false;
+	if(!validate_range(document.form.ip6_lan_sflt, 120, 604800))
+	return false;
+	if(parseInt("0x"+o1.value) > parseInt("0x"+o2.value))
+	o2.value = o1.value;
+	document.form.ip6_lan_sfps.value = parseInt("0x"+o1.value);
+	document.form.ip6_lan_sfpe.value = parseInt("0x"+o2.value);
 	}
 
 	return true;
@@ -132,12 +134,12 @@ function validate_ip6addr(o){
 	var regex = /^((([0-9a-f]{1,4}:){7}([0-9a-f]{1,4}|:))|(([0-9a-f]{1,4}:){6}(:[0-9a-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9a-f]{1,4}:){5}(((:[0-9a-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9a-f]{1,4}:){4}(((:[0-9a-f]{1,4}){1,3})|((:[0-9a-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9a-f]{1,4}:){3}(((:[0-9a-f]{1,4}){1,4})|((:[0-9a-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9a-f]{1,4}:){2}(((:[0-9a-f]{1,4}){1,5})|((:[0-9a-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9a-f]{1,4}:){1}(((:[0-9a-f]{1,4}){1,6})|((:[0-9a-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9a-f]{1,4}){1,7})|((:[0-9a-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?$/i;
 
 	if (o.value.length===0)
-		return true;
+	return true;
 
 	if (!regex.test(o.value)){
-		alert(o.value + " - " + "<#IP6_hint_addr#>");
-		o.focus();
-		return false;
+	alert(o.value + " - " + "<#IP6_hint_addr#>");
+	//o.focus();
+	return false;
 	}
 
 	return true;
@@ -147,12 +149,12 @@ function validate_ip6_part(o){
 	var regex = /^([0-9a-f]{1,4})(%.+)?$/i;
 
 	if (o.value.length===0)
-		return false;
+	return false;
 
 	if (!regex.test(o.value)){
-		alert(o.value + " - " + "<#IP6_hint_addr#>");
-		o.focus();
-		return false;
+	alert(o.value + " - " + "<#IP6_hint_addr#>");
+	//o.focus();
+	return false;
 	}
 
 	return true;
@@ -169,88 +171,88 @@ function change_ip6_service(){
 	var ip6on = true;
 
 	if (ip6_con=="6rd") {
-		$('lbl_ip6_wan_addr').innerHTML="<#IP6_6RD_Addr#>";
-		$('lbl_ip6_wan_size').innerHTML="<#IP6_6RD_Pref#>";
-		$('row_ip6_6rd_relay').style.display="";
-		$('row_ip6_6rd_size').style.display="";
-		$('row_ip6_6rd_dhcp').style.display="";
+	$('lbl_ip6_wan_addr').innerHTML="<#IP6_6RD_Addr#>";
+	$('lbl_ip6_wan_size').innerHTML="<#IP6_6RD_Pref#>";
+	$('row_ip6_6rd_relay').style.display="";
+	$('row_ip6_6rd_size').style.display="";
+	$('row_ip6_6rd_dhcp').style.display="";
 	}
 	else {
-		$('lbl_ip6_wan_addr').innerHTML="<#IP6_WAN_Addr#>";
-		$('lbl_ip6_wan_size').innerHTML="<#IP6_WAN_Pref#>";
-		$('row_ip6_6rd_relay').style.display="none";
-		$('row_ip6_6rd_size').style.display="none";
-		$('row_ip6_6rd_dhcp').style.display="none";
+	$('lbl_ip6_wan_addr').innerHTML="<#IP6_WAN_Addr#>";
+	$('lbl_ip6_wan_size').innerHTML="<#IP6_WAN_Pref#>";
+	$('row_ip6_6rd_relay').style.display="none";
+	$('row_ip6_6rd_size').style.display="none";
+	$('row_ip6_6rd_dhcp').style.display="none";
 	}
-
+	
 	if (ip6_con=="static") {
-		$('tbl_ip6_sit').style.display="none";
-		$('row_ip6_wan_dhcp').style.display="none";
-		$('row_ip6_dns_auto').style.display="none";
-		$('row_ip6_lan_auto').style.display="none";
-		inputRCtrl2(document.form.ip6_dns_auto, 1);
-		inputRCtrl2(document.form.ip6_lan_auto, 1);
-		$j('#ip6_dns_auto_on_of').iState(0);
-		$j('#ip6_lan_auto_on_of').iState(0);
-		if (ppp) pppif = true;
+	$('tbl_ip6_sit').style.display="none";
+	$('row_ip6_wan_dhcp').style.display="none";
+	$('row_ip6_dns_auto').style.display="none";
+	$('row_ip6_lan_auto').style.display="none";
+	inputRCtrl2(document.form.ip6_dns_auto, 1);
+	inputRCtrl2(document.form.ip6_lan_auto, 1);
+	$j('#ip6_dns_auto_on_of').iState(0);
+	$j('#ip6_lan_auto_on_of').iState(0);
+	if (ppp) pppif = true;
 	}
 	else if (ip6_con=="dhcp6") {
-		$('tbl_ip6_sit').style.display="none";
-		$('row_ip6_wan_dhcp').style.display="";
-		$('row_ip6_dns_auto').style.display="";
-		$('row_ip6_lan_auto').style.display="";
-		if (ppp) pppif = true;
+	$('tbl_ip6_sit').style.display="none";
+	$('row_ip6_wan_dhcp').style.display="";
+	$('row_ip6_dns_auto').style.display="";
+	$('row_ip6_lan_auto').style.display="";
+	if (ppp) pppif = true;
 	}
 	else if (ip6_con=="6in4") {
-		$('tbl_ip6_sit').style.display="";
-		$('row_ip6_wan_dhcp').style.display="none";
-		$('row_ip6_dns_auto').style.display="none";
-		$('row_ip6_lan_auto').style.display="none";
-		$('row_ip6_6in4_remote').style.display="";
-		$('row_ip6_6to4_relay').style.display="none";
-		inputRCtrl2(document.form.ip6_dns_auto, 1);
-		inputRCtrl2(document.form.ip6_lan_auto, 1);
-		$j('#ip6_dns_auto_on_of').iState(0);
-		$j('#ip6_lan_auto_on_of').iState(0);
+	$('tbl_ip6_sit').style.display="";
+	$('row_ip6_wan_dhcp').style.display="none";
+	$('row_ip6_dns_auto').style.display="none";
+	$('row_ip6_lan_auto').style.display="none";
+	$('row_ip6_6in4_remote').style.display="";
+	$('row_ip6_6to4_relay').style.display="none";
+	inputRCtrl2(document.form.ip6_dns_auto, 1);
+	inputRCtrl2(document.form.ip6_lan_auto, 1);
+	$j('#ip6_dns_auto_on_of').iState(0);
+	$j('#ip6_lan_auto_on_of').iState(0);
 	}
 	else if (ip6_con=="6to4") {
-		$('tbl_ip6_sit').style.display="";
-		$('row_ip6_wan_dhcp').style.display="none";
-		$('row_ip6_dns_auto').style.display="none";
-		$('row_ip6_lan_auto').style.display="none";
-		$('row_ip6_6in4_remote').style.display="none";
-		$('row_ip6_6to4_relay').style.display="";
-		inputRCtrl2(document.form.ip6_dns_auto, 1);
-		inputRCtrl2(document.form.ip6_lan_auto, 0);
-		$j('#ip6_dns_auto_on_of').iState(0);
-		$j('#ip6_lan_auto_on_of').iState(1);
+	$('tbl_ip6_sit').style.display="";
+	$('row_ip6_wan_dhcp').style.display="none";
+	$('row_ip6_dns_auto').style.display="none";
+	$('row_ip6_lan_auto').style.display="none";
+	$('row_ip6_6in4_remote').style.display="none";
+	$('row_ip6_6to4_relay').style.display="";
+	inputRCtrl2(document.form.ip6_dns_auto, 1);
+	inputRCtrl2(document.form.ip6_lan_auto, 0);
+	$j('#ip6_dns_auto_on_of').iState(0);
+	$j('#ip6_lan_auto_on_of').iState(1);
 	}
 	else if (ip6_con=="6rd") {
-		$('tbl_ip6_sit').style.display="";
-		$('row_ip6_wan_dhcp').style.display="none";
-		$('row_ip6_dns_auto').style.display="none";
-		$('row_ip6_lan_auto').style.display="none";
-		$('row_ip6_6in4_remote').style.display="none";
-		$('row_ip6_6to4_relay').style.display="none";
-		inputRCtrl2(document.form.ip6_dns_auto, 1);
-		inputRCtrl2(document.form.ip6_lan_auto, 0);
-		$j('#ip6_dns_auto_on_of').iState(0);
-		$j('#ip6_lan_auto_on_of').iState(1);
-
-		if (wan_proto == "static") {
-			document.form.ip6_6rd_dhcp.selectedIndex = 0;
-			inputCtrl(document.form.ip6_6rd_dhcp, 0);
-		}
-
-		if (document.form.ip6_6rd_dhcp.value == "1") {
-			if (wan_proto != "dhcp")
-				warn = true;
-		}
-
-		if (ppp) warn = true;
+	$('tbl_ip6_sit').style.display="";
+	$('row_ip6_wan_dhcp').style.display="none";
+	$('row_ip6_dns_auto').style.display="none";
+	$('row_ip6_lan_auto').style.display="none";
+	$('row_ip6_6in4_remote').style.display="none";
+	$('row_ip6_6to4_relay').style.display="none";
+	inputRCtrl2(document.form.ip6_dns_auto, 1);
+	inputRCtrl2(document.form.ip6_lan_auto, 0);
+	$j('#ip6_dns_auto_on_of').iState(0);
+	$j('#ip6_lan_auto_on_of').iState(1);
+	
+	if (wan_proto == "static") {
+	document.form.ip6_6rd_dhcp.selectedIndex = 0;
+	inputCtrl(document.form.ip6_6rd_dhcp, 0);
+	}
+	
+	if (document.form.ip6_6rd_dhcp.value == "1") {
+	if (wan_proto != "dhcp")
+	warn = true;
+	}
+	
+	if (ppp) warn = true;
 	}
 	else {
-		ip6on = false;
+	ip6on = false;
 	}
 
 	showhide_div('row_wan_type', ip6on);
@@ -260,27 +262,27 @@ function change_ip6_service(){
 	showhide_div('tbl_ip6_lan', ip6on);
 
 	if (!ip6on) {
-		showhide_div('tbl_ip6_sit', 0);
+	showhide_div('tbl_ip6_sit', 0);
 	}
 
 	if (ip6on && hw_nat_mode != "2" && ((support_ipv6_ppe() > 1) || (support_ipv6_ppe() == 1 && (ip6_con=="static" || ip6_con=="dhcp6")))) {
-		$('row_wan_ppe').style.display="";
-		if (support_ipv6_ppe() > 1){
-			if (hw_nat_mode == "1" || hw_nat_mode == "4")
-				$('ip6_ppe_on').options[1].text = "Offload for LAN/WLAN";
-		}
+	$('row_wan_ppe').style.display="";
+	if (support_ipv6_ppe() > 1){
+	if (hw_nat_mode == "1" || hw_nat_mode == "4")
+	$('ip6_ppe_on').options[1].text = "Offload for LAN/WLAN";
+	}
 	} else {
-		$('row_wan_ppe').style.display="none";
+	$('row_wan_ppe').style.display="none";
 	}
 
 	if (wan_proto == "dhcp")
-		wif = 'IPoE: <#BOP_ctype_title1#>';
+	wif = 'IPoE: <#BOP_ctype_title1#>';
 	else if (wan_proto == "pppoe")
-		wif = 'PPPoE';
+	wif = 'PPPoE';
 	else if (wan_proto == "pptp")
-		wif = 'PPTP';
+	wif = 'PPTP';
 	else if (wan_proto == "l2tp")
-		wif = 'L2TP';
+	wif = 'L2TP';
 
 	$('wan_type').innerHTML = '<span class="label label-' + (warn == false ? 'success' : 'warning') + '">' + wif + '</span>';
 
@@ -295,9 +297,9 @@ function change_ip6_wan_dhcp(){
 	var ip6_wan = document.form.ip6_wan_dhcp.value;
 
 	if (ip6_con == "dhcp6" && ip6_wan != "1")
-		$('row_ip6_wan_priv').style.display="";
+	$('row_ip6_wan_priv').style.display="";
 	else
-		$('row_ip6_wan_priv').style.display="none";
+	$('row_ip6_wan_priv').style.display="none";
 }
 
 function change_ip6_6rd_dhcp(){
@@ -307,16 +309,16 @@ function change_ip6_6rd_dhcp(){
 	var val_gate;
 
 	if (ip6_con == "6rd") {
-		val_gate = 0;
-		val_addr = val_man;
-		inputCtrl(document.form.ip6_6rd_relay, val_man);
-		inputCtrl(document.form.ip6_6rd_size, val_man);
+	val_gate = 0;
+	val_addr = val_man;
+	inputCtrl(document.form.ip6_6rd_relay, val_man);
+	inputCtrl(document.form.ip6_6rd_size, val_man);
 	} else if (ip6_con == "dhcp6" || ip6_con == "6to4") {
-		val_addr = 0;
-		val_gate = 0;
+	val_addr = 0;
+	val_gate = 0;
 	} else {
-		val_addr = 1;
-		val_gate = 1;
+	val_addr = 1;
+	val_gate = 1;
 	}
 
 	showhide_div('row_ip6_wan_addr', val_addr);
@@ -341,10 +343,10 @@ function change_ip6_lan_radv(){
 	var v = document.form.ip6_lan_radv[0].checked;
 	showhide_div('row_ip6_lan_dhcp', v);
 	if (v) {
-		change_ip6_lan_dhcp();
+	change_ip6_lan_dhcp();
 	} else {
-		showhide_div('row_ip6_lan_pool', 0);
-		showhide_div('row_ip6_lan_life', 0);
+	showhide_div('row_ip6_lan_pool', 0);
+	showhide_div('row_ip6_lan_life', 0);
 	}
 }
 
@@ -352,6 +354,59 @@ function change_ip6_lan_dhcp(){
 	var v = (parseInt(document.form.ip6_lan_dhcp.value)>1) ? 1 : 0;
 	showhide_div('row_ip6_lan_pool', v);
 	showhide_div('row_ip6_lan_life', v);
+}
+
+function button_set_napt66(){
+	document.form.ip6_service.selectedIndex = 2;
+	change_ip6_service();
+	document.form.ip6_ppe_on.selectedIndex = 1;
+	document.form.ip6_wan_dhcp.selectedIndex = 0;
+	change_ip6_wan_dhcp();
+	document.form.ip6_wan_priv.selectedIndex = 0;
+	inputRCtrl2(document.form.ip6_dns_auto, 1);
+	$j('#ip6_dns_auto_on_of').iState(0);
+	change_ip6_dns_auto();
+	document.form.ip6_dns1.value="2606:4700:4700::1111";
+	document.form.ip6_dns2.value="2606:4700:4700::1001";
+	document.form.ip6_dns3.value="";
+	inputRCtrl2(document.form.ip6_lan_auto, 1);
+	$j('#ip6_lan_auto_on_of').iState(0);
+	change_ip6_lan_auto();
+	document.form.ip6_lan_addr.value="dc00:101:101::1";
+	document.form.ip6_lan_size.value="64";
+	inputRCtrl2(document.form.ip6_lan_radv, 0);
+	$j('#ip6_lan_radv_on_of').iState(1);
+	change_ip6_lan_radv();
+	document.form.ip6_lan_dhcp.selectedIndex = 3;
+	change_ip6_lan_dhcp();
+	inputRCtrl2(document.form.napt66_enable, 0);
+	$j('#napt66_enable_on_of').iState(1);
+	inputRCtrl2(document.form.ip6_cast_enable, 1);
+	$j('#ip6_cast_enable_on_of').iState(0);
+}
+
+function button_set_ip6_cast(){
+	document.form.ip6_service.selectedIndex = 2;
+	change_ip6_service();
+	document.form.ip6_ppe_on.selectedIndex = 1;
+	document.form.ip6_wan_dhcp.selectedIndex = 0;
+	change_ip6_wan_dhcp();
+	document.form.ip6_wan_priv.selectedIndex = 0;
+	inputRCtrl2(document.form.ip6_dns_auto, 0);
+	$j('#ip6_dns_auto_on_of').iState(1);
+	change_ip6_dns_auto();
+	inputRCtrl2(document.form.ip6_lan_auto, 0);
+	$j('#ip6_lan_auto_on_of').iState(1);
+	change_ip6_lan_auto();
+	inputRCtrl2(document.form.ip6_lan_radv, 0);
+	$j('#ip6_lan_radv_on_of').iState(1);
+	change_ip6_lan_radv();
+	document.form.ip6_lan_dhcp.selectedIndex = 1;
+	change_ip6_lan_dhcp();
+	inputRCtrl2(document.form.napt66_enable, 1);
+	$j('#napt66_enable_on_of').iState(0);
+	inputRCtrl2(document.form.ip6_cast_enable, 0);
+	$j('#ip6_cast_enable_on_of').iState(1);
 }
 
 </script>
@@ -363,8 +418,8 @@ function change_ip6_lan_dhcp(){
 <body onload="initial();" onunLoad="return unload_body();">
 <script>
 	if(get_ap_mode()){
-		alert("<#page_not_support_mode_hint#>");
-		location.href = "/as.asp";
+	alert("<#page_not_support_mode_hint#>");
+	location.href = "/as.asp";
 	}
 </script>
 
@@ -386,7 +441,7 @@ function change_ip6_lan_dhcp(){
     <input type="hidden" name="current_page" value="Advanced_IPv6_Content.asp">
     <input type="hidden" name="next_page" value="">
     <input type="hidden" name="next_host" value="">
-    <input type="hidden" name="sid_list" value="IP6Connection;">
+    <input type="hidden" name="sid_list" value="IP6Connection;General;">
     <input type="hidden" name="group_id" value="">
     <input type="hidden" name="action_mode" value="">
     <input type="hidden" name="action_script" value="">
@@ -662,6 +717,46 @@ function change_ip6_lan_dhcp(){
                                             <td align="left">
                                                 <input type="text" maxlength="6" size="6" name="ip6_lan_sflt" class="input" value="<% nvram_get_x("", "ip6_lan_sflt"); %>" onKeyPress="return is_number(this,event);"/>
                                                 &nbsp;<span style="color:#888;">[120..604800]</span>
+                                            </td>
+                                        </tr>
+                                    </table>
+
+                                    <table width="100%" cellpadding="3" cellspacing="0" class="table">
+                                        <tr>
+                                            <th colspan="3" style="background-color: #E3E3E3;"><#Adm_System_misc#></th>
+                                        </tr>
+                                        <tr>
+                                            <th width="50%"><#Adm_Svc_napt66#></th>
+                                            <td>
+                                                <div class="main_itoggle">
+                                                    <div id="napt66_enable_on_of">
+                                                        <input type="checkbox" id="napt66_enable_fake" <% nvram_match_x("", "napt66_enable", "1", "value=1 checked"); %><% nvram_match_x("", "napt66_enable", "0", "value=0"); %>>
+                                                    </div>
+                                                </div>
+                                                <div style="position: absolute; margin-left: -10000px;">
+                                                    <input type="radio" name="napt66_enable" id="napt66_enable_1" class="input" value="1" <% nvram_match_x("", "napt66_enable", "1", "checked"); %>/><#checkbox_Yes#>
+                                                    <input type="radio" name="napt66_enable" id="napt66_enable_0" class="input" value="0" <% nvram_match_x("", "napt66_enable", "0", "checked"); %>/><#checkbox_No#>
+                                                </div>
+                                            </td>
+                                            <td>
+                                            	<input class="btn btn-success" type="button" name="set_ip6_cast" value="一键填写配置" onclick="button_set_napt66()" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>IPv6 <#VPNS_Cast#> WAN to LAN(重启后生效)</th>
+                                            <td>
+                                                <div class="main_itoggle">
+                                                    <div id="ip6_cast_enable_on_of">
+                                                        <input type="checkbox" id="ip6_cast_enable_fake" <% nvram_match_x("", "ip6_cast_enable", "1", "value=1 checked"); %><% nvram_match_x("", "ip6_cast_enable", "0", "value=0"); %>>
+                                                    </div>
+                                                </div>
+                                                <div style="position: absolute; margin-left: -10000px;">
+                                                    <input type="radio" name="ip6_cast_enable" id="ip6_cast_enable_1" class="input" value="1" <% nvram_match_x("", "ip6_cast_enable", "1", "checked"); %>/><#checkbox_Yes#>
+                                                    <input type="radio" name="ip6_cast_enable" id="ip6_cast_enable_0" class="input" value="0" <% nvram_match_x("", "ip6_cast_enable", "0", "checked"); %>/><#checkbox_No#>
+                                                </div>
+                                            </td>
+                                            <td>
+                                            	<input class="btn btn-success" type="button" name="set_ip6_cast" value="一键填写配置" onclick="button_set_ip6_cast()" />
                                             </td>
                                         </tr>
                                     </table>

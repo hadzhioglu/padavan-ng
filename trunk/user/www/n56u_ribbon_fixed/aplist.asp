@@ -1,3 +1,3 @@
 var aplist = <% nvram_dump("apscan",""); %>;
 
-var profile_ssid = "<% nvram_get_x("", "sta_ssid"); %>";
+var profile_ssid = "<% nvram_char_to_ascii("", "sta_ssid"); %>";

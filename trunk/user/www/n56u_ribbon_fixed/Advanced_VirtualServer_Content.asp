@@ -33,30 +33,30 @@ $j(document).ready(function() {
 <script>
 
 var wItem = new Array(new Array("", "", "TCP"),
-		new Array("FTP", "21", "TCP"),
-		new Array("SSH", "22", "TCP"),
-		new Array("TELNET", "23", "TCP"),
-		new Array("SMTP", "25", "TCP"),
-		new Array("DNS", "53", "UDP"),
-		new Array("FINGER", "79", "TCP"),
-		new Array("HTTP", "80", "TCP"),
-		new Array("HTTPS", "443", "TCP"),
-		new Array("POP3", "110", "TCP"),
-		new Array("SNMP", "161", "UDP"),
-		new Array("SNMP TRAP", "162", "UDP"),
-		new Array("GRE", "47", "OTHER"),
-		new Array("IPv6 Tunnel", "41", "OTHER"));
+	new Array("FTP", "21", "TCP"),
+	new Array("SSH", "22", "TCP"),
+	new Array("TELNET", "23", "TCP"),
+	new Array("SMTP", "25", "TCP"),
+	new Array("DNS", "53", "UDP"),
+	new Array("FINGER", "79", "TCP"),
+	new Array("HTTP", "80", "TCP"),
+	new Array("HTTPS", "443", "TCP"),
+	new Array("POP3", "110", "TCP"),
+	new Array("SNMP", "161", "UDP"),
+	new Array("SNMP TRAP", "162", "UDP"),
+	new Array("GRE", "47", "OTHER"),
+	new Array("IPv6 Tunnel", "41", "OTHER"));
 
 var wItem2 = new Array(new Array("", "", "TCP"),
-		new Array("Age of Empires", "2302:2400,6073", "BOTH"),
-		new Array("BitTorrent", "6881:6889", "TCP"),
-		new Array("Transmission", "51413", "BOTH"),
-		new Array("Counter Strike(TCP)", "27030:27039", "TCP"),
-		new Array("Counter Strike(UDP)", "27000:27015,1200", "UDP"),
-		new Array("PlayStation2", "4658,4659", "BOTH"),
-		new Array("Warcraft III", "6112:6119,4000", "BOTH"),
-		new Array("WOW", "3724", "BOTH"),
-		new Array("Xbox Live", "3074", "BOTH"));
+	new Array("Age of Empires", "2302:2400,6073", "BOTH"),
+	new Array("BitTorrent", "6881:6889", "TCP"),
+	new Array("Transmission", "51413", "BOTH"),
+	new Array("Counter Strike(TCP)", "27030:27039", "TCP"),
+	new Array("Counter Strike(UDP)", "27000:27015,1200", "UDP"),
+	new Array("PlayStation2", "4658,4659", "BOTH"),
+	new Array("Warcraft III", "6112:6119,4000", "BOTH"),
+	new Array("WOW", "3724", "BOTH"),
+	new Array("Xbox Live", "3074", "BOTH"));
 
 <% login_state_hook(); %>
 
@@ -74,7 +74,7 @@ var isMenuopen = 0;
 function initial(){
 	var id_menu = 3;
 	if(!support_ipv6())
-		id_menu--;
+	id_menu--;
 
 	show_banner(2);
 	show_menu(5,4,id_menu);
@@ -94,32 +94,32 @@ function initial(){
 function applyRule(){
 	showLoading();
 	if (document.form.vts_enable_x[0].checked)
-		document.form.action_mode.value = " Restart ";
+	document.form.action_mode.value = " Restart ";
 	else
-		document.form.action_mode.value = " Apply ";
+	document.form.action_mode.value = " Apply ";
 	document.form.next_page.value = "";
 	document.form.submit();
 }
 
 function done_validating(action){
 	if(action == " Add ")
-		split_vts_rule();
+	split_vts_rule();
 	else
-		refreshpage();
+	refreshpage();
 }
 
 function loadAppOptions(){
 	free_options(document.form.KnownApps);
 	add_option(document.form.KnownApps, "<#Select_menu_default#>", 0, 1);
 	for(var i = 1; i < wItem.length; i++)
-		add_option(document.form.KnownApps, wItem[i][0], i, 0);
+	add_option(document.form.KnownApps, wItem[i][0], i, 0);
 }
 
 function loadGameOptions(){
 	free_options(document.form.KnownGames);
 	add_option(document.form.KnownGames, "<#Select_menu_default#>", 0, 1);
 	for(var i = 1; i < wItem2.length; i++)
-		add_option(document.form.KnownGames, wItem2[i][0], i, 0);
+	add_option(document.form.KnownGames, wItem2[i][0], i, 0);
 }
 
 function change_upnp_enabled(){
@@ -145,13 +145,13 @@ function change_proto(){
 	inputCtrl(document.form.vts_port_x_0, !v);
 	inputCtrl(document.form.vts_lport_x_0, !v);
 	if(v){
-		document.form.vts_port_x_0.style.display = "none";
-		document.form.vts_protono_x_0.style.display = "";
-		$("col_port_proto").innerHTML = "<#IPConnection_VServerPNo_itemname#>";
+	document.form.vts_port_x_0.style.display = "none";
+	document.form.vts_protono_x_0.style.display = "";
+	$("col_port_proto").innerHTML = "<#IPConnection_VServerPNo_itemname#>";
 	}else{
-		document.form.vts_protono_x_0.style.display = "none";
-		document.form.vts_port_x_0.style.display = "";
-		$("col_port_proto").innerHTML = '<a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this,18,2);"><#IPConnection_VServerPort_itemname#></a>';
+	document.form.vts_protono_x_0.style.display = "none";
+	document.form.vts_port_x_0.style.display = "";
+	$("col_port_proto").innerHTML = '<a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this,18,2);"><#IPConnection_VServerPort_itemname#></a>';
 	}
 }
 
@@ -159,54 +159,54 @@ function change_wizard(o, id){
 	var i;
 	var obj = document.form.vts_proto_x_0;
 	if(id == "KnownApps"){
-		$("KnownGames").value = 0;
-
-		for(i = 0; i < wItem.length; ++i){
-			if(wItem[i][0] != null && o.value == i){
-				if(wItem[i][2] == "TCP")
-					obj.options[0].selected = 1;
-				else if(wItem[i][2] == "UDP")
-					obj.options[1].selected = 1;
-				else if(wItem[i][2] == "BOTH")
-					obj.options[2].selected = 1;
-				else
-					obj.options[3].selected = 1;
-
-				document.form.vts_ipaddr_x_0.value = client_ip;
-				if (obj.options.selectedIndex == 3)
-					document.form.vts_protono_x_0.value = wItem[i][1];
-				else
-					document.form.vts_port_x_0.value = wItem[i][1];
-				document.form.vts_desc_x_0.value = wItem[i][0];
-				break;
-			}
-		}
-
-		document.form.vts_lport_x_0.value = "";
+	$("KnownGames").value = 0;
+	
+	for(i = 0; i < wItem.length; ++i){
+	if(wItem[i][0] != null && o.value == i){
+	if(wItem[i][2] == "TCP")
+	obj.options[0].selected = 1;
+	else if(wItem[i][2] == "UDP")
+	obj.options[1].selected = 1;
+	else if(wItem[i][2] == "BOTH")
+	obj.options[2].selected = 1;
+	else
+	obj.options[3].selected = 1;
+	
+	document.form.vts_ipaddr_x_0.value = client_ip;
+	if (obj.options.selectedIndex == 3)
+	document.form.vts_protono_x_0.value = wItem[i][1];
+	else
+	document.form.vts_port_x_0.value = wItem[i][1];
+	document.form.vts_desc_x_0.value = wItem[i][0];
+	break;
+	}
+	}
+	
+	document.form.vts_lport_x_0.value = "";
 	}
 	else if(id == "KnownGames"){
-		$("KnownApps").value = 0;
-
-		for(i = 0; i < wItem2.length; ++i){
-			if(wItem2[i][0] != null && o.value == i){
-				if(wItem2[i][2] == "TCP")
-					obj.options[0].selected = 1;
-				else if(wItem2[i][2] == "UDP")
-					obj.options[1].selected = 1;
-				else if(wItem2[i][2] == "BOTH")
-					obj.options[2].selected = 1;
-				else
-					obj.options[3].selected = 1;
-
-				document.form.vts_ipaddr_x_0.value = client_ip;
-				if (obj.options.selectedIndex == 3)
-					document.form.vts_protono_x_0.value = wItem2[i][1];
-				else
-					document.form.vts_port_x_0.value = wItem2[i][1];
-				document.form.vts_desc_x_0.value = wItem2[i][0];
-				break;
-			}
-		}
+	$("KnownApps").value = 0;
+	
+	for(i = 0; i < wItem2.length; ++i){
+	if(wItem2[i][0] != null && o.value == i){
+	if(wItem2[i][2] == "TCP")
+	obj.options[0].selected = 1;
+	else if(wItem2[i][2] == "UDP")
+	obj.options[1].selected = 1;
+	else if(wItem2[i][2] == "BOTH")
+	obj.options[2].selected = 1;
+	else
+	obj.options[3].selected = 1;
+	
+	document.form.vts_ipaddr_x_0.value = client_ip;
+	if (obj.options.selectedIndex == 3)
+	document.form.vts_protono_x_0.value = wItem2[i][1];
+	else
+	document.form.vts_port_x_0.value = wItem2[i][1];
+	document.form.vts_desc_x_0.value = wItem2[i][0];
+	break;
+	}
+	}
 	}
 	change_proto();
 }
@@ -215,78 +215,78 @@ function markGroupVS(o, c, b) {
 	var i, obj, proto_other;
 	document.form.group_id.value = "VSList";
 	if(b == " Add "){
-		proto_other = (document.form.vts_proto_x_0.options.selectedIndex == 3)?true:false;
-		if (document.form.vts_num_x_0.value >= c){
-			alert("<#JS_itemlimit1#> " + c + " <#JS_itemlimit2#>");
-			return false;
-		}
-		obj = document.form.vts_srcip_x_0;
-		if (obj.value!=""){
-			obj = document.form.vts_srcip_x_0;
-			if(obj.value.split("*").length >= 2){
-				if(!valid_IP_subnet(obj))
-					return false;
-			}else if(!validate_ipaddr_final(obj, ""))
-				return false;
-		}
-		obj = document.form.vts_port_x_0;
-		if(obj.value=="" && !proto_other){
-			alert("<#JS_fieldblank#>");
-			obj.focus();
-			return false;
-		}
-		obj = document.form.vts_ipaddr_x_0;
-		if (obj.value==""){
-			alert("<#JS_fieldblank#>");
-			obj.focus();
-			return false;
-		}else if (!validate_ipaddr_final(obj, "")){
-			return false;
-		}
-		if (proto_other){
-			obj = document.form.vts_protono_x_0;
-			if (obj.value==""){
-				alert("<#JS_fieldblank#>");
-				obj.focus();
-				return false;
-			}else if (!validate_range(obj, 0, 255))
-				return false;
-
-			for(i=0; i< VSList.length; i++){
-				if (VSList[i][3] == 'OTHER' && VSList[i][4] == obj.value) {
-					alert('<#JS_duplicate#>' + ' (Protocol ' + VSList[i][4] + ')' );
-					obj.focus();
-					obj.select();
-					return false;
-				}
-			}
-			document.form.vts_port_x_0.value = "";
-			document.form.vts_lport_x_0.value = "";
-		}else{
-			obj = document.form.vts_port_x_0;
-			if (!validate_portrange(obj, "") || !validate_range_sp(document.form.vts_lport_x_0, 1, 65535))
-				return false;
-			for(i=0; i< VSList.length; i++){
-				if ((VSList[i][3] != 'OTHER') &&
-				    (VSList[i][3] == 'BOTH' || document.form.vts_proto_x_0.value == 'BOTH' ||
-				     VSList[i][3] == document.form.vts_proto_x_0.value)){
-					if(obj.value == VSList[i][0]){
-						alert('<#JS_duplicate#>' + ' (Port ' + VSList[i][0] + ')' );
-						obj.focus();
-						obj.select();
-						return false;
-					}
-					if(!(portrange_min(obj.value, 11) > portrange_max(VSList[i][0], 11) ||
-							portrange_max(obj.value, 11) < portrange_min(VSList[i][0], 11))){
-						alert('<#JS_duplicate#>' + ' (Ports ' + VSList[i][0] + ')' );
-						obj.focus();
-						obj.select();
-						return false;
-					}
-				}
-			}
-			document.form.vts_protono_x_0.value = "";
-		}
+	proto_other = (document.form.vts_proto_x_0.options.selectedIndex == 3)?true:false;
+	if (document.form.vts_num_x_0.value >= c){
+	alert("<#JS_itemlimit1#> " + c + " <#JS_itemlimit2#>");
+	return false;
+	}
+	obj = document.form.vts_srcip_x_0;
+	if (obj.value!=""){
+	obj = document.form.vts_srcip_x_0;
+	if(obj.value.split("*").length >= 2){
+	if(!valid_IP_subnet(obj))
+	return false;
+	}else if(!validate_ipaddr_final(obj, ""))
+	return false;
+	}
+	obj = document.form.vts_port_x_0;
+	if(obj.value=="" && !proto_other){
+	alert("<#JS_fieldblank#>");
+	obj.focus();
+	return false;
+	}
+	obj = document.form.vts_ipaddr_x_0;
+	if (obj.value==""){
+	alert("<#JS_fieldblank#>");
+	obj.focus();
+	return false;
+	}else if (!validate_ipaddr_final(obj, "")){
+	return false;
+	}
+	if (proto_other){
+	obj = document.form.vts_protono_x_0;
+	if (obj.value==""){
+	alert("<#JS_fieldblank#>");
+	obj.focus();
+	return false;
+	}else if (!validate_range(obj, 0, 255))
+	return false;
+	
+	for(i=0; i< VSList.length; i++){
+	if (VSList[i][3] == 'OTHER' && VSList[i][4] == obj.value) {
+	alert('<#JS_duplicate#>' + ' (Protocol ' + VSList[i][4] + ')' );
+	obj.focus();
+	obj.select();
+	return false;
+	}
+	}
+	document.form.vts_port_x_0.value = "";
+	document.form.vts_lport_x_0.value = "";
+	}else{
+	obj = document.form.vts_port_x_0;
+	if (!validate_portrange(obj, "") || !validate_range_sp(document.form.vts_lport_x_0, 1, 65535))
+	return false;
+	for(i=0; i< VSList.length; i++){
+	if ((VSList[i][3] != 'OTHER') &&
+	    (VSList[i][3] == 'BOTH' || document.form.vts_proto_x_0.value == 'BOTH' ||
+	     VSList[i][3] == document.form.vts_proto_x_0.value)){
+	if(obj.value == VSList[i][0]){
+	alert('<#JS_duplicate#>' + ' (Port ' + VSList[i][0] + ')' );
+	obj.focus();
+	obj.select();
+	return false;
+	}
+	if(!(portrange_min(obj.value, 11) > portrange_max(VSList[i][0], 11) ||
+	portrange_max(obj.value, 11) < portrange_min(VSList[i][0], 11))){
+	alert('<#JS_duplicate#>' + ' (Ports ' + VSList[i][0] + ')' );
+	obj.focus();
+	obj.select();
+	return false;
+	}
+	}
+	}
+	document.form.vts_protono_x_0.value = "";
+	}
 	}
 	pageChanged = 0;
 	document.form.action_mode.value = b;
@@ -299,65 +299,65 @@ function split_vts_rule(s){
 	var i;
 	var count_dup = 0;
 	if(typeof(s) !== "undefined"){
-		this.vts_rule_array = s;
+	this.vts_rule_array = s;
 	}
 	if(this.vts_rule_array.length <= 0){
-		refreshpage();
-		return;
+	refreshpage();
+	return;
 	}
 	else{
-		document.form.vts_port_x_0.value = this.vts_rule_array[0];
-		this.vts_rule_array.shift();
+	document.form.vts_port_x_0.value = this.vts_rule_array[0];
+	this.vts_rule_array.shift();
 	}
-
+	
 	for(i=0; i< VSList.length; i++){
-		if(entry_cmp(VSList[i][3].toLowerCase(), document.form.vts_proto_x_0.value.toLowerCase(), 5)==0){
-			if(!(portrange_min(document.form.vts_port_x_0.value, 11) > portrange_max(VSList[i][0], 11) ||
-				portrange_max(document.form.vts_port_x_0.value, 11) < portrange_min(VSList[i][0], 11))){
-				count_dup = count_dup + 1;
-			}
-			if(entry_cmp(VSList[i][1], document.form.vts_ipaddr_x_0.value.toLowerCase(), 15)==0){
-				if(document.form.vts_lport_x_0.value.length!=0){
-					if(entry_cmp(VSList[i][2], "", 5)==0){
-						if(!(portrange_min(document.form.vts_lport_x_0.value, 5) > portrange_max(VSList[i][0], 11) || portrange_max(document.form.vts_lport_x_0.value, 5) < portrange_min(VSList[i][0], 11))){
-							count_dup = count_dup + 1;
-						}
-					}
-					else{
-						if(portrange_min(document.form.vts_lport_x_0.value,5) == portrange_min(VSList[i][2], 5)){
-							count_dup = count_dup + 1;
-						}
-					}
-				}
-				else{
-					if(entry_cmp(VSList[i][2], "", 5)==0){
-						if(!(portrange_min(document.form.vts_port_x_0.value, 11) > portrange_max(VSList[i][0], 11) ||
-							portrange_max(document.form.vts_port_x_0.value, 11) < portrange_min(VSList[i][0], 11))){
-							count_dup = count_dup + 1;
-						}
-					}
-					else{
-						if(!(portrange_min(document.form.vts_port_x_0.value, 11) > portrange_min(VSList[i][2], 5) ||
-							portrange_max(document.form.vts_port_x_0.value, 11) < portrange_min(VSList[i][2], 5))){
-								count_dup = count_dup + 1;
-						}
-					}
-				}
-			}
-		}
+	if(entry_cmp(VSList[i][3].toLowerCase(), document.form.vts_proto_x_0.value.toLowerCase(), 5)==0){
+	if(!(portrange_min(document.form.vts_port_x_0.value, 11) > portrange_max(VSList[i][0], 11) ||
+	portrange_max(document.form.vts_port_x_0.value, 11) < portrange_min(VSList[i][0], 11))){
+	count_dup = count_dup + 1;
 	}
-
-	if (count_dup != "0"){
-		alert('<#JS_duplicate#>');
-		split_vts_rule();
+	if(entry_cmp(VSList[i][1], document.form.vts_ipaddr_x_0.value.toLowerCase(), 15)==0){
+	if(document.form.vts_lport_x_0.value.length!=0){
+	if(entry_cmp(VSList[i][2], "", 5)==0){
+	if(!(portrange_min(document.form.vts_lport_x_0.value, 5) > portrange_max(VSList[i][0], 11) || portrange_max(document.form.vts_lport_x_0.value, 5) < portrange_min(VSList[i][0], 11))){
+	count_dup = count_dup + 1;
+	}
 	}
 	else{
-		document.form.action = "/start_apply.htm";
-		document.form.target = "hidden_frame";
-		document.form.action_mode.value = " Add ";
-		document.form.current_page.value = "";
-		document.form.next_page.value = "";
-		document.form.submit();
+	if(portrange_min(document.form.vts_lport_x_0.value,5) == portrange_min(VSList[i][2], 5)){
+	count_dup = count_dup + 1;
+	}
+	}
+	}
+	else{
+	if(entry_cmp(VSList[i][2], "", 5)==0){
+	if(!(portrange_min(document.form.vts_port_x_0.value, 11) > portrange_max(VSList[i][0], 11) ||
+	portrange_max(document.form.vts_port_x_0.value, 11) < portrange_min(VSList[i][0], 11))){
+	count_dup = count_dup + 1;
+	}
+	}
+	else{
+	if(!(portrange_min(document.form.vts_port_x_0.value, 11) > portrange_min(VSList[i][2], 5) ||
+	portrange_max(document.form.vts_port_x_0.value, 11) < portrange_min(VSList[i][2], 5))){
+	count_dup = count_dup + 1;
+	}
+	}
+	}
+	}
+	}
+	}
+	
+	if (count_dup != "0"){
+	alert('<#JS_duplicate#>');
+	split_vts_rule();
+	}
+	else{
+	document.form.action = "/start_apply.htm";
+	document.form.target = "hidden_frame";
+	document.form.action_mode.value = " Add ";
+	document.form.current_page.value = "";
+	document.form.next_page.value = "";
+	document.form.submit();
 	}
 }
 
@@ -370,33 +370,33 @@ function showLANIPList(){
 	var code = "";
 	var show_name = "";
 	for(var i = 0; i < clients_info.length ; i++){
-		if(clients_info[i][0] && clients_info[i][0].length > 20)
-			show_name = clients_info[i][0].substring(0, 18) + "..";
-		else
-			show_name = clients_info[i][0];
-
-		if(clients_info[i][1]){
-			code += '<a href="javascript:void(0)"><div onclick="setClientIP('+i+');"><strong>'+clients_info[i][1]+'</strong>';
-			if(show_name && show_name.length > 0)
-				code += ' ('+show_name+')';
-			code += ' </div></a>';
-		}
+	if(clients_info[i][0] && clients_info[i][0].length > 20)
+	show_name = clients_info[i][0].substring(0, 18) + "..";
+	else
+	show_name = clients_info[i][0];
+	
+	if(clients_info[i][1]){
+	code += '<a href="javascript:void(0)"><div onclick="setClientIP('+i+');"><strong>'+clients_info[i][1]+'</strong>';
+	if(show_name && show_name.length > 0)
+	code += ' ('+show_name+')';
+	code += ' </div></a>';
+	}
 	}
 	if (code == "")
-		code = '<div style="text-align: center;" onclick="hideClients_Block();"><#Nodata#></div>';
+	code = '<div style="text-align: center;" onclick="hideClients_Block();"><#Nodata#></div>';
 	code +='<!--[if lte IE 6.5]><iframe class="hackiframe2"></iframe><![endif]-->';
 	$("ClientList_Block").innerHTML = code;
 }
 
 function pullLANIPList(obj){
 	if(isMenuopen == 0){
-		$j(obj).children('i').removeClass('icon-chevron-down').addClass('icon-chevron-up');
-		$("ClientList_Block").style.display = 'block';
-		document.form.vts_ipaddr_x_0.focus();
-		isMenuopen = 1;
+	$j(obj).children('i').removeClass('icon-chevron-down').addClass('icon-chevron-up');
+	$("ClientList_Block").style.display = 'block';
+	document.form.vts_ipaddr_x_0.focus();
+	isMenuopen = 1;
 	}
 	else
-		hideClients_Block();
+	hideClients_Block();
 }
 
 function hideClients_Block(){
@@ -410,38 +410,38 @@ function showVSList(){
 	var code = '';
 	var proto, srcip, eport, lport;
 	if(VSList.length == 0)
-		code +='<tr><td colspan="7" style="text-align: center;"><div class="alert alert-info"><#IPConnection_VSList_Norule#></div></td></tr>';
+	code +='<tr><td colspan="7" style="text-align: center;"><div class="alert alert-info"><#IPConnection_VSList_Norule#></div></td></tr>';
 	else{
 	    for(i = 0; i < VSList.length; i++){
-		srcip = "*";
-		eport = "";
-		lport = "";
-		proto = VSList[i][3];
-		if(proto == "OTHER"){
-			proto = VSList[i][4];
-		}else{
-			if (proto == "BOTH")
-				proto = "TCP/UDP";
-			eport = VSList[i][0];
-			if (VSList[i][2] != null && VSList[i][2] != "")
-				lport = VSList[i][2];
-		}
-		if (VSList[i][5] != null && VSList[i][5] != "")
-			srcip = VSList[i][5];
-		code +='<tr id="row' + i + '">';
-		code +='<td>&nbsp;'             + VSList[i][6] + '</td>';
-		code +='<td width="18%">&nbsp;' + srcip + '</td>';
-		code +='<td width="15%">&nbsp;' + eport + '</td>';
-		code +='<td width="22%">&nbsp;' + VSList[i][1] + '</td>';
-		code +='<td width="10%">&nbsp;' + lport + '</td>';
-		code +='<td width="11%">&nbsp;' + proto + '</td>';
-		code +='<td width="5%" style="text-align: center;"><input type="checkbox" name="VSList_s" value="' + i + '" onClick="changeBgColor(this,' + i + ');" id="check' + i + '"></td>';
-		code +='</tr>';
+	srcip = "*";
+	eport = "";
+	lport = "";
+	proto = VSList[i][3];
+	if(proto == "OTHER"){
+	proto = VSList[i][4];
+	}else{
+	if (proto == "BOTH")
+	proto = "TCP/UDP";
+	eport = VSList[i][0];
+	if (VSList[i][2] != null && VSList[i][2] != "")
+	lport = VSList[i][2];
+	}
+	if (VSList[i][5] != null && VSList[i][5] != "")
+	srcip = VSList[i][5];
+	code +='<tr id="row' + i + '">';
+	code +='<td>&nbsp;'             + VSList[i][6] + '</td>';
+	code +='<td width="18%">&nbsp;' + srcip + '</td>';
+	code +='<td width="15%">&nbsp;' + eport + '</td>';
+	code +='<td width="22%">&nbsp;' + VSList[i][1] + '</td>';
+	code +='<td width="10%">&nbsp;' + lport + '</td>';
+	code +='<td width="11%">&nbsp;' + proto + '</td>';
+	code +='<td width="5%" style="text-align: center;"><input type="checkbox" name="VSList_s" value="' + i + '" onClick="changeBgColor(this,' + i + ');" id="check' + i + '"></td>';
+	code +='</tr>';
 	    }
-		code += '<tr>';
-		code += '<td colspan="6">&nbsp;</td>'
-		code += '<td><button class="btn btn-danger" type="submit" onclick="markGroupVS(this, 64,\' Del \');" name="VSList"><i class="icon icon-minus icon-white"></i></button></td>';
-		code += '</tr>'
+	code += '<tr>';
+	code += '<td colspan="6">&nbsp;</td>'
+	code += '<td><button class="btn btn-danger" type="submit" onclick="markGroupVS(this, 64,\' Del \');" name="VSList"><i class="icon icon-minus icon-white"></i></button></td>';
+	code += '</tr>'
 	}
 	$j('#VSList_Block').append(code);
 }
@@ -457,17 +457,17 @@ function valid_IP_subnet(obj){
 	var ipPattern4 = new RegExp("(^(\\*)\\.(\\*)\\.(\\*)\\.(\\*)$)", "gi");
 	var parts = obj.value.split(".");
 	if(!ipPattern1.test(obj.value) && !ipPattern2.test(obj.value) && !ipPattern3.test(obj.value) && !ipPattern4.test(obj.value)){
-		alert(obj.value + " <#JS_validip#>");
-		obj.focus();
-		obj.select();
-		return false;
+	alert(obj.value + " <#JS_validip#>");
+	obj.focus();
+	obj.select();
+	return false;
 	}else if(parts[0] == 0 || parts[0] > 255 || parts[1] > 255 || parts[2] > 255){
-		alert(obj.value + " <#JS_validip#>");
-		obj.focus();
-		obj.select();
-		return false;
+	alert(obj.value + " <#JS_validip#>");
+	obj.focus();
+	obj.select();
+	return false;
 	}else
-		return true;
+	return true;
 }
 
 </script>

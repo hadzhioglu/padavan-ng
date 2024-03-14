@@ -38,20 +38,25 @@ function initial(){
 	show_menu(5,2,1);
 	show_footer();
 
+	var o1 = document.form.wl_gmode;
+	var o2 = document.form.wl_mcs_mode;
+
+	if (!support_5g_11ax()){
+	o1.remove(0);
+	}
+
 	if (!support_5g_11ac()){
-		var o1 = document.form.wl_gmode;
-		o1.remove(0);
-		o1.remove(0);
-		o1.options[0].text = "a/n Mixed (*)";
-		insert_vht_bw(0);
-		o1 = document.form.wl_mcs_mode;
-		o1.remove(1);
-		o1.remove(1);
-		o1.remove(1);
+	o1.remove(0);
+	o1.remove(0);
+	o1.options[0].text = "a/n Mixed (*)";
+	insert_vht_bw(0);
+	o2.remove(1);
+	o2.remove(1);
+	o2.remove(1);
 	}
 
 	if (!support_5g_160mhz()){
-		document.form.wl_HT_BW.remove(3);
+	document.form.wl_HT_BW.remove(3);
 	}
 
 	document.form.wl_radio_date_x_Sun.checked = getDateCheck(document.form.wl_radio_date_x.value, 0);
@@ -79,7 +84,7 @@ function initial(){
 	document.form.wl_phrase_x.value = decodeURIComponent(document.form.wl_phrase_x_org.value);
 
 	if(document.form.wl_wpa_psk.value.length < 1)
-		document.form.wl_wpa_psk.value = "Please type Password";
+	document.form.wl_wpa_psk.value = "Please type Password";
 
 	insertChannelOption();
 	wl_auth_mode_change(1);
@@ -97,49 +102,49 @@ function applyRule(){
 	var auth_mode = document.form.wl_auth_mode.value;
 
 	if(document.form.wl_wpa_psk.value == "Please type Password")
-		document.form.wl_wpa_psk.value = "";
+	document.form.wl_wpa_psk.value = "";
 
 	if(validForm()){
-		document.form.wl_radio_date_x.value = setDateCheck(
-		    document.form.wl_radio_date_x_Sun,
-		    document.form.wl_radio_date_x_Mon,
-		    document.form.wl_radio_date_x_Tue,
-		    document.form.wl_radio_date_x_Wed,
-		    document.form.wl_radio_date_x_Thu,
-		    document.form.wl_radio_date_x_Fri,
-		    document.form.wl_radio_date_x_Sat);
-		document.form.wl_radio_time_x.value = setTimeRange(
-		    document.form.wl_radio_time_x_starthour,
-		    document.form.wl_radio_time_x_startmin,
-		    document.form.wl_radio_time_x_endhour,
-		    document.form.wl_radio_time_x_endmin);
-		document.form.wl_radio_time2_x.value = setTimeRange(
-		    document.form.wl_radio_time2_x_starthour,
-		    document.form.wl_radio_time2_x_startmin,
-		    document.form.wl_radio_time2_x_endhour,
-		    document.form.wl_radio_time2_x_endmin);
-
-		showLoading();
-
-		document.form.action_mode.value = " Apply ";
-		document.form.current_page.value = "/Advanced_Wireless_Content.asp";
-		document.form.next_page.value = "";
-
-		if(auth_mode == "wpa" || auth_mode == "wpa2" || auth_mode == "radius")
-			document.form.next_page.value = "/Advanced_WSecurity_Content.asp";
-
-		inputCtrl(document.form.wl_crypto, 1);
-		inputCtrl(document.form.wl_wpa_psk, 1);
-		inputCtrl(document.form.wl_wep_x, 1);
-		inputCtrl(document.form.wl_key, 1);
-		inputCtrl(document.form.wl_key1, 1);
-		inputCtrl(document.form.wl_key2, 1);
-		inputCtrl(document.form.wl_key3, 1);
-		inputCtrl(document.form.wl_key4, 1);
-		inputCtrl(document.form.wl_phrase_x, 1);
-		inputCtrl(document.form.wl_wpa_gtk_rekey, 1);
-
-		document.form.submit();
+	document.form.wl_radio_date_x.value = setDateCheck(
+	    document.form.wl_radio_date_x_Sun,
+	    document.form.wl_radio_date_x_Mon,
+	    document.form.wl_radio_date_x_Tue,
+	    document.form.wl_radio_date_x_Wed,
+	    document.form.wl_radio_date_x_Thu,
+	    document.form.wl_radio_date_x_Fri,
+	    document.form.wl_radio_date_x_Sat);
+	document.form.wl_radio_time_x.value = setTimeRange(
+	    document.form.wl_radio_time_x_starthour,
+	    document.form.wl_radio_time_x_startmin,
+	    document.form.wl_radio_time_x_endhour,
+	    document.form.wl_radio_time_x_endmin);
+	document.form.wl_radio_time2_x.value = setTimeRange(
+	    document.form.wl_radio_time2_x_starthour,
+	    document.form.wl_radio_time2_x_startmin,
+	    document.form.wl_radio_time2_x_endhour,
+	    document.form.wl_radio_time2_x_endmin);
+	
+	showLoading();
+	
+	document.form.action_mode.value = " Apply ";
+	document.form.current_page.value = "/Advanced_Wireless_Content.asp";
+	document.form.next_page.value = "";
+	
+	if(auth_mode == "wpa" || auth_mode == "wpa2" || auth_mode == "radius")
+	document.form.next_page.value = "/Advanced_WSecurity_Content.asp";
+	
+	inputCtrl(document.form.wl_crypto, 1);
+	inputCtrl(document.form.wl_wpa_psk, 1);
+	inputCtrl(document.form.wl_wep_x, 1);
+	inputCtrl(document.form.wl_key, 1);
+	inputCtrl(document.form.wl_key1, 1);
+	inputCtrl(document.form.wl_key2, 1);
+	inputCtrl(document.form.wl_key3, 1);
+	inputCtrl(document.form.wl_key4, 1);
+	inputCtrl(document.form.wl_phrase_x, 1);
+	inputCtrl(document.form.wl_wpa_gtk_rekey, 1);
+	
+	document.form.submit();
 	}
 }
 
@@ -195,28 +200,31 @@ function validForm(){
         }
     }
 
+	if(!validate_string_ssid(document.form.wl_ssid))
+	return false;
+
 	if(document.form.wl_ssid.value == "")
-		document.form.wl_ssid.value = "ASUS_5G";
+	document.form.wl_ssid.value = "ASUS_5G";
 
 	if(document.form.wl_wep_x.value != "0")
-		if(!validate_wlphrase('WLANConfig11a', 'wl_phrase_x', document.form.wl_phrase_x))
-			return false;
+	if(!validate_wlphrase('WLANConfig11a', 'wl_phrase_x', document.form.wl_phrase_x))
+	return false;
 
 	if(auth_mode == "psk"){
-		if(!validate_psk(document.form.wl_wpa_psk))
-			return false;
-
-		if(!validate_range(document.form.wl_wpa_gtk_rekey, 0, 2592000))
-			return false;
+	if(!validate_psk(document.form.wl_wpa_psk))
+	return false;
+	
+	if(!validate_range(document.form.wl_wpa_gtk_rekey, 0, 2592000))
+	return false;
 	}
 	else if(auth_mode == "wpa" || auth_mode == "wpa2"){
-		if(!validate_range(document.form.wl_wpa_gtk_rekey, 0, 2592000))
-			return false;
+	if(!validate_range(document.form.wl_wpa_gtk_rekey, 0, 2592000))
+	return false;
 	}
 	else{
-		var cur_wep_key = eval('document.form.wl_key'+document.form.wl_key.value);
-		if(auth_mode != "radius" && !validate_wlkey(cur_wep_key))
-			return false;
+	var cur_wep_key = eval('document.form.wl_key'+document.form.wl_key.value);
+	if(auth_mode != "radius" && !validate_wlkey(cur_wep_key))
+	return false;
 	}
 
 	return true;
@@ -230,22 +238,22 @@ function change_key_des(){
 	var objs = getElementsByName_iefix("span", "key_des");
 	var wep_type = document.form.wl_wep_x.value;
 	var str = "";
-
+	
 	if(wep_type == "1")
-		str = "(<#WLANConfig11b_WEPKey_itemtype1#>)";
+	str = "(<#WLANConfig11b_WEPKey_itemtype1#>)";
 	else if(wep_type == "2")
-		str = "(<#WLANConfig11b_WEPKey_itemtype2#>)";
-
+	str = "(<#WLANConfig11b_WEPKey_itemtype2#>)";
+	
 	for(var i = 0; i < objs.length; ++i)
-		showtext(objs[i], str);
+	showtext(objs[i], str);
 }
 
 function validate_wlphrase(s, v, obj){
 	if(!validate_string(obj)){
-		is_wlphrase(s, v, obj);
-		return(false);
+	is_wlphrase(s, v, obj);
+	return(false);
 	}
-
+	
 	return true;
 }
 
@@ -280,7 +288,7 @@ function validate_wlphrase(s, v, obj){
     <input type="hidden" name="wl_radio_date_x" value="<% nvram_get_x("","wl_radio_date_x"); %>">
     <input type="hidden" name="wl_radio_time_x" value="<% nvram_get_x("","wl_radio_time_x"); %>">
     <input type="hidden" name="wl_radio_time2_x" value="<% nvram_get_x("","wl_radio_time2_x"); %>">
-    <input type="hidden" name="wl_ssid2" value="<% nvram_get_x("",  "wl_ssid"); %>">
+    <input type="hidden" name="wl_ssid2" value="<% nvram_char_to_ascii("",  "wl_ssid"); %>">
     <input type="hidden" name="wl_wpa_mode" value="<% nvram_get_x("","wl_wpa_mode"); %>">
     <input type="hidden" name="wl_wpa_psk_org" value="<% nvram_char_to_ascii("", "wl_wpa_psk"); %>">
     <input type="hidden" name="wl_key1_org" value="<% nvram_char_to_ascii("", "wl_key1"); %>">
@@ -394,8 +402,9 @@ function validate_wlphrase(s, v, obj){
                                             <th><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this, 0, 4);"><#WLANConfig11b_x_Mode11g_itemname#></a></th>
                                             <td>
                                                 <select name="wl_gmode" class="input" onChange="return change_common_wl(this, 'WLANConfig11a', 'wl_gmode')">
-                                                    <option value="4" <% nvram_match_x("","wl_gmode", "4","selected"); %>>a/n/ac Mixed</option>
-                                                    <option value="3" <% nvram_match_x("","wl_gmode", "3","selected"); %>>n/ac Mixed (*)</option>
+                                                    <option value="5" <% nvram_match_x("","wl_gmode", "5","selected"); %>>a/n/ac/ax Mixed</option>
+                                                    <option value="4" <% nvram_match_x("","wl_gmode", "4","selected"); %>>a/n/ac Mixed (*)</option>
+                                                    <option value="3" <% nvram_match_x("","wl_gmode", "3","selected"); %>>n/ac Mixed</option>
                                                     <option value="2" <% nvram_match_x("","wl_gmode", "2","selected"); %>>a/n Mixed</option>
                                                     <option value="1" <% nvram_match_x("","wl_gmode", "1","selected"); %>>n Only</option>
                                                     <option value="0" <% nvram_match_x("","wl_gmode", "0","selected"); %>>a Only</option>
@@ -409,7 +418,7 @@ function validate_wlphrase(s, v, obj){
                                                 <select name="wl_HT_BW" class="input" onChange="return change_common_wl(this, 'WLANConfig11a', 'wl_HT_BW')">
                                                     <option value="0" <% nvram_match_x("","wl_HT_BW", "0","selected"); %>>20 MHz</option>
                                                     <option value="1" <% nvram_match_x("","wl_HT_BW", "1","selected"); %>>20/40 MHz</option>
-                                                    <option value="2" <% nvram_match_x("","wl_HT_BW", "2","selected"); %>>20/40/80 MHz (*)</option>
+                                                    <option value="2" <% nvram_match_x("","wl_HT_BW", "2","selected"); %>>20/40/80 MHz</option>
                                                     <option value="3" <% nvram_match_x("","wl_HT_BW", "3","selected"); %>>20/40/80/160 MHz</option>
                                                 </select>
                                             </td>
@@ -453,7 +462,7 @@ function validate_wlphrase(s, v, obj){
                                                     <option value="open" <% nvram_match_x("", "wl_auth_mode", "open", "selected"); %>>Open System</option>
                                                     <option value="shared" <% nvram_match_x("", "wl_auth_mode", "shared", "selected"); %>>Shared Key</option>
                                                     <option value="psk" <% nvram_double_match_x("", "wl_auth_mode", "psk", "", "wl_wpa_mode", "1", "selected"); %>>WPA-Personal</option>
-                                                    <option value="psk" <% nvram_double_match_x("", "wl_auth_mode", "psk", "", "wl_wpa_mode", "2", "selected"); %>>WPA2-Personal (*)</option>
+                                                    <option value="psk" <% nvram_double_match_x("", "wl_auth_mode", "psk", "", "wl_wpa_mode", "2", "selected"); %>>WPA2-Personal</option>
                                                     <option value="psk" <% nvram_double_match_x("", "wl_auth_mode", "psk", "", "wl_wpa_mode", "0", "selected"); %>>WPA-Auto-Personal</option>
                                                     <option value="wpa" <% nvram_double_match_x("", "wl_auth_mode", "wpa", "", "wl_wpa_mode", "3", "selected"); %>>WPA-Enterprise (Radius)</option>
                                                     <option value="wpa2" <% nvram_match_x("", "wl_auth_mode", "wpa2", "selected"); %>>WPA2-Enterprise (Radius)</option>
@@ -557,18 +566,15 @@ function validate_wlphrase(s, v, obj){
                                             <th><#WIFIRegionCode#></th>
                                             <td>
                                                 <select name="wl_country_code" class="input" onChange="return change_common_wl(this, 'WLANConfig11a', 'wl_country_code')">
-                                                    <option value="AU" <% nvram_match_x("", "wl_country_code", "AU","selected"); %>>Australia (Region 0, channels 36-64,149-165)</option>
-                                                    <option value="BY" <% nvram_match_x("", "wl_country_code", "BY","selected"); %>>Belarus (Region 34, channels 36-64,132-144)</option>
-                                                    <option value="CN" <% nvram_match_x("", "wl_country_code", "CN","selected"); %>>China (Region 0, channels 36-64,149-165)</option>
-                                                    <option value="GB" <% nvram_match_x("", "wl_country_code", "GB","selected"); %>>Europe (Region 1, channels 36-64,100-140)</option>
-                                                    <option value="FR" <% nvram_match_x("", "wl_country_code", "FR","selected"); %>>France (Region 2, channels 36-64)</option>
-                                                    <option value="JP" <% nvram_match_x("", "wl_country_code", "JP","selected"); %>>Japan (Region 9, channels 36-64,100-116,132-140,149-165)</option>
-                                                    <option value="KR" <% nvram_match_x("", "wl_country_code", "KR","selected"); %>>Korea (Region 5, channels 149-161)</option>
-                                                    <option value="NO" <% nvram_match_x("", "wl_country_code", "NO","selected"); %>>Norway (Region 0, channels 36-64,149-165)</option>
-                                                    <option value="RU" <% nvram_match_x("", "wl_country_code", "RU","selected"); %>>Russia (Region 36, channels 36-64,132-144,149-165)</option>
-                                                    <option value="TW" <% nvram_match_x("", "wl_country_code", "TW","selected"); %>>Taiwan (Region 3, channels 52-64,149-161)</option>
-                                                    <option value="UA" <% nvram_match_x("", "wl_country_code", "UA","selected"); %>>Ukraine (Region 35, channels 36-64,100-140,149-165)</option>
-                                                    <option value="US" <% nvram_match_x("", "wl_country_code", "US","selected"); %>>USA (Region 0, channels 36-64,149-165)</option>
+                                                    <option value="US" <% nvram_match_x("", "wl_country_code", "US","selected"); %>>USA (channels 36,40,44,48,149,153,157,161,165)</option>
+                                                    <option value="AU" <% nvram_match_x("", "wl_country_code", "AU","selected"); %>>Australia (channels 36,40,44,48,149,153,157,161,165)</option>
+                                                    <option value="NO" <% nvram_match_x("", "wl_country_code", "NO","selected"); %>>Norway (channels 36,40,44,48,149,153,157,161,165)</option>
+                                                    <option value="FR" <% nvram_match_x("", "wl_country_code", "FR","selected"); %>>France (channels 36,40,44,48)</option>
+                                                    <option value="GB" <% nvram_match_x("", "wl_country_code", "GB","selected"); %>>Europe (channels 36,40,44,48)</option>
+                                                    <option value="TW" <% nvram_match_x("", "wl_country_code", "TW","selected"); %>>Taiwan (channels 149,153,157,161)</option>
+                                                    <option value="CN" <% nvram_match_x("", "wl_country_code", "CN","selected"); %>>China (channels 36,40,44,48,149,153,157,161,165)</option>
+                                                    <option value="KR" <% nvram_match_x("", "wl_country_code", "KR","selected"); %>>Korea (channels 149,153,157,161)</option>
+                                                    <option value="JP" <% nvram_match_x("", "wl_country_code", "JP","selected"); %>>Japan (channels 36,40,44,48)</option>
                                                     <option value="DB" <% nvram_match_x("", "wl_country_code", "DB","selected"); %>>Debug (all channels)</option>
                                                 </select>
                                             </td>

@@ -51,9 +51,9 @@ function initial(){
 	var id_menu = 4;
 
 	if(!found_app_smbd() && !found_app_ftpd())
-		id_menu = 2;
+	id_menu = 2;
 	else if(!found_app_smbd() || !found_app_ftpd())
-		id_menu = 3;
+	id_menu = 3;
 
 	show_banner(1);
 	show_menu(5,6,id_menu);
@@ -71,7 +71,7 @@ function switch_modem_rule(){
 	showhide_div('tbl_modem_adv', v);
 
 	if (v){
-		change_modem_dns_auto();
+	change_modem_dns_auto();
 	}
 
 	switch_modem_type();
@@ -80,32 +80,32 @@ function switch_modem_rule(){
 function switch_modem_type(){
 	var mtype = document.form.modem_type.value;
 	if (mtype == "3") {
-		$("row_modem_dial").style.display = "none";
-		$("row_modem_apn").style.display = "";
-		$("row_modem_nets").style.display = "";
-
-		$("hint_user").innerHTML = "* QMI only";
-		$("hint_pass").innerHTML = "* QMI only";
-		$("hint_node").innerHTML = "* NCM only";
-		$("hint_nets").innerHTML = "* QMI only";
-		$("hint_pin").innerHTML  = "* QMI only";
-		$("hint_cmd").innerHTML  = "* NCM only";
+	$("row_modem_dial").style.display = "none";
+	$("row_modem_apn").style.display = "";
+	$("row_modem_nets").style.display = "";
+	
+	$("hint_user").innerHTML = "* QMI only";
+	$("hint_pass").innerHTML = "* QMI only";
+	$("hint_node").innerHTML = "* NCM only";
+	$("hint_nets").innerHTML = "* QMI only";
+	$("hint_pin").innerHTML  = "* QMI only";
+	$("hint_cmd").innerHTML  = "* NCM only";
 	}
 	else {
-		$("row_modem_dial").style.display = "";
-		$("row_modem_nets").style.display = "none";
-
-		if (mtype == "1")
-			$("row_modem_apn").style.display = "none";
-		else
-			$("row_modem_apn").style.display = "";
-
-		$("hint_user").innerHTML = "";
-		$("hint_pass").innerHTML = "";
-		$("hint_node").innerHTML = "";
-		$("hint_nets").innerHTML = "";
-		$("hint_pin").innerHTML  = "";
-		$("hint_cmd").innerHTML  = "";
+	$("row_modem_dial").style.display = "";
+	$("row_modem_nets").style.display = "none";
+	
+	if (mtype == "1")
+	$("row_modem_apn").style.display = "none";
+	else
+	$("row_modem_apn").style.display = "";
+	
+	$("hint_user").innerHTML = "";
+	$("hint_pass").innerHTML = "";
+	$("hint_node").innerHTML = "";
+	$("hint_nets").innerHTML = "";
+	$("hint_pin").innerHTML  = "";
+	$("hint_cmd").innerHTML  = "";
 	}
 	gen_list();
 	show_APN_list();
@@ -118,13 +118,13 @@ function change_modem_dns_auto(){
 	inputCtrl(document.form.wan_dns3_x, !use_auto);
 
 	if (use_auto){
-		$("row_wan_dns1").style.display = "none";
-		$("row_wan_dns2").style.display = "none";
-		$("row_wan_dns3").style.display = "none";
+	$("row_wan_dns1").style.display = "none";
+	$("row_wan_dns2").style.display = "none";
+	$("row_wan_dns3").style.display = "none";
 	} else {
-		$("row_wan_dns1").style.display = "";
-		$("row_wan_dns2").style.display = "";
-		$("row_wan_dns3").style.display = "";
+	$("row_wan_dns1").style.display = "";
+	$("row_wan_dns2").style.display = "";
+	$("row_wan_dns3").style.display = "";
 	}
 }
 
@@ -135,45 +135,45 @@ function gen_list(){
 	gen_isp_list();
 
 	if (mtype != "3"){
-		var sp_idx = 0;
-		var sp_len = 0;
-		var ar_len = protolist.length;
-		for(i = 0; i < ar_len; i++){
-			if(protolist[i] == mtype){
-				if (sp_len == 0)
-					sp_idx = i;
-				sp_len++;
-			}
-			else if (sp_len > 0){
-				break;
-			}
-		}
-
-		if (sp_len > 0){
-			var x, n;
-			if ((sp_idx+sp_len) < ar_len){
-				x = sp_idx+sp_len;
-				n = ar_len-(sp_idx+sp_len);
-				protolist.splice(x, n);
-				isplist.splice(x, n);
-				apnlist.splice(x, n);
-				diallist.splice(x, n);
-				userlist.splice(x, n);
-				passlist.splice(x, n);
-			}
-
-			if (sp_idx > 0) {
-				protolist.splice(0, sp_idx);
-				isplist.splice(0, sp_idx);
-				apnlist.splice(0, sp_idx);
-				diallist.splice(0, sp_idx);
-				userlist.splice(0, sp_idx);
-				passlist.splice(0, sp_idx);
-			}
-		}
-		else {
-			gen_isp_list_empty();
-		}
+	var sp_idx = 0;
+	var sp_len = 0;
+	var ar_len = protolist.length;
+	for(i = 0; i < ar_len; i++){
+	if(protolist[i] == mtype){
+	if (sp_len == 0)
+	sp_idx = i;
+	sp_len++;
+	}
+	else if (sp_len > 0){
+	break;
+	}
+	}
+	
+	if (sp_len > 0){
+	var x, n;
+	if ((sp_idx+sp_len) < ar_len){
+	x = sp_idx+sp_len;
+	n = ar_len-(sp_idx+sp_len);
+	protolist.splice(x, n);
+	isplist.splice(x, n);
+	apnlist.splice(x, n);
+	diallist.splice(x, n);
+	userlist.splice(x, n);
+	passlist.splice(x, n);
+	}
+	
+	if (sp_idx > 0) {
+	protolist.splice(0, sp_idx);
+	isplist.splice(0, sp_idx);
+	apnlist.splice(0, sp_idx);
+	diallist.splice(0, sp_idx);
+	userlist.splice(0, sp_idx);
+	passlist.splice(0, sp_idx);
+	}
+	}
+	else {
+	gen_isp_list_empty();
+	}
 	}
 
 	append_isp_list_empty();
@@ -182,18 +182,18 @@ function gen_list(){
 	$("modem_isp").options.length = isplist.length;
 
 	for(i = 0; i < isplist.length; i++){
-		var caption = isplist[i];
-		if (mtype == "3"){
-			if (protolist[i] == "1")
-				caption = caption + " (EVDO)";
-			else if (protolist[i] == "2")
-				caption = caption + " (TD-SCDMA)";
-			else if (protolist[i] == "3")
-				caption = caption + " (LTE)";
-		}
-		$("modem_isp").options[i] = new Option(caption, isplist[i]);
-		if(isplist[i] == isp)
-			$("modem_isp").options[i].selected = "1";
+	var caption = isplist[i];
+	if (mtype == "3"){
+	if (protolist[i] == "1")
+	caption = caption + " (EVDO)";
+	else if (protolist[i] == "2")
+	caption = caption + " (TD-SCDMA)";
+	else if (protolist[i] == "3")
+	caption = caption + " (LTE)";
+	}
+	$("modem_isp").options[i] = new Option(caption, isplist[i]);
+	if(isplist[i] == isp)
+	$("modem_isp").options[i].selected = "1";
 	}
 }
 
@@ -201,50 +201,50 @@ function show_APN_list(){
 	var ISPlist = $("modem_isp").value;
 
 	if((ISPlist == isp) && (apn != "" || user != "" || pass != "")){
-		$("modem_apn").value = apn;
-		if (dialnum != "")
-			$("modem_dialnum").value = dialnum;
-		$("modem_user").value = user;
-		$("modem_pass").value = pass;
+	$("modem_apn").value = apn;
+	if (dialnum != "")
+	$("modem_dialnum").value = dialnum;
+	$("modem_user").value = user;
+	$("modem_pass").value = pass;
 	}
 	else{
-		for(var i = 0; i < isplist.length; i++){
-			if(isplist[i] == ISPlist){
-				$("modem_apn").value = apnlist[i];
-				$("modem_dialnum").value = diallist[i];
-				$("modem_user").value = userlist[i];
-				$("modem_pass").value = passlist[i];
-				break;
-			}
-		}
+	for(var i = 0; i < isplist.length; i++){
+	if(isplist[i] == ISPlist){
+	$("modem_apn").value = apnlist[i];
+	$("modem_dialnum").value = diallist[i];
+	$("modem_user").value = userlist[i];
+	$("modem_pass").value = passlist[i];
+	break;
+	}
+	}
 	}
 }
 
 function applyRule(){
 	if(validForm()){
-		showLoading();
-
-		document.form.action_mode.value = " Apply ";
-		document.form.current_page.value = "/Advanced_Modem_others.asp";
-		document.form.next_page.value = "";
-		document.form.submit();
+	showLoading();
+	
+	document.form.action_mode.value = " Apply ";
+	document.form.current_page.value = "/Advanced_Modem_others.asp";
+	document.form.next_page.value = "";
+	document.form.submit();
 	}
 }
 
 function validForm(){
 	if (!document.form.modem_rule[0].checked)
-		return true;
+	return true;
 
 	if(!validate_range(document.form.modem_mtu, 1000, 1500))
-		return false;
+	return false;
 
 	if(!document.form.modem_dnsa[0].checked){
-		if(!validate_ipaddr_final(document.form.wan_dns1_x, 'wan_dns_x'))
-			return false;
-		if(!validate_ipaddr_final(document.form.wan_dns2_x, 'wan_dns_x'))
-			return false;
-		if(!validate_ipaddr_final(document.form.wan_dns3_x, 'wan_dns_x'))
-			return false;
+	if(!validate_ipaddr_final(document.form.wan_dns1_x, 'wan_dns_x'))
+	return false;
+	if(!validate_ipaddr_final(document.form.wan_dns2_x, 'wan_dns_x'))
+	return false;
+	if(!validate_ipaddr_final(document.form.wan_dns3_x, 'wan_dns_x'))
+	return false;
 	}
 
 	return true;

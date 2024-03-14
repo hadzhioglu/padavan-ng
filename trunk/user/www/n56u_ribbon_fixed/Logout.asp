@@ -14,16 +14,16 @@
 function initial(){
 	var xmlhttp;
 	try{
-		if (window.XMLHttpRequest)
-			xmlhttp=new XMLHttpRequest();
-		else
-			xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	if (window.XMLHttpRequest)
+	xmlhttp=new XMLHttpRequest();
+	else
+	xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
 	}catch (e){
-		xmlhttp=null;
+	xmlhttp=null;
 	}
 	if (xmlhttp != null){
-		xmlhttp.open("HEAD","logout",true,"logout","");
-		xmlhttp.send(null);
+	xmlhttp.open("HEAD","logout",true,"logout","");
+	xmlhttp.send(null);
 	}
 }
 </script>

@@ -2,7 +2,7 @@ var wep1, wep2, wep3, wep4;
 
 function automode_hint() {
     var gmode = document.form.wl_gmode.value;
-    if ((gmode == "2" || gmode == "3" || gmode == "4") &&
+    if ((gmode == "2" || gmode == "3" || gmode == "4" || gmode == "5") &&
        (document.form.wl_wep_x.value == 1 || document.form.wl_wep_x.value == 2 || document.form.wl_auth_mode.value == "radius" ||
             (document.form.wl_crypto.value.indexOf("tkip") == 0 && !document.form.wl_crypto.disabled)))
         $("wl_gmode_hint").style.display = "block";
@@ -465,7 +465,7 @@ function enableExtChRows(o) {
         $("row_HT_BW").style.display = "";
         $("row_HT_EXTCHA").style.display = "";
     }
-    if (o.value == "3" || o.value == "4")
+    if (o.value == "3" || o.value == "4" || o.value == "5")
         insert_vht_bw(1);
     else
         insert_vht_bw(0);
@@ -481,6 +481,7 @@ function insertChannelOption() {
         country == "DZ" ||
         country == "AU" ||
         country == "BH" ||
+        country == "BY" ||
         country == "CA" ||
         country == "CL" ||
         country == "CO" ||
@@ -508,16 +509,18 @@ function insertChannelOption() {
         country == "QA" ||
         country == "CN" ||
         country == "RO" ||
+        country == "RU" ||
         country == "SA" ||
         country == "SG" ||
         country == "SY" ||
         country == "TH" ||
+        country == "UA" ||
         country == "AE" ||
         country == "US" ||
         country == "VN" ||
         country == "YE" ||
         country == "ZW")
-        channels = new Array(0, 36, 40, 44, 48, 52, 56, 60, 64, 149, 153, 157, 161, 165); //Region 0
+        channels = new Array(0, 36, 40, 44, 48, 149, 153, 157, 161, 165); //Region 0
 
     else if (country == "AT" ||
         country == "BE" ||
@@ -548,7 +551,7 @@ function insertChannelOption() {
         country == "CH" ||
         country == "GB" ||
         country == "UZ")
-        channels = new Array(0, 36, 40, 44, 48, 52, 56, 60, 64, 100, 104, 108, 112, 116, 120, 124, 128, 132, 136, 140); //Region 1
+        channels = new Array(0, 36, 40, 44, 48); //Region 1
 
     else if (country == "AM" ||
         country == "AZ" ||
@@ -561,10 +564,10 @@ function insertChannelOption() {
         country == "TT" ||
         country == "TN" ||
         country == "TR")
-        channels = new Array(0, 36, 40, 44, 48, 52, 56, 60, 64); //Region 2
+        channels = new Array(0, 36, 40, 44, 48); //Region 2
 
     else if (country == "AR" || country == "TW")
-        channels = new Array(0, 52, 56, 60, 64, 149, 153, 157); //Region 3
+        channels = new Array(0, 149, 153, 157, 161); //Region 3
 
     else if (country == "BZ" ||
         country == "BO" ||
@@ -582,16 +585,7 @@ function insertChannelOption() {
         channels = new Array(0, 149, 153, 157, 161); //Region 5
 
     else if (country == "JP")
-        channels = new Array(0, 36, 40, 44, 48, 52, 56, 60, 64, 100, 104, 108, 112, 116, 132, 136, 140, 149, 153, 157, 161, 165); //Region 9
-
-    else if(country == "BY")
-        channels = new Array(0, 36, 40, 44, 48, 52, 56, 60, 64, 132, 136, 140, 144); //Region 34
-
-    else if(country == "UA")
-        channels = new Array(0, 36, 40, 44, 48, 52, 56, 60, 64, 100, 104, 108, 112, 116, 120, 124, 128, 132, 136, 140, 149, 153, 157, 161, 165); //Region 35
-
-    else if(country == "RU")
-        channels = new Array(0, 36, 40, 44, 48, 52, 56, 60, 64, 132, 136, 140, 144, 149, 153, 157, 161, 165); //Region 36
+        channels = new Array(0, 36, 40, 44, 48); //Region 9
 
     else
         channels = new Array(0, 36, 40, 44, 48, 52, 56, 60, 64, 100, 104, 108, 112, 116, 120, 124, 128, 132, 136, 140, 149, 153, 157, 161, 165); //Region 7
@@ -761,7 +755,7 @@ function validate_wlkey(key_obj){
 	var wep_type = document.form.wl_wep_x.value;
 	var iscurrect = true;
 	var str = "<#JS_wepkey#>";
-
+	
 	if(wep_type == "0")
 		iscurrect = true;	// do nothing
 	else if(wep_type == "1"){
@@ -775,7 +769,7 @@ function validate_wlkey(key_obj){
 		}
 		else{
 			str += "(<#WLANConfig11b_WEPKey_itemtype1#>)";
-
+			
 			iscurrect = false;
 		}
 	}
@@ -790,7 +784,7 @@ function validate_wlkey(key_obj){
 		}
 		else{
 			str += "(<#WLANConfig11b_WEPKey_itemtype2#>)";
-
+			
 			iscurrect = false;
 		}
 	}
@@ -798,14 +792,14 @@ function validate_wlkey(key_obj){
 		alert("System error!");
 		iscurrect = false;
 	}
-
+	
 	if(iscurrect == false){
 		alert(str);
-
+		
 		key_obj.focus();
 		key_obj.select();
 	}
-
+	
 	return iscurrect;
 }
 

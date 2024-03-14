@@ -1,5 +1,5 @@
 body{
-    background-color: #181818;
+    background-color: #282828;
     overflow-y: scroll;
 }
 body.body_iframe{
@@ -15,7 +15,7 @@ body.body_iframe{
 }
 
 #logo {
-    background-image: url("/bootstrap/img/padavan_logo.png");
+    background-image: url("/bootstrap/img/asus_logo.png");
     width: 150px;
     height: 71px;
     margin-top: 40px;
@@ -334,7 +334,9 @@ li div.accordion a {
     margin-bottom: 1px;
 }
 
-.big-icons{ background: url("../img/icons/big-icons.png") no-repeat top left;}
+.big-ss{ background: url("/bootstrap/img/icons/big-ss.png"); width: 48px; height: 45px; }
+.big-ss-active{ background: url("/bootstrap/img/icons/big-ss-active.png"); width: 48px; height: 45px; }
+.big-icons{ background: url("/bootstrap/img/icons/big-icons.png") no-repeat top left;}
 .big-icons-globe{ background-position: 0 0; width: 48px; height: 48px; }
 .big-icons-laptop{ background-position: 0 -114px; width: 48px; height: 48px; }
 .big-icons-router{ background-position: 0 -228px; width: 48px; height: 48px; }

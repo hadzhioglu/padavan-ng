@@ -222,7 +222,7 @@ function fill_wan_bytes(rx,tx,now){
 		last_bytes_rx = rx;
 		last_bytes_tx = tx;
 		last_time = now;
-
+		
 		$("WANBytesRX").innerHTML = '<i class="icon-arrow-down"></i>'+bytesToIEC(rx,2);
 		$("WANBytesTX").innerHTML = '<i class="icon-arrow-up"></i>'+bytesToIEC(tx,2);
 		$("WANBRateRX").innerHTML = '<i class="icon-arrow-down"></i>'+kbitsToRate(diff_rx,2);
@@ -309,7 +309,16 @@ function submitInternet(v){
     <td id="wan_status" colspan="3"></td>
   </tr>
   <tr>
-    <th><#Connectiontype#>:</th>
+    <th>
+	<select id="wan_domore" class="domore" style="width: 92px;" onchange="domore_link(this);">
+          <option selected="selected"><#Connectiontype#></option>
+          <option value="../Advanced_WAN_Content.asp#1">IPoE: <#BOP_ctype_title5#></option>
+          <option value="../Advanced_WAN_Content.asp#2">IPoE: <#BOP_ctype_title1#></option>
+          <option value="../Advanced_WAN_Content.asp#3">PPPoE: <#BOP_ctype_title2#></option>
+          <option value="../Advanced_WAN_Content.asp#4">PPTP: <#BOP_ctype_title3#></option>
+          <option value="../Advanced_WAN_Content.asp#5">L2TP: <#BOP_ctype_title3#></option>
+        </select>
+	</th>
     <td colspan="3"><span id="WANType"></span></td>
   </tr>
   <tr id="row_uptime" style="display:none">
@@ -355,7 +364,7 @@ function submitInternet(v){
     <td colspan="3"><span id="MANGW4"></span></td>
   </tr>
   <tr>
-    <th>DNS:</th>
+    <th><#DNS#></th>
     <td colspan="3"><span id="WANDNS"></span></td>
   </tr>
   <tr>

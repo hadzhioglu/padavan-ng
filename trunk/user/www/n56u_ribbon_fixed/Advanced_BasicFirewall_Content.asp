@@ -52,92 +52,92 @@ function initial(){
 	firewall_changed();
 
 	if(found_app_sshd()){
-		$("row_sshd").style.display = "";
-		sshd_wopen_changed();
+	$("row_sshd").style.display = "";
+	sshd_wopen_changed();
 	}
 
 	if(found_app_ftpd()){
-		$("row_ftpd_wopen").style.display = "";
-		if (sw_mode != "4")
-			ftpd_wopen_changed();
+	$("row_ftpd_wopen").style.display = "";
+	if (sw_mode != "4")
+	ftpd_wopen_changed();
 	}
 
 	if (sw_mode != "4")
-		udpxy_wopen_changed();
+	udpxy_wopen_changed();
 
 	if(found_app_torr())
-		$("row_torrent").style.display = "";
+	$("row_torrent").style.display = "";
 
 	if(found_app_aria())
-		$("row_aria").style.display = "";
+	$("row_aria").style.display = "";
 
 	if (support_http_ssl()){
-		if (http_proto == "0" || http_proto == "2"){
-			if (sw_mode != "4")
-				http_wopen_changed();
-		}else{
-			$("row_http_wopen").style.display = "none";
-		}
-		if (http_proto == "1" || http_proto == "2"){
-			$("row_https_wopen").style.display = "";
-			if (sw_mode != "4")
-				https_wopen_changed();
-		}
+	if (http_proto == "0" || http_proto == "2"){
+	if (sw_mode != "4")
+	http_wopen_changed();
 	}else{
-		if (sw_mode != "4")
-			http_wopen_changed();
+	$("row_http_wopen").style.display = "none";
+	}
+	if (http_proto == "1" || http_proto == "2"){
+	$("row_https_wopen").style.display = "";
+	if (sw_mode != "4")
+	https_wopen_changed();
+	}
+	}else{
+	if (sw_mode != "4")
+	http_wopen_changed();
 	}
 }
 
 function applyRule(){
 	if(validForm()){
-		showLoading();
-
-		document.form.action_mode.value = " Apply ";
-		document.form.current_page.value = "/Advanced_BasicFirewall_Content.asp";
-		document.form.next_page.value = "";
-
-		document.form.submit();
+	showLoading();
+	
+	document.form.action_mode.value = " Apply ";
+	document.form.current_page.value = "/Advanced_BasicFirewall_Content.asp";
+	document.form.next_page.value = "";
+	
+	document.form.submit();
 	}
 }
 
 function validForm(){
 	if (sw_mode == '4')
-		return true;
+	return true;
 
 	if (support_http_ssl()){
-		if (http_proto == "0" || http_proto == "2"){
-			if(!validate_range(document.form.misc_httpport_x, 80, 65535))
-				return false;
-		}
-		if (http_proto == "1" || http_proto == "2"){
-			if(!validate_range(document.form.https_wport, 81, 65535))
-				return false;
-		}
-		if (http_proto == "2"){
-			if (document.form.misc_httpport_x.value == document.form.https_wport.value){
-				alert("HTTP and HTTPS ports is equal!");
-				document.form.https_wport.focus();
-				document.form.https_wport.select();
-				return false;
-			}
-		}
+	if (http_proto == "0" || http_proto == "2"){
+	if(!validate_range(document.form.misc_httpport_x, 80, 65535))
+	return false;
+	}
+	if (http_proto == "1" || http_proto == "2"){
+	if(!validate_range(document.form.https_wport, 81, 65535))
+	return false;
+	}
+	if (http_proto == "2"){
+	if (document.form.misc_httpport_x.value == document.form.https_wport.value){
+	alert("HTTP and HTTPS ports is equal!");
+	document.form.https_wport.focus();
+	document.form.https_wport.select();
+	return false;
+	}
+	}
 	}else{
-		if(!validate_range(document.form.misc_httpport_x, 80, 65535))
-			return false;
+	if(!validate_range(document.form.misc_httpport_x, 80, 65535))
+	return false;
 	}
 
 	if(!validate_range(document.form.udpxy_wport, 1024, 65535))
-		return false;
+	return false;
 
 	if(found_app_sshd()){
-		if(!validate_range(document.form.sshd_wport, 22, 65535))
-			return false;
+	if(!validate_range(document.form.sshd_wport, 22, 65535))
+	return false;
 	}
 
 	if(found_app_ftpd()){
-		if(!validate_range(document.form.ftpd_wport, 21, 65535))
-			return false;
+	if(!validate_range(document.form.ftpd_wport, 21, 65535))
+	return false;
 	}
 
 	return true;
@@ -158,12 +158,12 @@ function firewall_changed(){
 	inputRCtrl1(document.form.trmd_ropen, v);
 
 	if (!v){
-		inputRCtrl2(document.form.misc_ping_x, 1);
-		inputRCtrl2(document.form.misc_http_x, 1);
-		inputRCtrl2(document.form.https_wopen, 1);
-		inputRCtrl2(document.form.sshd_wopen, 1);
-		inputRCtrl2(document.form.ftpd_wopen, 1);
-		inputRCtrl2(document.form.trmd_ropen, 1);
+	inputRCtrl2(document.form.misc_ping_x, 1);
+	inputRCtrl2(document.form.misc_http_x, 1);
+	inputRCtrl2(document.form.https_wopen, 1);
+	inputRCtrl2(document.form.sshd_wopen, 1);
+	inputRCtrl2(document.form.ftpd_wopen, 1);
+	inputRCtrl2(document.form.trmd_ropen, 1);
 	}
 
 	showhide_div('row_misc_ping', v);
@@ -172,14 +172,14 @@ function firewall_changed(){
 
 function http_wopen_changed(){
 	if (sw_mode == '4')
-		return;
+	return;
 	var v = document.form.misc_http_x[0].checked;
 	showhide_div('row_http_wport', v);
 }
 
 function https_wopen_changed(){
 	if (sw_mode == '4')
-		return;
+	return;
 	var v = document.form.https_wopen[0].checked;
 	showhide_div('row_https_wport', v);
 }
@@ -192,14 +192,14 @@ function sshd_wopen_changed(){
 
 function ftpd_wopen_changed(){
 	if (sw_mode == '4')
-		return;
+	return;
 	var v = document.form.ftpd_wopen[0].checked;
 	showhide_div('row_ftpd_wport', v);
 }
 
 function udpxy_wopen_changed(){
 	if (sw_mode == '4')
-		return;
+	return;
 	var v = document.form.udpxy_wopen[0].checked;
 	showhide_div('row_udpxy_wport', v);
 }
@@ -318,7 +318,7 @@ function done_validating(action){
                                             <th><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this,8,1);"><#FirewallConfig_WanLanLog_itemname#></a></th>
                                             <td>
                                                 <select name="fw_log_x" class="input" onchange="return change_common(this, 'FirewallConfig', 'fw_log_x')">
-                                                    <option value="none" <% nvram_match_x("","fw_log_x", "none","selected"); %>><#checkbox_No#> (*)</option>
+                                                    <option value="none" <% nvram_match_x("","fw_log_x", "none","selected"); %>><#checkbox_No#></option>
                                                     <option value="drop" <% nvram_match_x("","fw_log_x", "drop","selected"); %>>Dropped</option>
                                                     <option value="accept" <% nvram_match_x("","fw_log_x", "accept","selected"); %>>Accepted</option>
                                                     <option value="both" <% nvram_match_x("","fw_log_x", "both","selected"); %>>Both</option>

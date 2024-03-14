@@ -39,9 +39,9 @@ var id_update_status = 0;
 function initial(){
 	var id_menu = 5;
 	if(get_ap_mode()){
-		id_menu = 4;
-		if (lan_proto == '1')
-			id_menu--;
+	id_menu = 4;
+	if (lan_proto == '1')
+	id_menu--;
 	}
 
 	show_banner(1);
@@ -62,27 +62,27 @@ function fill_ports(){
 	var has_lan_1g = 1;
 
 	if (switch_type >= 10 && !support_ephy_w1000())
-		has_wan_1g = 0;
+	has_wan_1g = 0;
 	if (switch_type >= 10 && !support_ephy_l1000())
-		has_lan_1g = 0;
+	has_lan_1g = 0;
 
 	if (switch_type == 10 || switch_type == 11)
-		showhide_div("row_ether_jumbo", 0);
+	showhide_div("row_ether_jumbo", 0);
 
 	if (switch_type > 1){
-		document.form.ether_jumbo.options[1].text = "Up to 9000 bytes";
-		showhide_div("row_ether_green", 0);
+	document.form.ether_jumbo.options[1].text = "Up to 9000 bytes";
+	showhide_div("row_ether_green", 0);
 	}
 
 	fill_port_flow("ether_flow_wan", has_wan_1g, 0);
 	fill_port_link("ether_link_wan", has_wan_1g, 0);
 
 	for (i=1;i<num_ephy;i++){
-		var ln = i.toString();
-		fill_port_flow("ether_flow_lan"+ln, has_lan_1g, i);
-		fill_port_link("ether_link_lan"+ln, has_lan_1g, i);
-		if (i > 1)
-			showhide_div("tbl_ephy_l"+ln, 1);
+	var ln = i.toString();
+	fill_port_flow("ether_flow_lan"+ln, has_lan_1g, i);
+	fill_port_link("ether_link_lan"+ln, has_lan_1g, i);
+	if (i > 1)
+	showhide_div("tbl_ephy_l"+ln, 1);
 	}
 }
 
@@ -95,15 +95,15 @@ function show_links(){
 	led1 = (switch_type >= 10) ? 2 : 0;
 
 	if (support_led_phy() > 0)
-		led0 = parseInt("<% nvram_get_x("","ether_led0"); %>");
+	led0 = parseInt("<% nvram_get_x("","ether_led0"); %>");
 	if (support_led_phy() > 1)
-		led1 = parseInt("<% nvram_get_x("","ether_led1"); %>");
+	led1 = parseInt("<% nvram_get_x("","ether_led1"); %>");
 
 	show_port_link("linkstate_wan", 0, led0, led1);
 
 	for (i=1;i<num_ephy;i++){
-		var ln = i.toString();
-		show_port_link("linkstate_lan"+ln, i, led0, led1);
+	var ln = i.toString();
+	show_port_link("linkstate_lan"+ln, i, led0, led1);
 	}
 }
 
@@ -111,12 +111,12 @@ function fill_port_flow(oname,ins1g,pid){
 	var idx = 0;
 	var o = document.form[oname];
 	if (o === undefined)
-		return;
+	return;
 	if (typeof(ether_flow_mode) === 'function')
-		idx = ether_flow_mode(pid);
+	idx = ether_flow_mode(pid);
 	add_option(o, "TX/RX", "0", idx==0);
 	if (ins1g)
-		add_option(o, "TX (Asymmetric Pause)", "1", idx==1);
+	add_option(o, "TX (Asymmetric Pause)", "1", idx==1);
 	add_option(o, "Disabled", "2", idx==2);
 }
 
@@ -124,9 +124,9 @@ function fill_port_link(oname,ins1g,pid){
 	var idx = 0;
 	var o = document.form[oname];
 	if (o === undefined)
-		return;
+	return;
 	if (typeof(ether_link_mode) === 'function')
-		idx = ether_link_mode(pid);
+	idx = ether_link_mode(pid);
 	add_option(o, "Auto", "0", idx==0);
 	if (ins1g)
 	add_option(o, "1000 Mbps, Full Duplex: [AN]", "1", idx==1);
@@ -147,10 +147,10 @@ function show_port_link(oname,idx,led0,led1){
 	var port_speed = 0;
 	var o = document.getElementById(oname);
 	if (o === null)
-		return;
+	return;
 	if (typeof(ether_link_status) === 'function') {
-		port_text = ether_link_status(idx);
-		port_speed = parseInt(port_text);
+	port_text = ether_link_status(idx);
+	port_speed = parseInt(port_text);
 	}
 	o.innerHTML = '<span class="label ' + (port_speed == arr_speeds[led1] ? 'label-warning">' : (port_speed == arr_speeds[led0] ? 'label-success">' : 'label-info">')) + port_text + '</span>';
 }
@@ -168,16 +168,16 @@ function applyRule(){
 function update_ether_status(){
 	clearTimeout(id_update_status);
 	$j.ajax({
-		url: '/status_lanlink.asp',
-		dataType: 'script',
-		cache: true,
-		error: function(xhr){
-			;
-		},
-		success: function(response){
-			show_links();
-			id_update_status = setTimeout("update_ether_status();", 3000);
-		}
+	url: '/status_lanlink.asp',
+	dataType: 'script',
+	cache: true,
+	error: function(xhr){
+	;
+	},
+	success: function(response){
+	show_links();
+	id_update_status = setTimeout("update_ether_status();", 3000);
+	}
 	});
 }
 
@@ -253,7 +253,7 @@ function done_validating(action){
                                             </td>
                                         </tr>
                                         <tr id="row_ether_green">
-                                            <th width="50%"><#btn_Enable#> Green Ethernet?</th>
+                                            <th width="50%"><#btn_Enable#> <#SwitchGreenEth#></th>
                                             <td>
                                                 <div class="main_itoggle">
                                                     <div id="ether_green_on_of">
@@ -268,7 +268,7 @@ function done_validating(action){
                                             </td>
                                         </tr>
                                         <tr>
-                                            <th width="50%"><#btn_Enable#> Energy Efficient Ethernet (802.3az)?</th>
+                                            <th width="50%"><#btn_Enable#> <#SwitchEEE#></th>
                                             <td>
                                                 <div class="main_itoggle">
                                                     <div id="ether_eee_on_of">

@@ -46,7 +46,7 @@ function initial(){
 	var id_menu = 3;
 
 	if(!found_app_smbd())
-		id_menu = 2;
+	id_menu = 2;
 
 	show_banner(1);
 	show_menu(5,6,id_menu);
@@ -79,23 +79,23 @@ function get_accounts(){
 
 function showShareStatusControl(){
 	if (this.FTP_status == 1){
-		$("tableMask").style.width = "0px";
+	$("tableMask").style.width = "0px";
 	}
 	else{
-		$("tableMask").style.width = "500px";
+	$("tableMask").style.width = "500px";
 	}
 }
 
 function showAccountControl(){
 	switch(this.AM_to_ftp){
-		case 1:
-			$("accountMask").style.display = "block";
-			break;
-		case 2:
-		case 3:
-		case 4:
-			$("accountMask").style.display = "none";
-			break;
+	case 1:
+	$("accountMask").style.display = "block";
+	break;
+	case 2:
+	case 3:
+	case 4:
+	$("accountMask").style.display = "none";
+	break;
 	}
 }
 
@@ -103,21 +103,21 @@ function showAccountMenu(){
 	var account_menu_code = "";
 	
 	if(this.accounts.length <= 0)
-		account_menu_code += '<div class="noAccount"><#Noaccount#></div>\n'
+	account_menu_code += '<div class="noAccount"><#Noaccount#></div>\n'
 	else
-		for(var i = 0; i < this.accounts.length; ++i){
-			account_menu_code += '<div class="accountName" id="';
-			account_menu_code += "account"+i;
-			account_menu_code += '" onClick="setSelectAccount(this);">'
-			account_menu_code += this.accounts[i];
-			account_menu_code += '</div>\n';
-		}
+	for(var i = 0; i < this.accounts.length; ++i){
+	account_menu_code += '<div class="accountName" id="';
+	account_menu_code += "account"+i;
+	account_menu_code += '" onClick="setSelectAccount(this);">'
+	account_menu_code += this.accounts[i];
+	account_menu_code += '</div>\n';
+	}
 	
 	$("account_menu").innerHTML = account_menu_code;
 	
 	if(this.accounts.length > 0){
-		if(AM_to_ftp == 2 || AM_to_ftp == 3 || AM_to_ftp == 4 )
-			setSelectAccount($("account0"));
+	if(AM_to_ftp == 2 || AM_to_ftp == 3 || AM_to_ftp == 4 )
+	setSelectAccount($("account0"));
 	}
 }
 
@@ -135,16 +135,16 @@ function showPermissionTitle(){
 var controlApplyBtn = 0;
 function showApplyBtn(){
 	if(this.controlApplyBtn == 3)
-		$("changePermissionBtn").disabled = 0;
+	$("changePermissionBtn").disabled = 0;
 	else
-		$("changePermissionBtn").disabled = 1;
+	$("changePermissionBtn").disabled = 1;
 }
 
 function setSelectAccount(selectedObj){
 	this.selectedAccount = selectedObj.firstChild.nodeValue;
 	
 	if(this.controlApplyBtn == 0 || this.controlApplyBtn == 2)
-		this.controlApplyBtn += 1;
+	this.controlApplyBtn += 1;
 	showApplyBtn();
 	onEvent();
 	show_permissions_of_account(selectedObj, PROTOCOL);
@@ -159,116 +159,116 @@ function show_permissions_of_account(selectedObj, protocol){
 	var accountName = selectedObj.firstChild.nodeValue;
 	var poolName;
 	var permissions;
-
+	
 	for(var i = 0; i < pool_names().length; ++i){
-		poolName = pool_names()[i];
-		if(!this.clickedFolderBarCode[poolName])
-			continue;
-
-		permissions = get_account_permissions_in_pool(accountName, poolName);
-		for(var j = 0; j < permissions.length; ++j){
-			var folderBarCode = get_folderBarCode_in_pool(poolName, permissions[j][0]);
-
-			if(protocol == "cifs")
-				showPermissionRadio(folderBarCode, permissions[j][1]);
-			else if(protocol == "ftp")
-				showPermissionRadio(folderBarCode, permissions[j][2]);
-			else{
-				alert("Wrong protocol when get permission!");	// system error msg. must not be translate
-				return;
-			}
-		}
+	poolName = pool_names()[i];
+	if(!this.clickedFolderBarCode[poolName])
+	continue;
+	
+	permissions = get_account_permissions_in_pool(accountName, poolName);
+	for(var j = 0; j < permissions.length; ++j){
+	var folderBarCode = get_folderBarCode_in_pool(poolName, permissions[j][0]);
+	
+	if(protocol == "cifs")
+	showPermissionRadio(folderBarCode, permissions[j][1]);
+	else if(protocol == "ftp")
+	showPermissionRadio(folderBarCode, permissions[j][2]);
+	else{
+	alert("Wrong protocol when get permission!");	// system error msg. must not be translate
+	return;
+	}
+	}
 	}
 }
 
 function get_permission_of_folder(accountName, poolName, folderName, protocol){
 	var permissions = get_account_permissions_in_pool(accountName, poolName);
-
+	
 	for(var i = 0; i < permissions.length; ++i)
-		if(permissions[i][0] == folderName){
-			if(protocol == "cifs")
-				return permissions[i][1];
-			else if(protocol == "ftp")
-				return permissions[i][2];
-			else{
-				alert("Wrong protocol when get permission!");	// system error msg. must not be translate
-				return;
-			}
-		}
-
+	if(permissions[i][0] == folderName){
+	if(protocol == "cifs")
+	return permissions[i][1];
+	else if(protocol == "ftp")
+	return permissions[i][2];
+	else{
+	alert("Wrong protocol when get permission!");	// system error msg. must not be translate
+	return;
+	}
+	}
+	
 	alert("Wrong folderName when get permission!");	// system error msg. must not be translate
 }
 
 function contrastSelectAccount(selectedObj){
 	if(this.lastClickedAccount != 0){
-		this.lastClickedAccount.style.marginRight = "0px";
-		this.lastClickedAccount.style.background = "url(/images/AiDisk/user_icon0.gif) #F8F8F8 left no-repeat";
-		this.lastClickedAccount.style.cursor = "pointer";
-		this.lastClickedAccount.style.fontWeight ="normal";
+	this.lastClickedAccount.style.marginRight = "0px";
+	this.lastClickedAccount.style.background = "url(/images/AiDisk/user_icon0.gif) #F8F8F8 left no-repeat";
+	this.lastClickedAccount.style.cursor = "pointer";
+	this.lastClickedAccount.style.fontWeight ="normal";
 	}
-
+	
 	selectedObj.style.marginRight = "-1px";
 	selectedObj.style.background = "url(/images/AiDisk/user_icon.gif) #FFF left no-repeat";
 	selectedObj.style.cursor = "default";
 	selectedObj.style.fontWeight ="bolder";
-
+	
 	this.lastClickedAccount = selectedObj;
 }
 
 function submitChangePermission(protocol){
 	var orig_permission;
-
+	
 	for(var i = 0; i < accounts.length; ++i){
-		if(!this.changedPermissions[accounts[i]])
-			continue;
-
-		for(var j = 0; j < pool_names().length; ++j){
-			if(!this.changedPermissions[accounts[i]][pool_names()[j]])
-				continue;
-
-			folderlist = get_sharedfolder_in_pool(pool_names()[j]);
-
-			for(var k = 0; k < folderlist.length; ++k){
-				if(!this.changedPermissions[accounts[i]][pool_names()[j]][folderlist[k]])
-					continue;
-
-				orig_permission = get_permission_of_folder(accounts[i], pool_names()[j], folderlist[k], PROTOCOL);
-				if(this.changedPermissions[accounts[i]][pool_names()[j]][folderlist[k]] == orig_permission)
-					continue;
-
-				// the item which was set already
-				if(this.changedPermissions[accounts[i]][pool_names()[j]][folderlist[k]] == -1)
-					continue;
-
-				document.aidiskForm.action = "/aidisk/set_account_permission.asp";
-				$("account").value = accounts[i];
-				$("pool").value = pool_names()[j];
-				$("folder").value = folderlist[k];
-				$("protocol").value = protocol;
-				$("permission").value = this.changedPermissions[accounts[i]][pool_names()[j]][folderlist[k]];
-
-				// mark this item which is set
-				this.changedPermissions[accounts[i]][pool_names()[j]][folderlist[k]] = -1;
-				showLoading();
-				document.aidiskForm.submit_fake.click();
-				return;
-			}
-		}
+	if(!this.changedPermissions[accounts[i]])
+	continue;
+	
+	for(var j = 0; j < pool_names().length; ++j){
+	if(!this.changedPermissions[accounts[i]][pool_names()[j]])
+	continue;
+	
+	folderlist = get_sharedfolder_in_pool(pool_names()[j]);
+	
+	for(var k = 0; k < folderlist.length; ++k){
+	if(!this.changedPermissions[accounts[i]][pool_names()[j]][folderlist[k]])
+	continue;
+	
+	orig_permission = get_permission_of_folder(accounts[i], pool_names()[j], folderlist[k], PROTOCOL);
+	if(this.changedPermissions[accounts[i]][pool_names()[j]][folderlist[k]] == orig_permission)
+	continue;
+	
+	// the item which was set already
+	if(this.changedPermissions[accounts[i]][pool_names()[j]][folderlist[k]] == -1)
+	continue;
+	
+	document.aidiskForm.action = "/aidisk/set_account_permission.asp";
+	$("account").value = accounts[i];
+	$("pool").value = pool_names()[j];
+	$("folder").value = folderlist[k];
+	$("protocol").value = protocol;
+	$("permission").value = this.changedPermissions[accounts[i]][pool_names()[j]][folderlist[k]];
+	
+	// mark this item which is set
+	this.changedPermissions[accounts[i]][pool_names()[j]][folderlist[k]] = -1;
+	showLoading();
+	document.aidiskForm.submit_fake.click();
+	return;
 	}
-
+	}
+	}
+	
 	refreshpage();
 }
 
 function changeActionButton(selectedObj, type, action, flag){
 	if(type == "User")
-		if(this.accounts.length <= 0)
-			if(action == "Del" || action == "Mod")
-				return;
-
+	if(this.accounts.length <= 0)
+	if(action == "Del" || action == "Mod")
+	return;
+	
 	if(typeof(flag) == "number")
-		selectedObj.src = '/images/AiDisk/'+type+action+'_'+flag+'.gif';
+	selectedObj.src = '/images/AiDisk/'+type+action+'_'+flag+'.gif';
 	else
-		selectedObj.src = '/images/AiDisk/'+type+action+'.gif';
+	selectedObj.src = '/images/AiDisk/'+type+action+'.gif';
 }
 
 function resultOfCreateAccount(){
@@ -277,178 +277,178 @@ function resultOfCreateAccount(){
 
 function onEvent(){
 	if((AM_to_ftp==2 || AM_to_ftp==3 || AM_to_ftp==4) && accounts.length < 50){
-		changeActionButton($("createAccountBtn"), 'User', 'Add', 0);
-
-		$("createAccountBtn").onclick = function(){
-				popupWindow('OverlayMask','/aidisk/popCreateAccount.asp');
-			};
-		$("createAccountBtn").onmouseover = function(){
-				changeActionButton(this, 'User', 'Add', 1);
-			};
-		$("createAccountBtn").onmouseout = function(){
-				changeActionButton(this, 'User', 'Add', 0);
-			};
+	changeActionButton($("createAccountBtn"), 'User', 'Add', 0);
+	
+	$("createAccountBtn").onclick = function(){
+	popupWindow('OverlayMask','/aidisk/popCreateAccount.asp');
+	};
+	$("createAccountBtn").onmouseover = function(){
+	changeActionButton(this, 'User', 'Add', 1);
+	};
+	$("createAccountBtn").onmouseout = function(){
+	changeActionButton(this, 'User', 'Add', 0);
+	};
 	}
 	else{
-		changeActionButton($("createAccountBtn"), 'User', 'Add');
-
-		$("createAccountBtn").onclick = function(){};
-		$("createAccountBtn").onmouseover = function(){};
-		$("createAccountBtn").onmouseout = function(){};
-		$("createAccountBtn").title = (accounts.length < 50)?"<#AddAccountTitle#>":"<#account_overflow#>";
+	changeActionButton($("createAccountBtn"), 'User', 'Add');
+	
+	$("createAccountBtn").onclick = function(){};
+	$("createAccountBtn").onmouseover = function(){};
+	$("createAccountBtn").onmouseout = function(){};
+	$("createAccountBtn").title = (accounts.length < 50)?"<#AddAccountTitle#>":"<#account_overflow#>";
 	}
-
+	
 	if(this.accounts.length > 0 && this.selectedAccount.length > 0 && this.selectedAccount != "anonymous"){
-		changeActionButton($("deleteAccountBtn"), 'User', 'Del', 0);
-		changeActionButton($("modifyAccountBtn"), 'User', 'Mod', 0);
-
-		$("deleteAccountBtn").onclick = function(){
-				if(!selectedAccount){
-					alert("No chosen account!");
-					return;
-				}
-
-				popupWindow('OverlayMask','/aidisk/popDeleteAccount.asp');
-		};
-		$("deleteAccountBtn").onmouseover = function(){
-			changeActionButton(this, 'User', 'Del', 1);
-		};
-		$("deleteAccountBtn").onmouseout = function(){
-			changeActionButton(this, 'User', 'Del', 0);
-		};
-
-		$("modifyAccountBtn").onclick = function(){
-				if(!selectedAccount){
-					alert("No chosen account!");
-					return;
-				}
-
-				popupWindow('OverlayMask','/aidisk/popModifyAccount.asp');
-		};
-		$("modifyAccountBtn").onmouseover = function(){
-				changeActionButton(this, 'User', 'Mod', 1);
-		};
-		$("modifyAccountBtn").onmouseout = function(){
-				changeActionButton(this, 'User', 'Mod', 0);
-		};
+	changeActionButton($("deleteAccountBtn"), 'User', 'Del', 0);
+	changeActionButton($("modifyAccountBtn"), 'User', 'Mod', 0);
+	
+	$("deleteAccountBtn").onclick = function(){
+	if(!selectedAccount){
+	alert("No chosen account!");
+	return;
+	}
+	
+	popupWindow('OverlayMask','/aidisk/popDeleteAccount.asp');
+	};
+	$("deleteAccountBtn").onmouseover = function(){
+	changeActionButton(this, 'User', 'Del', 1);
+	};
+	$("deleteAccountBtn").onmouseout = function(){
+	changeActionButton(this, 'User', 'Del', 0);
+	};
+	
+	$("modifyAccountBtn").onclick = function(){
+	if(!selectedAccount){
+	alert("No chosen account!");
+	return;
+	}
+	
+	popupWindow('OverlayMask','/aidisk/popModifyAccount.asp');
+	};
+	$("modifyAccountBtn").onmouseover = function(){
+	changeActionButton(this, 'User', 'Mod', 1);
+	};
+	$("modifyAccountBtn").onmouseout = function(){
+	changeActionButton(this, 'User', 'Mod', 0);
+	};
 	}
 	else{
-		changeActionButton($("deleteAccountBtn"), 'User', 'Del');
-		changeActionButton($("modifyAccountBtn"), 'User', 'Mod');
-
-		$("deleteAccountBtn").onclick = function(){};
-		$("deleteAccountBtn").onmouseover = function(){};
-		$("deleteAccountBtn").onmouseout = function(){};
-
-		$("modifyAccountBtn").onclick = function(){};
-		$("modifyAccountBtn").onmouseover = function(){};
-		$("modifyAccountBtn").onmouseout = function(){};
+	changeActionButton($("deleteAccountBtn"), 'User', 'Del');
+	changeActionButton($("modifyAccountBtn"), 'User', 'Mod');
+	
+	$("deleteAccountBtn").onclick = function(){};
+	$("deleteAccountBtn").onmouseover = function(){};
+	$("deleteAccountBtn").onmouseout = function(){};
+	
+	$("modifyAccountBtn").onclick = function(){};
+	$("modifyAccountBtn").onmouseover = function(){};
+	$("modifyAccountBtn").onmouseout = function(){};
 	}
-
+	
 	// folder action buttons
 	if(this.selectedPool.length > 0){
-		changeActionButton($("createFolderBtn"), 'Folder', 'Add', 0);
-
-		$("createFolderBtn").onclick = function(){
-				if(!selectedDisk){
-					alert("No chosen Disk for creating the shared-folder!");
-					return;
-				}
-				if(!selectedPool){
-					alert("No chosen Partition for creating the shared-folder!");
-					return;
-				}
-
-				popupWindow('OverlayMask','/aidisk/popCreateFolder.asp');
-			};
-		$("createFolderBtn").onmouseover = function(){
-				changeActionButton(this, 'Folder', 'Add', 1);
-			};
-		$("createFolderBtn").onmouseout = function(){
-				changeActionButton(this, 'Folder', 'Add', 0);
-			};
+	changeActionButton($("createFolderBtn"), 'Folder', 'Add', 0);
+	
+	$("createFolderBtn").onclick = function(){
+	if(!selectedDisk){
+	alert("No chosen Disk for creating the shared-folder!");
+	return;
+	}
+	if(!selectedPool){
+	alert("No chosen Partition for creating the shared-folder!");
+	return;
+	}
+	
+	popupWindow('OverlayMask','/aidisk/popCreateFolder.asp');
+	};
+	$("createFolderBtn").onmouseover = function(){
+	changeActionButton(this, 'Folder', 'Add', 1);
+	};
+	$("createFolderBtn").onmouseout = function(){
+	changeActionButton(this, 'Folder', 'Add', 0);
+	};
 	}
 	else{
-		changeActionButton($("createFolderBtn"), 'Folder', 'Add');
-
-		$("createFolderBtn").onclick = function(){};
-		$("createFolderBtn").onmouseover = function(){};
-		$("createFolderBtn").onmouseout = function(){};
+	changeActionButton($("createFolderBtn"), 'Folder', 'Add');
+	
+	$("createFolderBtn").onclick = function(){};
+	$("createFolderBtn").onmouseover = function(){};
+	$("createFolderBtn").onmouseout = function(){};
 	}
-
+	
 	if(this.selectedFolder.length > 0){
-		changeActionButton($("deleteFolderBtn"), 'Folder', 'Del', 0);
-		changeActionButton($("modifyFolderBtn"), 'Folder', 'Mod', 0);
-
-		$("deleteFolderBtn").onclick = function(){
-				if(!selectedFolder){
-					alert("No chosen folder!");
-					return;
-				}
-
-				popupWindow('OverlayMask','/aidisk/popDeleteFolder.asp');
-			};
-		$("deleteFolderBtn").onmouseover = function(){
-				changeActionButton(this, 'Folder', 'Del', 1);
-			};
-		$("deleteFolderBtn").onmouseout = function(){
-				changeActionButton(this, 'Folder', 'Del', 0);
-			};
-
-		$("modifyFolderBtn").onclick = function(){
-				if(!selectedFolder){
-					alert("No chosen folder!");
-					return;
-				}
-
-				popupWindow('OverlayMask','/aidisk/popModifyFolder.asp');
-			};
-		$("modifyFolderBtn").onmouseover = function(){
-				changeActionButton(this, 'Folder', 'Mod', 1);
-			};
-		$("modifyFolderBtn").onmouseout = function(){
-				changeActionButton(this, 'Folder', 'Mod', 0);
-			};
+	changeActionButton($("deleteFolderBtn"), 'Folder', 'Del', 0);
+	changeActionButton($("modifyFolderBtn"), 'Folder', 'Mod', 0);
+	
+	$("deleteFolderBtn").onclick = function(){
+	if(!selectedFolder){
+	alert("No chosen folder!");
+	return;
+	}
+	
+	popupWindow('OverlayMask','/aidisk/popDeleteFolder.asp');
+	};
+	$("deleteFolderBtn").onmouseover = function(){
+	changeActionButton(this, 'Folder', 'Del', 1);
+	};
+	$("deleteFolderBtn").onmouseout = function(){
+	changeActionButton(this, 'Folder', 'Del', 0);
+	};
+	
+	$("modifyFolderBtn").onclick = function(){
+	if(!selectedFolder){
+	alert("No chosen folder!");
+	return;
+	}
+	
+	popupWindow('OverlayMask','/aidisk/popModifyFolder.asp');
+	};
+	$("modifyFolderBtn").onmouseover = function(){
+	changeActionButton(this, 'Folder', 'Mod', 1);
+	};
+	$("modifyFolderBtn").onmouseout = function(){
+	changeActionButton(this, 'Folder', 'Mod', 0);
+	};
 	}
 	else{
-		changeActionButton($("deleteFolderBtn"), 'Folder', 'Del');
-		changeActionButton($("modifyFolderBtn"), 'Folder', 'Mod');
-
-		$("deleteFolderBtn").onclick = function(){};
-		$("deleteFolderBtn").onmouseover = function(){};
-		$("deleteFolderBtn").onmouseout = function(){};
-
-		$("modifyFolderBtn").onclick = function(){};
-		$("modifyFolderBtn").onmouseover = function(){};
-		$("modifyFolderBtn").onmouseout = function(){};
+	changeActionButton($("deleteFolderBtn"), 'Folder', 'Del');
+	changeActionButton($("modifyFolderBtn"), 'Folder', 'Mod');
+	
+	$("deleteFolderBtn").onclick = function(){};
+	$("deleteFolderBtn").onmouseover = function(){};
+	$("deleteFolderBtn").onmouseout = function(){};
+	
+	$("modifyFolderBtn").onclick = function(){};
+	$("modifyFolderBtn").onmouseover = function(){};
+	$("modifyFolderBtn").onmouseout = function(){};
 	}
-
+	
 	$("changePermissionBtn").onclick = function(){
-			submitChangePermission(PROTOCOL);
-		};
+	submitChangePermission(PROTOCOL);
+	};
 }
 
 function unload_body(){
 	$("createAccountBtn").onclick = function(){};
 	$("createAccountBtn").onmouseover = function(){};
 	$("createAccountBtn").onmouseout = function(){};
-
+	
 	$("deleteAccountBtn").onclick = function(){};
 	$("deleteAccountBtn").onmouseover = function(){};
 	$("deleteAccountBtn").onmouseout = function(){};
-
+	
 	$("modifyAccountBtn").onclick = function(){};
 	$("modifyAccountBtn").onmouseover = function(){};
 	$("modifyAccountBtn").onmouseout = function(){};
-
+	
 	$("createFolderBtn").onclick = function(){};
 	$("createFolderBtn").onmouseover = function(){};
 	$("createFolderBtn").onmouseout = function(){};
-
+	
 	$("deleteFolderBtn").onclick = function(){};
 	$("deleteFolderBtn").onmouseover = function(){};
 	$("deleteFolderBtn").onmouseout = function(){};
-
+	
 	$("modifyFolderBtn").onclick = function(){};
 	$("modifyFolderBtn").onmouseover = function(){};
 	$("modifyFolderBtn").onmouseout = function(){};

@@ -28,7 +28,7 @@ function LoadingTime(seconds, flag){
 			showtext($("proceeding_main_txt"), translate("<#Main_alert_proceeding_desc3#>"));
 			showtext($("proceeding_txt"), "");
 			y = 0;
-
+			
 			if(flag != "waiting")
 				setTimeout("hideLoading();",1000);
 		}

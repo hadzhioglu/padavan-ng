@@ -34,8 +34,8 @@ var tabs_desc = [
 
 $j(document).ready(function(){
 	$j("#tabs a").click(function(){
-		switchPage(this.id);
-		return false;
+	switchPage(this.id);
+	return false;
 	});
 });
 
@@ -61,7 +61,7 @@ function initial(){
 function getHash(){
 	var curHash = window.location.hash.toLowerCase();
 	if (curHash != '#dy' && curHash != '#mo')
-		curHash = '#dy';
+	curHash = '#dy';
 	return curHash;
 }
 
@@ -93,47 +93,47 @@ function fixInt(n, min, max, def){
 
 function rescale(n, z){
 	if ((z) && (n == 0))
-		return '-';
+	return '-';
 	var d = 1;
 	if (scale == 1)
-		d = 1024;
+	d = 1024;
 	else if (scale == 2)
-		d = 1024*1024;
+	d = 1024*1024;
 	else if (scale == 3)
-		d = 1024*1024*1024;
+	d = 1024*1024*1024;
 	return (((z) && (n > 0)) ? '+' : '') + comma((n / d).toFixed(2)) + snames[scale];
 }
 
 function makeRow(rtitle, dl, ul, total){
 	return '<tr>' +
-		'<td class="rtitle">' + rtitle + '</td>' +
-		'<td class="dl">' + dl + '</td>' +
-		'<td class="ul">' + ul + '</td>' +
-		'<td class="total">' + total + '</td>' +
-		'</tr>';
+	'<td class="rtitle">' + rtitle + '</td>' +
+	'<td class="dl">' + dl + '</td>' +
+	'<td class="ul">' + ul + '</td>' +
+	'<td class="total">' + total + '</td>' +
+	'</tr>';
 }
 
 function getTabDesc(idx){
 	for(var j=0; j < tabs_desc.length; j++){
-		if (tabs_desc[j][0] == idx)
-			return tabs_desc[j][1];
+	if (tabs_desc[j][0] == idx)
+	return tabs_desc[j][1];
 	}
 	return idx;
 }
 
 function tabSelect(tabVal){
 	if(netdev != tabVal){
-		netdev = tabVal;
-		load_history();
+	netdev = tabVal;
+	load_history();
 	}
 }
 
 function handleTabs(){
 	var o = E('sel_netif');
 	if (o.length != netdevs.length){
-		free_options(o);
-		for(var i=0; i<netdevs.length; i++)
-			add_option(o, getTabDesc(netdevs[i]), netdevs[i], netdevs[i] == netdev);
+	free_options(o);
+	for(var i=0; i<netdevs.length; i++)
+	add_option(o, getTabDesc(netdevs[i]), netdevs[i], netdevs[i] == netdev);
 	}
 }
 
@@ -182,11 +182,11 @@ function eval_history(response){
 	monthly_history.length = 0;
 
 	try {
-		eval(response);
+	eval(response);
 	}
 	catch (ex) {
-		daily_history.length = 0;
-		monthly_history.length = 0;
+	daily_history.length = 0;
+	monthly_history.length = 0;
 	}
 
 	handleTabs();
@@ -199,38 +199,38 @@ function eval_history(response){
 function load_history(){
 	clearTimeout(idTimerPoll);
 	$j.ajax({
-		type: "get",
-		url: "/update.cgi",
-		data: {
-			output: "bandwidth",
-			arg0: "history",
-			arg1: netdev
-		},
-		dataType: "script",
-		cache: true,
-		error: function(xhr){
-			invoke_timer(5);
-		},
-		success: function(response){
-			eval_history(response);
-		}
+	type: "get",
+	url: "/update.cgi",
+	data: {
+	output: "bandwidth",
+	arg0: "history",
+	arg1: netdev
+	},
+	dataType: "script",
+	cache: true,
+	error: function(xhr){
+	invoke_timer(5);
+	},
+	success: function(response){
+	eval_history(response);
+	}
 	});
 }
 
 function ymdText(yr, mo, da){
 	switch (dateFormat) {
 	case 1:
-		return (mo + 1) + '-' + pad(da,2) + '-' + yr;
+	return (mo + 1) + '-' + pad(da,2) + '-' + yr;
 	case 2:
-		return months_s[mo] + ' ' + da + ', ' + yr;
+	return months_s[mo] + ' ' + da + ', ' + yr;
 	case 3:
-		return months_f[mo] + ' ' + da + ', ' + yr;
+	return months_f[mo] + ' ' + da + ', ' + yr;
 	case 4:
-		return pad(da,2) + '.' + pad(mo + 1, 2) + '.' + yr;
+	return pad(da,2) + '.' + pad(mo + 1, 2) + '.' + yr;
 	case 5:
-		return pad(da,2) + '-' + months_s[mo] + '-' + yr;
+	return pad(da,2) + '-' + months_s[mo] + '-' + yr;
 	case 6:
-		return da + ' ' + months_s[mo] + ' ' + yr;
+	return da + ' ' + months_s[mo] + ' ' + yr;
 	}
 	return yr + '-' + pad(mo + 1, 2) + '-' + pad(da, 2);
 }
@@ -250,25 +250,25 @@ function redraw_history(){
 
 	hash = getHash();
 	if (hash == '#dy'){
-		$j('#tab_tr_mo').parents('li').removeClass('active');
-		$j('#tab_tr_dy').parents('li').addClass('active');
-		E('bx_label').innerHTML = '<#menu4#> - <#menu4_2_3#>';
-		E('dafm').disabled = 0;
-		for (i = 0; i < daily_history.length; ++i){
-			h = daily_history[i];
-			ymd = getYMD(h[0]);
-			grid += makeRow(ymdText(ymd[0], ymd[1], ymd[2]), rescale(h[1]), rescale(h[2]), rescale(h[1] + h[2]));
-		}
+	$j('#tab_tr_mo').parents('li').removeClass('active');
+	$j('#tab_tr_dy').parents('li').addClass('active');
+	E('bx_label').innerHTML = '<#menu4#> - <#menu4_2_3#>';
+	E('dafm').disabled = 0;
+	for (i = 0; i < daily_history.length; ++i){
+	h = daily_history[i];
+	ymd = getYMD(h[0]);
+	grid += makeRow(ymdText(ymd[0], ymd[1], ymd[2]), rescale(h[1]), rescale(h[2]), rescale(h[1] + h[2]));
+	}
 	}else{
-		$j('#tab_tr_dy').parents('li').removeClass('active');
-		$j('#tab_tr_mo').parents('li').addClass('active');
-		E('bx_label').innerHTML = '<#menu4#> - <#menu4_2_4#>';
-		E('dafm').disabled = 1;
-		for (i = 0; i < monthly_history.length; ++i){
-			h = monthly_history[i];
-			ymd = getYMD(h[0]);
-			grid += makeRow(ymText(ymd[0], ymd[1]), rescale(h[1]), rescale(h[2]), rescale(h[1] + h[2]));
-		}
+	$j('#tab_tr_dy').parents('li').removeClass('active');
+	$j('#tab_tr_mo').parents('li').addClass('active');
+	E('bx_label').innerHTML = '<#menu4#> - <#menu4_2_4#>';
+	E('dafm').disabled = 1;
+	for (i = 0; i < monthly_history.length; ++i){
+	h = monthly_history[i];
+	ymd = getYMD(h[0]);
+	grid += makeRow(ymText(ymd[0], ymd[1]), rescale(h[1]), rescale(h[2]), rescale(h[1] + h[2]));
+	}
 	}
 
 	E('bwm-daily-grid').innerHTML = grid + '</table>';
@@ -276,13 +276,13 @@ function redraw_history(){
 
 function switchPage(id){
 	if(id == "tab_bw_rt")
-		location.href = "/Main_TrafficMonitor_realtime.asp";
+	location.href = "/Main_TrafficMonitor_realtime.asp";
 	else if(id == "tab_bw_24")
-		location.href = "/Main_TrafficMonitor_last24.asp";
+	location.href = "/Main_TrafficMonitor_last24.asp";
 	else if(id == "tab_tr_dy")
-		location.href = "/Main_TrafficMonitor_daily.asp#DY";
+	location.href = "/Main_TrafficMonitor_daily.asp#DY";
 	else if(id == "tab_tr_mo")
-		location.href = "/Main_TrafficMonitor_daily.asp#MO";
+	location.href = "/Main_TrafficMonitor_daily.asp#MO";
 	return false;
 }
 

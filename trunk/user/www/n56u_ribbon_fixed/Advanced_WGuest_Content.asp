@@ -47,10 +47,10 @@ function initial(){
 	show_footer();
 
 	if (!support_5g_11ac()){
-		o1 = document.form.wl_guest_mcs_mode;
-		o1.remove(1);
-		o1.remove(1);
-		o1.remove(1);
+	o1 = document.form.wl_guest_mcs_mode;
+	o1.remove(1);
+	o1.remove(1);
+	o1.remove(1);
 	}
 
 	document.form.wl_guest_date_x_Sun.checked = getDateCheck(document.form.wl_guest_date_x.value, 0);
@@ -73,7 +73,7 @@ function initial(){
 	document.form.wl_guest_wpa_psk.value = decodeURIComponent(document.form.wl_guest_wpa_psk_org.value);
 
 	if (get_ap_mode())
-		$("col_isolate").innerHTML = "<#WIFIGuestIsolate#>";
+	$("col_isolate").innerHTML = "<#WIFIGuestIsolate#>";
 
 	load_body();
 
@@ -83,80 +83,83 @@ function initial(){
 
 function applyRule(){
 	if(validForm()){
-		document.form.wl_guest_date_x.value = setDateCheck(
-		    document.form.wl_guest_date_x_Sun,
-		    document.form.wl_guest_date_x_Mon,
-		    document.form.wl_guest_date_x_Tue,
-		    document.form.wl_guest_date_x_Wed,
-		    document.form.wl_guest_date_x_Thu,
-		    document.form.wl_guest_date_x_Fri,
-		    document.form.wl_guest_date_x_Sat);
-		document.form.wl_guest_time_x.value = setTimeRange(
-		    document.form.wl_guest_time_x_starthour,
-		    document.form.wl_guest_time_x_startmin,
-		    document.form.wl_guest_time_x_endhour,
-		    document.form.wl_guest_time_x_endmin);
-		document.form.wl_guest_time2_x.value = setTimeRange(
-		    document.form.wl_guest_time2_x_starthour,
-		    document.form.wl_guest_time2_x_startmin,
-		    document.form.wl_guest_time2_x_endhour,
-		    document.form.wl_guest_time2_x_endmin);
-
-		showLoading();
-
-		document.form.action_mode.value = " Apply ";
-		document.form.current_page.value = "/Advanced_WGuest_Content.asp";
-		document.form.next_page.value = "";
-		document.form.submit();
+	document.form.wl_guest_date_x.value = setDateCheck(
+	    document.form.wl_guest_date_x_Sun,
+	    document.form.wl_guest_date_x_Mon,
+	    document.form.wl_guest_date_x_Tue,
+	    document.form.wl_guest_date_x_Wed,
+	    document.form.wl_guest_date_x_Thu,
+	    document.form.wl_guest_date_x_Fri,
+	    document.form.wl_guest_date_x_Sat);
+	document.form.wl_guest_time_x.value = setTimeRange(
+	    document.form.wl_guest_time_x_starthour,
+	    document.form.wl_guest_time_x_startmin,
+	    document.form.wl_guest_time_x_endhour,
+	    document.form.wl_guest_time_x_endmin);
+	document.form.wl_guest_time2_x.value = setTimeRange(
+	    document.form.wl_guest_time2_x_starthour,
+	    document.form.wl_guest_time2_x_startmin,
+	    document.form.wl_guest_time2_x_endhour,
+	    document.form.wl_guest_time2_x_endmin);
+	
+	showLoading();
+	
+	document.form.action_mode.value = " Apply ";
+	document.form.current_page.value = "/Advanced_WGuest_Content.asp";
+	document.form.next_page.value = "";
+	document.form.submit();
 	}
 }
 
 function validForm(){
 	if (!document.form.wl_guest_enable[0].checked)
-		return true;
+	return true;
 
 	var mode = document.form.wl_guest_auth_mode.value;
 
+	if(!validate_string_ssid(document.form.wl_guest_ssid))
+	return false;
+
 	if(!validate_timerange(document.form.wl_guest_time_x_starthour, 0)
-			|| !validate_timerange(document.form.wl_guest_time_x_startmin, 1)
-			|| !validate_timerange(document.form.wl_guest_time_x_endhour, 2)
-			|| !validate_timerange(document.form.wl_guest_time_x_endmin, 3)
-			)
-		return false;
+	|| !validate_timerange(document.form.wl_guest_time_x_startmin, 1)
+	|| !validate_timerange(document.form.wl_guest_time_x_endhour, 2)
+	|| !validate_timerange(document.form.wl_guest_time_x_endmin, 3)
+	)
+	return false;
 
 	var starttime = eval(document.form.wl_guest_time_x_starthour.value + document.form.wl_guest_time_x_startmin.value);
 	var endtime = eval(document.form.wl_guest_time_x_endhour.value + document.form.wl_guest_time_x_endmin.value);
 	if(starttime == endtime){
-		alert("<#FirewallConfig_URLActiveTime_itemhint2#>");
-			document.form.wl_guest_time_x_starthour.focus();
-			document.form.wl_guest_time_x_starthour.select;
-		return false;
+	alert("<#FirewallConfig_URLActiveTime_itemhint2#>");
+	document.form.wl_guest_time_x_starthour.focus();
+	document.form.wl_guest_time_x_starthour.select;
+	return false;
 	}
 
 	if(!validate_timerange(document.form.wl_guest_time2_x_starthour, 0)
-			|| !validate_timerange(document.form.wl_guest_time2_x_startmin, 1)
-			|| !validate_timerange(document.form.wl_guest_time2_x_endhour, 2)
-			|| !validate_timerange(document.form.wl_guest_time2_x_endmin, 3)
-			)
-		return false;
+	|| !validate_timerange(document.form.wl_guest_time2_x_startmin, 1)
+	|| !validate_timerange(document.form.wl_guest_time2_x_endhour, 2)
+	|| !validate_timerange(document.form.wl_guest_time2_x_endmin, 3)
+	)
+	return false;
 
 	var starttime2 = eval(document.form.wl_guest_time2_x_starthour.value + document.form.wl_guest_time2_x_startmin.value);
 	var endtime2 = eval(document.form.wl_guest_time2_x_endhour.value + document.form.wl_guest_time2_x_endmin.value);
 	if(starttime2 == endtime2){
-		alert("<#FirewallConfig_URLActiveTime_itemhint2#>");
-			document.form.wl_guest_time2_x_starthour.focus();
-			document.form.wl_guest_time2_x_starthour.select;
-		return false;
+	alert("<#FirewallConfig_URLActiveTime_itemhint2#>");
+	document.form.wl_guest_time2_x_starthour.focus();
+	document.form.wl_guest_time2_x_starthour.select;
+	return false;
 	}
 
 	if(document.form.wl_guest_ssid.value == "") {
-		document.form.wl_guest_ssid.focus();
-		return false;
+	document.form.wl_guest_ssid.focus();
+	return false;
 	}
 
 	if(mode == "psk"){
-		if(!validate_psk(document.form.wl_guest_wpa_psk))
-			return false;
+	if(!validate_psk(document.form.wl_guest_wpa_psk))
+	return false;
 	}
 
 	return true;
@@ -174,7 +177,9 @@ function change_guest_enabled(mflag) {
 	showhide_div('row_guest_4', v);
 	showhide_div('row_guest_5', v);
 	showhide_div('row_guest_6', v);
+	if (support_lan_ap_isolate()) {
 	showhide_div('row_guest_7', v);
+	}
 	showhide_div('row_guest_8', v);
 	showhide_div('row_guest_9', v);
 	showhide_div('row_guest_10', v);
@@ -186,44 +191,44 @@ function change_guest_enabled(mflag) {
 function change_guest_auth_mode(mflag) {
 	var mode = document.form.wl_guest_auth_mode.value;
 	var opts = document.form.wl_guest_auth_mode.options;
-
+	
 	if (mode == "psk")
 	{
-		inputCtrl(document.form.wl_guest_crypto, 1);
-		inputCtrl(document.form.wl_guest_wpa_psk, 1);
-
-		if(opts[opts.selectedIndex].text == "WPA2-Personal")
-		{
-			if (mflag == 1) {
-				document.form.wl_guest_crypto.options[2].selected = 0;
-				document.form.wl_guest_crypto.options[0].selected = 0;
-				document.form.wl_guest_crypto.options[1].selected = 1;
-				document.form.wl_guest_wpa_mode.value = "2";
-			}
-		}
-		else if(opts[opts.selectedIndex].text == "WPA-Personal")
-		{
-			if (mflag == 1) {
-				document.form.wl_guest_crypto.options[2].selected = 0;
-				document.form.wl_guest_crypto.options[1].selected = 0;
-				document.form.wl_guest_crypto.options[0].selected = 1;
-				document.form.wl_guest_wpa_mode.value = "1";
-			}
-		}
-		else
-		{
-			if (mflag == 1) {
-				document.form.wl_guest_crypto.options[1].selected = 0;
-				document.form.wl_guest_crypto.options[0].selected = 0;
-				document.form.wl_guest_crypto.options[2].selected = 1;
-				document.form.wl_guest_wpa_mode.value = "0";
-			}
-		}
+	inputCtrl(document.form.wl_guest_crypto, 1);
+	inputCtrl(document.form.wl_guest_wpa_psk, 1);
+	
+	if(opts[opts.selectedIndex].text == "WPA2-Personal")
+	{
+	if (mflag == 1) {
+	document.form.wl_guest_crypto.options[2].selected = 0;
+	document.form.wl_guest_crypto.options[0].selected = 0;
+	document.form.wl_guest_crypto.options[1].selected = 1;
+	document.form.wl_guest_wpa_mode.value = "2";
+	}
+	}
+	else if(opts[opts.selectedIndex].text == "WPA-Personal")
+	{
+	if (mflag == 1) {
+	document.form.wl_guest_crypto.options[2].selected = 0;
+	document.form.wl_guest_crypto.options[1].selected = 0;
+	document.form.wl_guest_crypto.options[0].selected = 1;
+	document.form.wl_guest_wpa_mode.value = "1";
+	}
 	}
 	else
 	{
-		inputCtrl(document.form.wl_guest_crypto, 0);
-		inputCtrl(document.form.wl_guest_wpa_psk, 0);
+	if (mflag == 1) {
+	document.form.wl_guest_crypto.options[1].selected = 0;
+	document.form.wl_guest_crypto.options[0].selected = 0;
+	document.form.wl_guest_crypto.options[2].selected = 1;
+	document.form.wl_guest_wpa_mode.value = "0";
+	}
+	}
+	}
+	else
+	{
+	inputCtrl(document.form.wl_guest_crypto, 0);
+	inputCtrl(document.form.wl_guest_wpa_psk, 0);
 	}
 }
 </script>
@@ -255,7 +260,7 @@ function change_guest_auth_mode(mflag) {
 
     <input type="hidden" name="wl_gmode" value="<% nvram_get_x("","wl_gmode"); %>" readonly="1">
     <input type="hidden" name="wl_country_code" value="<% nvram_get_x("","wl_country_code"); %>">
-    <input type="hidden" name="wl_guest_ssid_org" value="<% nvram_get_x("", "wl_guest_ssid"); %>">
+    <input type="hidden" name="wl_guest_ssid_org" value="<% nvram_char_to_ascii("", "wl_guest_ssid"); %>">
     <input type="hidden" name="wl_guest_wpa_mode" value="<% nvram_get_x("","wl_guest_wpa_mode"); %>">
     <input type="hidden" name="wl_guest_wpa_psk_org" value="<% nvram_char_to_ascii("", "wl_guest_wpa_psk"); %>">
     <input type="hidden" name="wl_guest_date_x" value="<% nvram_get_x("","wl_guest_date_x"); %>">

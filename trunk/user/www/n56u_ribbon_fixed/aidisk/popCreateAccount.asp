@@ -56,26 +56,26 @@ function validForm(){
 	$("account").value = trim($("account").value);
 	tempPasswd = trim($("password").value);
 	$("confirm_password").value = trim($("confirm_password").value);
-
+	
 	// account name
 	if($("account").value.length == 0){
 		alert("<#File_Pop_content_alert_desc1#>");
 		$("account").focus();
 		return false;
 	}
-
+	
 	if($("account").value == "root" || $("account").value == "admin" || $("account").value == "family" || $("account").value == "Family"){
 		alert("<#USB_Application_account_alert#>");
 		$("account").focus();
 		return false;
 	}
-
+	
 	if(trim($("account").value).length <= 1){
 		alert("<#File_Pop_content_alert_desc2#>");
 		$("account").focus();
 		return false;
 	}
-
+	
 	if(trim($("account").value).length > 20){
 		alert("<#File_Pop_content_alert_desc3#>");
 		$("account").focus();
@@ -88,39 +88,39 @@ function validForm(){
 		$("account").focus();
 		return false;
 	}
-
+	
 	if(checkDuplicateName($("account").value, parent.get_accounts())){
 		alert("<#File_Pop_content_alert_desc5#>");
 		$("account").focus();
 		return false;
 	}
-
+	
 	// password
 	if(trim(tempPasswd).length <= 0 || trim($("confirm_password").value).length == 0){
 		alert("<#File_Pop_content_alert_desc6#>");
 		$("password").focus();
 		return false;
 	}
-
+	
 	if(tempPasswd != $("confirm_password").value){
 		alert("<#File_Pop_content_alert_desc7#>");
 		$("confirm_password").focus();
 		return false;
 	}
-
+	
 	if(tempPasswd.length != $("password").value.length){
 		alert("<#File_Pop_content_alert_desc8#>");
 		$("password").focus();
 		return false;
 	}
-
+	
 	var re = new RegExp("[^a-zA-Z0-9]+","gi");
 	if(re.test($("password").value)){
 		alert("<#File_Pop_content_alert_desc9#>");
 		$("password").focus();
 		return false;
 	}
-
+	
 	return true;
 }
 

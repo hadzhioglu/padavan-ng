@@ -26,10 +26,6 @@ var $j = jQuery.noConflict();
 
 $j(document).ready(function() {
 	init_itoggle('dhcp_enable_x');
-	init_itoggle('redirect_alldns');
-	init_itoggle('dhcp_filter_aaa');
-	init_itoggle('dhcp_allservers');
-	init_itoggle('dhcp_strictorder');
 	init_itoggle('lan_dhcpd_x');
 	init_itoggle('dhcp_static_x', change_dhcp_static_enabled);
 	init_itoggle('dhcp_static_arp');
@@ -46,7 +42,7 @@ var mdhcp_ifield = 3;
 if(m_dhcp.length > 0){
 	var m_dhcp_ifield = m_dhcp[0].length;
 	for (var i = 0; i < m_dhcp.length; i++) {
-		m_dhcp[i][mdhcp_ifield] = i;
+	m_dhcp[i][mdhcp_ifield] = i;
 	}
 }
 
@@ -61,22 +57,16 @@ function initial(){
 	showtext($("LANIP"), '<% nvram_get_x("", "lan_ipaddr"); %>');
 
 	if(get_ap_mode()){
-		showhide_div('row_dhcpd_rt', 0);
-		showhide_div('row_dhcpd_ap', 1);
-		showhide_div('row_domain', 0);
-		showhide_div('row_dservers', 0);
-		showhide_div('row_dhcpconf', 0);
-		showhide_div('row_hosts', 0);
-	}
-	if(!found_support_wpad()){
-		showhide_div('row_wpad', 0);
-	}else{
-		if(get_ap_mode()) showhide_div('row_wpad', 0);
+	showhide_div('row_dhcpd_rt', 0);
+	showhide_div('row_dhcpd_ap', 1);
+	showhide_div('row_domain', 0);
+	showhide_div('row_dservers', 0);
+	showhide_div('row_hosts', 0);
 	}
 
 	if((inet_network(document.form.lan_ipaddr.value)>=inet_network(document.form.dhcp_start.value))&&
 	   (inet_network(document.form.lan_ipaddr.value)<=inet_network(document.form.dhcp_end.value)))
-		$('router_in_pool').style.display="";
+	$('router_in_pool').style.display="";
 
 	showMDHCPList();
 	showLANIPList();
@@ -84,8 +74,8 @@ function initial(){
 	change_dhcp_static_enabled();
 
 	if (!support_ipv6()){
-		document.form.dhcp_verbose.remove(2);
-		document.form.dhcp_verbose.remove(2);
+	document.form.dhcp_verbose.remove(2);
+	document.form.dhcp_verbose.remove(2);
 	}
 
 	load_body();
@@ -93,13 +83,13 @@ function initial(){
 
 function applyRule(){
 	if(validForm()){
-		showLoading();
-
-		document.form.action_mode.value = " Restart ";
-		document.form.current_page.value = "/Advanced_DHCP_Content.asp";
-		document.form.next_page.value = "";
-
-		document.form.submit();
+	showLoading();
+	
+	document.form.action_mode.value = " Restart ";
+	document.form.current_page.value = "/Advanced_DHCP_Content.asp";
+	document.form.next_page.value = "";
+	
+	document.form.submit();
 	}
 }
 
@@ -107,26 +97,26 @@ function validForm(){
 	var re = new RegExp('^(?=[a-z0-9])[a-z0-9\-\.]*[a-z0-9]$','gi');
 	var o_dom = document.form.lan_domain;
 	if((o_dom.value != "") && (!re.test(o_dom.value))){
-		alert("<#JS_validchar#>");
-		o_dom.focus();
-		o_dom.select();
-		return false;
+	alert("<#JS_validchar#>");
+	o_dom.focus();
+	o_dom.select();
+	return false;
 	}
 
 	var o_min = document.form.dhcp_start;
 	var o_max = document.form.dhcp_end;
 
 	if(!validate_ipaddr_final(o_min, 'dhcp_start') ||
-			!validate_ipaddr_final(o_max, 'dhcp_end') ||
-			!validate_ipaddr_final(document.form.dhcp_gateway_x, 'dhcp_gateway_x') ||
-			!validate_ipaddr_final(document.form.dhcp_dns1_x, 'dhcp_dns_x') ||
-			!validate_ipaddr_final(document.form.dhcp_dns2_x, 'dhcp_dns_x') ||
-			!validate_ipaddr_final(document.form.dhcp_dns3_x, 'dhcp_dns_x') ||
-			!validate_ipaddr_final(document.form.dhcp_wins_x, 'dhcp_wins_x'))
-		return false;
+	!validate_ipaddr_final(o_max, 'dhcp_end') ||
+	!validate_ipaddr_final(document.form.dhcp_gateway_x, 'dhcp_gateway_x') ||
+	!validate_ipaddr_final(document.form.dhcp_dns1_x, 'dhcp_dns_x') ||
+	!validate_ipaddr_final(document.form.dhcp_dns2_x, 'dhcp_dns_x') ||
+	!validate_ipaddr_final(document.form.dhcp_dns3_x, 'dhcp_dns_x') ||
+	!validate_ipaddr_final(document.form.dhcp_wins_x, 'dhcp_wins_x'))
+	return false;
 
 	if(!validate_range(document.form.dhcp_lease, 120, 604800))
-		return false;
+	return false;
 
 	var lan_addr = document.form.lan_ipaddr.value;
 	var lan_mask = document.form.lan_netmask.value;
@@ -135,39 +125,39 @@ function validForm(){
 	var snet_max = get_subnet_num(lan_addr, lan_mask, 1);
 
 	if(inet_network(o_min.value) > inet_network(o_max.value)){
-		var tmp = o_min.value;
-		o_min.value = o_max.value;
-		o_max.value = tmp;
+	var tmp = o_min.value;
+	o_min.value = o_max.value;
+	o_max.value = tmp;
 	}
 
 	if(inet_network(o_min.value) == snet_min){
-		alert(o_min.value+"/"+lan_mask+" <#JS_validip#>");
-		o_min.focus();
-		o_min.select();
-		return false;
+	alert(o_min.value+"/"+lan_mask+" <#JS_validip#>");
+	o_min.focus();
+	o_min.select();
+	return false;
 	}
 
 	if(inet_network(o_max.value) == snet_max){
-		alert(o_max.value+"/"+lan_mask+" <#JS_validip#>");
-		o_max.focus();
-		o_max.select();
-		return false;
+	alert(o_max.value+"/"+lan_mask+" <#JS_validip#>");
+	o_max.focus();
+	o_max.select();
+	return false;
 	}
 
 	if (!matchSubnet(o_min.value, lan_addr, lan_mask) ||
 	    !matchSubnet(o_max.value, lan_addr, lan_mask)) {
-		if(confirm("<#JS_DHCP3#>")){
-			var snet_pool = snet_max-snet_min;
-			o_min.value=num2ip4(snet_min+2);
-			if (snet_pool > 30)
-				o_max.value=num2ip4(snet_max-11);
-			else
-				o_max.value=num2ip4(snet_max-1);
-		}else{
-			o_min.focus();
-			o_min.select();
-			return false;
-		}
+	if(confirm("<#JS_DHCP3#>")){
+	var snet_pool = snet_max-snet_min;
+	o_min.value=num2ip4(snet_min+2);
+	if (snet_pool > 30)
+	o_max.value=num2ip4(snet_max-11);
+	else
+	o_max.value=num2ip4(snet_max-1);
+	}else{
+	o_min.focus();
+	o_min.select();
+	return false;
+	}
 	}
 
 	return true;
@@ -175,36 +165,36 @@ function validForm(){
 
 function sortbyIP(){
 	m_dhcp.sort(function(a,b){
-		var aa = a[1].split(".");
-		var bb = b[1].split(".");
-		var resulta = aa[0]*0x1000000 + aa[1]*0x10000 + aa[2]*0x100 + aa[3]*1;
-		var resultb = bb[0]*0x1000000 + bb[1]*0x10000 + bb[2]*0x100 + bb[3]*1;
-		return resulta-resultb;
+	var aa = a[1].split(".");
+	var bb = b[1].split(".");
+	var resulta = aa[0]*0x1000000 + aa[1]*0x10000 + aa[2]*0x100 + aa[3]*1;
+	var resultb = bb[0]*0x1000000 + bb[1]*0x10000 + bb[2]*0x100 + bb[3]*1;
+	return resulta-resultb;
 	});
 	showMDHCPList();
 }
 
 function sortbyMAC(){
 	m_dhcp.sort(function(a,b){
-		return parseInt(a[0])-parseInt(b[0]);
+	return parseInt(a[0])-parseInt(b[0]);
 	});
 	showMDHCPList();
 }
 
 function sortbyName(){
 	m_dhcp.sort(function(a,b){
-		var aa = a[2].toLowerCase();
-		var bb = b[2].toLowerCase();
-		if (aa < bb) return -1;
-		if (aa > bb) return 1;
-		return 0;
+	var aa = a[2].toLowerCase();
+	var bb = b[2].toLowerCase();
+	if (aa < bb) return -1;
+	if (aa > bb) return 1;
+	return 0;
 	});
 	showMDHCPList();
 }
 
 function sortbyId(){
 	m_dhcp.sort(function(a,b){
-		return a[mdhcp_ifield] - b[mdhcp_ifield];
+	return a[mdhcp_ifield] - b[mdhcp_ifield];
 	});
 	showMDHCPList();
 }
@@ -219,24 +209,24 @@ function setClientMAC(num){
 function showLANIPList(){
 	var code = "";
 	var show_name = "";
-
+	
 	for(var i = 0; i < clients_info.length ; i++){
-		if(clients_info[i][0] && clients_info[i][0].length > 20)
-			show_name = clients_info[i][0].substring(0, 18) + "..";
-		else
-			show_name = clients_info[i][0];
-
-		if(clients_info[i][2]){
-			code += '<a href="javascript:void(0)"><div onclick="setClientMAC('+i+');"><strong>'+clients_info[i][1]+'</strong>';
-			code += ' ['+clients_info[i][2]+']';
-			if(show_name && show_name.length > 0)
-				code += ' ('+show_name+')';
-			code += ' </div></a>';
-		}
+	if(clients_info[i][0] && clients_info[i][0].length > 20)
+	show_name = clients_info[i][0].substring(0, 18) + "..";
+	else
+	show_name = clients_info[i][0];
+	
+	if(clients_info[i][2]){
+	code += '<a href="javascript:void(0)"><div onclick="setClientMAC('+i+');"><strong>'+clients_info[i][1]+'</strong>';
+	code += ' ['+clients_info[i][2]+']';
+	if(show_name && show_name.length > 0)
+	code += ' ('+show_name+')';
+	code += ' </div></a>';
+	}
 	}
 	if (code == "")
-		code = '<div style="text-align: center;" onclick="hideClients_Block();"><#Nodata#></div>';
-	code +='<!--[if lte IE 6.5]><iframe class="hackiframe2"></iframe><![endif]-->';
+	code = '<div style="text-align: center;" onclick="hideClients_Block();"><#Nodata#></div>';
+	code +='<!--[if lte IE 6.5]><iframe class="hackiframe2"></iframe><![endif]-->';	
 	$("ClientList_Block").innerHTML = code;
 }
 
@@ -248,13 +238,13 @@ function hideClients_Block(){
 
 function pullLANIPList(obj){
 	if(isMenuopen == 0){
-		$j(obj).children('i').removeClass('icon-chevron-down').addClass('icon-chevron-up');
-		$("ClientList_Block").style.display = 'block';
-		document.form.dhcp_staticmac_x_0.focus();
-		isMenuopen = 1;
+	$j(obj).children('i').removeClass('icon-chevron-down').addClass('icon-chevron-up');
+	$("ClientList_Block").style.display = 'block';
+	document.form.dhcp_staticmac_x_0.focus();
+	isMenuopen = 1;
 	}
 	else
-		hideClients_Block();
+	hideClients_Block();
 }
 
 function change_dhcp_static_enabled(){
@@ -272,39 +262,39 @@ function done_validating(action){
 function markGroupMDHCP(o, c, b) {
 	document.form.group_id.value = "ManualDHCPList";
 	if(b == " Add "){
-		if (document.form.dhcp_staticnum_x_0.value >= c){
-			alert("<#JS_itemlimit1#> " + c + " <#JS_itemlimit2#>");
-			return false;
-		}else if (document.form.dhcp_staticmac_x_0.value==""){
-			alert("<#JS_fieldblank#>");
-			document.form.dhcp_staticmac_x_0.focus();
-			document.form.dhcp_staticmac_x_0.select();
-			return false;
-		}else if(document.form.dhcp_staticip_x_0.value==""){
-			alert("<#JS_fieldblank#>");
-			document.form.dhcp_staticip_x_0.focus();
-			document.form.dhcp_staticip_x_0.select();
-			return false;
-		}else if (!validate_hwaddr(document.form.dhcp_staticmac_x_0)){
-			return false;
-		}else if (!validate_ipaddr_final(document.form.dhcp_staticip_x_0, 'staticip')){
-			return false;
-		}else{
-			for(i=0; i<m_dhcp.length; i++){
-				if(document.form.dhcp_staticmac_x_0.value==m_dhcp[i][0]) {
-					alert('<#JS_duplicate#>' + ' (' + m_dhcp[i][0] + ')' );
-					document.form.dhcp_staticmac_x_0.focus();
-					document.form.dhcp_staticmac_x_0.select();
-					return false;
-				}
-				if(document.form.dhcp_staticip_x_0.value.value==m_dhcp[i][1]) {
-					alert('<#JS_duplicate#>' + ' (' + m_dhcp[i][1] + ')' );
-					document.form.dhcp_staticip_x_0.focus();
-					document.form.dhcp_staticip_x_0.select();
-					return false;
-				}
-			}
-		}
+	if (document.form.dhcp_staticnum_x_0.value >= c){
+	alert("<#JS_itemlimit1#> " + c + " <#JS_itemlimit2#>");
+	return false;
+	}else if (document.form.dhcp_staticmac_x_0.value==""){
+	alert("<#JS_fieldblank#>");
+	document.form.dhcp_staticmac_x_0.focus();
+	document.form.dhcp_staticmac_x_0.select();
+	return false;
+	}else if(document.form.dhcp_staticip_x_0.value==""){
+	alert("<#JS_fieldblank#>");
+	document.form.dhcp_staticip_x_0.focus();
+	document.form.dhcp_staticip_x_0.select();
+	return false;
+	}else if (!validate_hwaddr(document.form.dhcp_staticmac_x_0)){
+	return false;
+	}else if (!validate_ipaddr_final(document.form.dhcp_staticip_x_0, 'staticip')){
+	return false;
+	}else{
+	for(i=0; i<m_dhcp.length; i++){
+	if(document.form.dhcp_staticmac_x_0.value==m_dhcp[i][0]) {
+	alert('<#JS_duplicate#>' + ' (' + m_dhcp[i][0] + ')' );
+	document.form.dhcp_staticmac_x_0.focus();
+	document.form.dhcp_staticmac_x_0.select();
+	return false;
+	}
+	if(document.form.dhcp_staticip_x_0.value.value==m_dhcp[i][1]) {
+	alert('<#JS_duplicate#>' + ' (' + m_dhcp[i][1] + ')' );
+	document.form.dhcp_staticip_x_0.focus();
+	document.form.dhcp_staticip_x_0.select();
+	return false;
+	}
+	}
+	}
 	}
 	pageChanged = 0;
 	document.form.action_mode.value = b;
@@ -314,20 +304,20 @@ function markGroupMDHCP(o, c, b) {
 function showMDHCPList(){
 	var code = '<table width="100%" cellspacing="0" cellpadding="3" class="table table-list">';
 	if(m_dhcp.length == 0)
-		code +='<tr><td colspan="4" style="text-align: center;"><div class="alert alert-info"><#IPConnection_VSList_Norule#></div></td></tr>';
+	code +='<tr><td colspan="4" style="text-align: center;"><div class="alert alert-info"><#IPConnection_VSList_Norule#></div></td></tr>';
 	else{
 	    for(var i = 0; i < m_dhcp.length; i++){
-		code +='<tr id="row' + i + '">';
-		code +='<td width="25%">&nbsp;' + m_dhcp[i][0] + '</td>';
-		code +='<td width="25%">&nbsp;' + m_dhcp[i][1] + '</td>';
-		code +='<td width="45%">&nbsp;' + m_dhcp[i][2] + '</td>';
-		code +='<td width="5%" style="text-align: center;"><input type="checkbox" name="ManualDHCPList_s" value="' + m_dhcp[i][mdhcp_ifield] + '" onClick="changeBgColor(this,' + i + ');" id="check' + m_dhcp[i][mdhcp_ifield] + '"></td>';
-		code +='</tr>';
+	code +='<tr id="row' + i + '">';
+	code +='<td width="25%">&nbsp;' + m_dhcp[i][0] + '</td>';
+	code +='<td width="25%">&nbsp;' + m_dhcp[i][1] + '</td>';
+	code +='<td width="45%">&nbsp;' + m_dhcp[i][2] + '</td>';
+	code +='<td width="5%" style="text-align: center;"><input type="checkbox" name="ManualDHCPList_s" value="' + m_dhcp[i][mdhcp_ifield] + '" onClick="changeBgColor(this,' + i + ');" id="check' + m_dhcp[i][mdhcp_ifield] + '"></td>';
+	code +='</tr>';
 	    }
-		code += '<tr>';
-		code += '<td colspan="3">&nbsp;</td>'
-		code += '<td><button class="btn btn-danger" type="submit" onclick="markGroupMDHCP(this, 64, \' Del \');" name="ManualDHCPList"><i class="icon icon-minus icon-white"></i></button></td>';
-		code += '</tr>'
+	code += '<tr>';
+	code += '<td colspan="3">&nbsp;</td>'
+	code += '<td><button class="btn btn-danger" type="submit" onclick="markGroupMDHCP(this, 255, \' Del \');" name="ManualDHCPList"><i class="icon icon-minus icon-white"></i></button></td>';
+	code += '</tr>'
 	}
 	code +='</table>';
 	$("MDHCPList_Block").innerHTML = code;
@@ -492,72 +482,17 @@ function changeBgColor(obj, num){
                                             </td>
                                         </tr>
                                         <tr>
-                                            <th><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this,5,10);"><#LANHostConfig_x_LDNSServer6_itemname#> :</th>
+                                            <th><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this,5,12);"><#LANHostConfig_x_LDNSServer6_itemname#> :</th>
                                             <td>
                                                 <input type="text" maxlength="40" class="input" size="15" name="dhcp_dnsv6_x" value="<% nvram_get_x("", "dhcp_dnsv6_x"); %>" onKeyPress="return is_string(this,event);" />
+	<div>&nbsp;<span style="color:#888;">填写 br0 时使用本地 IPv6 地址</span></div>
                                             </td>
                                         </tr>
                                         <tr>
-                                            <th style="padding-bottom: 0px;"><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this,5,11);"><#LANHostConfig_x_WINSServer_itemname#></a></th>
+                                            <th style="padding-bottom: 0px;"><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this,5,10);"><#LANHostConfig_x_WINSServer_itemname#></a></th>
                                             <td style="padding-bottom: 0px;">
                                                 <input type="text" maxlength="15" class="input" size="15" name="dhcp_wins_x" value="<% nvram_get_x("", "dhcp_wins_x"); %>" onkeypress="return is_ipaddr(this,event);" />
                                             </td>
-                                        </tr>
-                                        <tr>
-                                            <th style="border-top: 0 none;"><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this,5,12);"><#LANHostConfig_ForceDNS_itemname#></a></th>
-                                            <td style="border-top: 0 none;">
-                                                <div class="main_itoggle">
-                                                    <div id="redirect_alldns_on_of">
-                                                        <input type="checkbox" id="redirect_alldns_fake" <% nvram_match_x("", "redirect_alldns", "1", "value=1 checked"); %><% nvram_match_x("", "redirect_alldns", "0", "value=0"); %>>
-                                                    </div>
-                                                </div>
-                                                <div style="position: absolute; margin-left: -10000px;">
-                                                    <input type="radio" value="1" name="redirect_alldns" id="redirect_alldns_1" <% nvram_match_x("", "redirect_alldns", "1", "checked"); %>><#checkbox_Yes#>
-                                                    <input type="radio" value="0" name="redirect_alldns" id="redirect_alldns_0" <% nvram_match_x("", "redirect_alldns", "0", "checked"); %>><#checkbox_No#>
-                                                </div>
-                                           </td>
-                                        </tr>
-                                        <tr>
-                                            <th style="border-top: 0 none;"><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this,5,13);"><#LANHostConfig_DHCPFilterAAAA_itemname#></a></th>
-                                            <td style="border-top: 0 none;">
-                                                <div class="main_itoggle">
-                                                    <div id="dhcp_filter_aaa_on_of">
-                                                        <input type="checkbox" id="dhcp_filter_aaa_fake" <% nvram_match_x("", "dhcp_filter_aaa", "1", "value=1 checked"); %><% nvram_match_x("", "dhcp_filter_aaa", "0", "value=0"); %>>
-                                                    </div>
-                                                </div>
-                                                <div style="position: absolute; margin-left: -10000px;">
-                                                    <input type="radio" value="1" name="dhcp_filter_aaa" id="dhcp_filter_aaa_1" <% nvram_match_x("", "dhcp_filter_aaa", "1", "checked"); %> /><#checkbox_Yes#>
-                                                    <input type="radio" value="0" name="dhcp_filter_aaa" id="dhcp_filter_aaa_0" <% nvram_match_x("", "dhcp_filter_aaa", "0", "checked"); %> /><#checkbox_No#>
-                                                </div>
-                                           </td>
-                                        </tr>
-                                        <tr>
-                                            <th style="border-top: 0 none;"><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this,5,14);"><#LANHostConfig_DHCPAllservers_itemname#></a></th>
-                                            <td style="border-top: 0 none;">
-                                                <div class="main_itoggle">
-                                                    <div id="dhcp_allservers_on_of">
-                                                        <input type="checkbox" id="dhcp_allservers_fake" <% nvram_match_x("", "dhcp_allservers", "1", "value=1 checked"); %><% nvram_match_x("", "dhcp_allservers", "0", "value=0"); %>>
-                                                    </div>
-                                                </div>
-                                                <div style="position: absolute; margin-left: -10000px;">
-                                                    <input type="radio" value="1" name="dhcp_allservers" id="dhcp_allservers_1" <% nvram_match_x("", "dhcp_allservers", "1", "checked"); %> /><#checkbox_Yes#>
-                                                    <input type="radio" value="0" name="dhcp_allservers" id="dhcp_allservers_0" <% nvram_match_x("", "dhcp_allservers", "0", "checked"); %> /><#checkbox_No#>
-                                                </div>
-                                           </td>
-                                        </tr>
-                                        <tr>
-                                            <th style="border-top: 0 none;"><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this,5,15);"><#LANHostConfig_DHCPStrictorder_itemname#></a></th>
-                                            <td style="border-top: 0 none;">
-                                                <div class="main_itoggle">
-                                                    <div id="dhcp_strictorder_on_of">
-                                                        <input type="checkbox" id="dhcp_strictorder_fake" <% nvram_match_x("", "dhcp_strictorder", "1", "value=1 checked"); %><% nvram_match_x("", "dhcp_strictorder", "0", "value=0"); %>>
-                                                    </div>
-                                                </div>
-                                                <div style="position: absolute; margin-left: -10000px;">
-                                                    <input type="radio" value="1" name="dhcp_strictorder" id="dhcp_strictorder_1" <% nvram_match_x("", "dhcp_strictorder", "1", "checked"); %> /><#checkbox_Yes#>
-                                                    <input type="radio" value="0" name="dhcp_strictorder" id="dhcp_strictorder_0" <% nvram_match_x("", "dhcp_strictorder", "0", "checked"); %> /><#checkbox_No#>
-                                                </div>
-                                           </td>
                                         </tr>
                                     </table>
 
@@ -569,7 +504,7 @@ function changeBgColor(obj, num){
                                             <th width="50%"><#DHCP_Verbose#></th>
                                             <td>
                                                 <select name="dhcp_verbose" class="input">
-                                                    <option value="0" <% nvram_match_x("", "dhcp_verbose", "0","selected"); %>><#CTL_Disabled#> (*)</option>
+                                                    <option value="0" <% nvram_match_x("", "dhcp_verbose", "0","selected"); %>><#CTL_Disabled#></option>
                                                     <option value="1" <% nvram_match_x("", "dhcp_verbose", "1","selected"); %>>DHCPv4</option>
                                                     <option value="2" <% nvram_match_x("", "dhcp_verbose", "2","selected"); %>>DHCPv6</option>
                                                     <option value="3" <% nvram_match_x("", "dhcp_verbose", "3","selected"); %>>DHCPv4 + DHCPv6</option>
@@ -578,42 +513,39 @@ function changeBgColor(obj, num){
                                         </tr>
                                         <tr>
                                             <td colspan="2">
-                                                <a href="javascript:spoiler_toggle('spoiler_conf')"><span><#CustomConf#> "dnsmasq.conf"</span></a>
+                                                <i class="icon-hand-right"></i><a href="javascript:spoiler_toggle('spoiler_conf')"><span><#CustomConf#> "dnsmasq.conf"</span></a>
                                                 <div id="spoiler_conf" style="display:none;">
-                                                    <textarea rows="16" wrap="off" spellcheck="false" maxlength="4096" class="span12" name="dnsmasq.dnsmasq.conf" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("dnsmasq.dnsmasq.conf",""); %></textarea>
+                                                    <textarea rows="16" wrap="off" spellcheck="false" maxlength="2097152" class="span12" name="dnsmasq.dnsmasq.conf" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("dnsmasq.dnsmasq.conf",""); %></textarea>
                                                 </div>
                                             </td>
                                         </tr>
                                         <tr id="row_dservers">
                                             <td colspan="2">
-                                                <a href="javascript:spoiler_toggle('spoiler_dservers')"><span><#CustomConf#> "dnsmasq.servers"</span></a>
+                                                <i class="icon-hand-right"></i><a href="javascript:spoiler_toggle('spoiler_dservers')"><span><#CustomConf#> "dnsmasq.servers"</span></a>
                                                 <div id="spoiler_dservers" style="display:none;">
-                                                    <textarea rows="16" wrap="off" spellcheck="false" maxlength="16384" class="span12" name="dnsmasq.dnsmasq.servers" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("dnsmasq.dnsmasq.servers",""); %></textarea>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr id="row_dhcpconf">
-                                            <td colspan="2">
-                                                <a href="javascript:spoiler_toggle('spoiler_dhcpconf')"><span><#CustomConf#> "dhcp.conf"</span></a>
-                                                <div id="spoiler_dhcpconf" style="display:none;">
-                                                    <textarea rows="16" wrap="off" spellcheck="false" maxlength="16384" class="span12" name="dnsmasq.dhcp.conf" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("dnsmasq.dhcp.conf",""); %></textarea>
+                                                    <textarea rows="16" wrap="off" spellcheck="false" maxlength="2097152" class="span12" name="dnsmasq.dnsmasq.servers" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("dnsmasq.dnsmasq.servers",""); %></textarea>
                                                 </div>
                                             </td>
                                         </tr>
                                         <tr id="row_hosts">
                                             <td colspan="2" style="padding-bottom: 0px;">
-                                                <a href="javascript:spoiler_toggle('spoiler_hosts')"><span><#CustomConf#> "hosts"</span></a>
+                                                <i class="icon-hand-right"></i><a href="javascript:spoiler_toggle('spoiler_hosts')"><span><#CustomConf#> "hosts"</span></a>
                                                 <div id="spoiler_hosts" style="display:none;">
-                                                    <textarea rows="16" wrap="off" spellcheck="false" maxlength="8192" class="span12" name="dnsmasq.hosts" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("dnsmasq.hosts",""); %></textarea>
+                                                    <textarea rows="16" wrap="off" spellcheck="false" maxlength="2097152" class="span12" name="dnsmasq.hosts" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("dnsmasq.hosts",""); %></textarea>
                                                 </div>
                                             </td>
                                         </tr>
-                                        <tr id="row_wpad">
-                                            <td colspan="2" style="padding-bottom: 0px;">
-                                                <a href="javascript:spoiler_toggle('spoiler_wpad')"><span><#LANHostConfig_WPAD#> "wpad.dat"</span></a>
-                                                <div id="spoiler_wpad" style="display:none;">
-                                                    <textarea rows="16" wrap="off" spellcheck="false" maxlength="65536" class="span12" name="scripts.wpad.dat" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("scripts.wpad.dat",""); %></textarea>
-                                                </div>
+                                        <tr>
+                                            <th style="padding-bottom: 0px;">dnsmasq 缓存大小(cachesize):</th>
+                                            <td style="padding-bottom: 0px;">
+                                                <input type="text" maxlength="5" size="5" name="dnsmasq_cache_size" class="input" value="<% nvram_get_x("", "dnsmasq_cache_size"); %>" onKeyPress="return is_number(this,event);">
+                                                &nbsp;<span style="color:#888;">[0..10000]</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th style="padding-bottom: 0px;">dnsmasq 启动选项(options):</th>
+                                            <td style="padding-bottom: 0px;">
+                                                <input type="text" maxlength="255" size="32" name="dnsmasq_options" class="input" placeholder="-C /etc/dnsmasq.conf" value="<% nvram_get_x("", "dnsmasq_options"); %>" onKeyPress="return is_string(this,event);">
                                             </td>
                                         </tr>
                                     </table>
@@ -623,7 +555,7 @@ function changeBgColor(obj, num){
                                             <th colspan="4" id="GWStatic" style="background-color: #E3E3E3;"><#LANHostConfig_ManualDHCPList_groupitemdesc#></th>
                                         </tr>
                                         <tr>
-                                            <th colspan="2" width="50%"><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this,5,16);"><#LANHostConfig_ManualDHCPEnable_itemname#></a></th>
+                                            <th colspan="2" width="50%"><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this,5,11);"><#LANHostConfig_ManualDHCPEnable_itemname#></a></th>
                                             <td colspan="2">
                                                 <div class="main_itoggle">
                                                     <div id="dhcp_static_x_on_of">
@@ -638,7 +570,7 @@ function changeBgColor(obj, num){
                                             </td>
                                         </tr>
                                         <tr id="row_static_arp" style="display:none">
-                                            <th colspan="2" width="50%"><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this,5,17);"><#LANHostConfig_ManualARP_itemname#></a></th>
+                                            <th colspan="2"><#LANHostConfig_ManualARP_itemname#></th>
                                             <td colspan="2">
                                                 <div class="main_itoggle">
                                                     <div id="dhcp_static_arp_on_of">
@@ -681,7 +613,7 @@ function changeBgColor(obj, num){
                                                 <input type="text" maxlength="24" class="span12" size="20" name="dhcp_staticname_x_0" value="<% nvram_get_x("", "dhcp_staticname_x_0"); %>" onKeyPress="return is_string(this,event);"/>
                                             </td>
                                             <td width="5%">
-                                                <button class="btn" style="max-width: 219px" type="submit" onclick="return markGroupMDHCP(this, 64, ' Add ');" name="ManualDHCPList2" value="<#CTL_add#>" size="12"><i class="icon icon-plus"></i></button>
+                                                <button class="btn" style="max-width: 219px" type="submit" onclick="return markGroupMDHCP(this, 255, ' Add ');" name="ManualDHCPList2" value="<#CTL_add#>" size="12"><i class="icon icon-plus"></i></button>
                                             </td>
                                         </tr>
                                         <tr id="row_static_body" style="display:none">

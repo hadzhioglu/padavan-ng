@@ -36,10 +36,10 @@ function initial(){
 function getHashId(){
 	var curHash = window.location.hash;
 	if (curHash == '')
-		curHash = '#0';
+	curHash = '#0';
 	var id = parseInt(curHash.replace('#', '0'));
 	if (isNaN(id))
-		return 0;
+	return 0;
 	return id;
 }
 
@@ -48,7 +48,7 @@ function get_page_id(){
     if (support_2g_radio())
         page_id += 1;
 	if (support_5g_radio())
-		page_id += 1;
+	page_id += 1;
 	return page_id;
 }
 
@@ -56,7 +56,7 @@ function update_page(){
 	var port_nm = 'WAN';
 	eth_port_id = getHashId();
 	if (eth_port_id > 0)
-		port_nm = 'LAN' + eth_port_id.toString();
+	port_nm = 'LAN' + eth_port_id.toString();
 	$("hdr_port").innerHTML = '<#menu5_9#> - ' + port_nm;
 	document.title = '<#Web_Title#> - ' + port_nm;
 }
@@ -70,16 +70,16 @@ function update_tabs(){
 function set_mib_data(){
 	clearTimeout(id_timer_mib);
 	$j.ajax({
-		type: 'get',
-		url: '/status_eth_mib.asp',
-		data: {
-			port_id: eth_port_id
-		},
-		dataType: 'html',
-		success: function(data){
-			$j('#mib_area').text(data);
-			id_timer_mib = setTimeout('set_mib_data()', 5000);
-		}
+	type: 'get',
+	url: '/status_eth_mib.asp',
+	data: {
+	port_id: eth_port_id
+	},
+	dataType: 'html',
+	success: function(data){
+	$j('#mib_area').text(data);
+	id_timer_mib = setTimeout('set_mib_data()', 5000);
+	}
 	});
 }
 </script>

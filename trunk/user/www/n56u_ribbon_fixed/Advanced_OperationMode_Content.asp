@@ -24,11 +24,11 @@ function initial(){
 	show_footer();
 
 	if(sw_mode == '1' || sw_mode == '3'){
-		showhide_div('wl_rt', 1);
-		showhide_div('rt_wo_nat', 0);
+	showhide_div('wl_rt', 1);
+	showhide_div('rt_wo_nat', 0);
 	}else if(sw_mode == '4'){
-		showhide_div('wl_rt', 0);
-		showhide_div('rt_wo_nat', 1);
+	showhide_div('wl_rt', 0);
+	showhide_div('rt_wo_nat', 1);
 	}
 
 	setScenerion(sw_mode);
@@ -44,20 +44,20 @@ function initial(){
 function saveMode(){
 	var o1 = document.form.sw_mode;
 	if(sw_mode == '1'){
-		if(o1[0].checked == true){
-			alert("<#op_already_configured#>");
-			return false;
-		}
+	if(o1[0].checked == true){
+	alert("<#op_already_configured#>");
+	return false;
+	}
 	}else if(sw_mode == '4'){
-		if(o1[1].checked == true){
-			alert("<#op_already_configured#>");
-			return false;
-		}
+	if(o1[1].checked == true){
+	alert("<#op_already_configured#>");
+	return false;
+	}
 	}else if(sw_mode == '3'){
-		if(o1[2].checked == true){
-			alert("<#op_already_configured#>");
-			return false;
-		}
+	if(o1[2].checked == true){
+	alert("<#op_already_configured#>");
+	return false;
+	}
 	}
 
 	showLoading();
@@ -75,20 +75,20 @@ function done_validating(action){
 
 function setScenerion(mode){
 	if(mode == '1' || mode == '4'){
-		$j("#radio2").hide();
-		$j("#Internet_span").css("display", "");
-		$j("#ap-line").css("display", "none");
-		$j(".AP").hide();
-		$j("#mode_desc").html("<#OP_GW_desc1#> <#OP_GW_desc2#>");
-		$j("#nextButton").attr("value","<#CTL_next#>");
+	$j("#radio2").hide();
+	$j("#Internet_span").css("display", "");
+	$j("#ap-line").css("display", "none");
+	$j(".AP").hide();
+	$j("#mode_desc").html("<#OP_GW_desc1#> <#OP_GW_desc2#>");
+	$j("#nextButton").attr("value","<#CTL_next#>");
 	}
 	else if(mode == '3'){
-		$j("#radio2").css("display", "none");
-		$j("#Internet_span").css("display", "");
-		$j("#ap-line").css("display", "none");
-		$j(".AP").show();
-		$j("#mode_desc").html("<#OP_AP_desc1#> <#OP_AP_desc2#>");
-		$j("#nextButton").attr("value","<#CTL_next#>");
+	$j("#radio2").css("display", "none");
+	$j("#Internet_span").css("display", "");
+	$j("#ap-line").css("display", "none");
+	$j(".AP").show();
+	$j("#mode_desc").html("<#OP_AP_desc1#> <#OP_AP_desc2#>");
+	$j("#nextButton").attr("value","<#CTL_next#>");
 	}
 }
 

@@ -36,12 +36,12 @@ var lan_ipaddr = '<% nvram_get_x("", "lan_ipaddr_t"); %>';
 function initial(){
 	var id_menu = 4;
 	if(get_ap_mode()){
-		id_menu = 3;
-		if (lan_proto == '1')
-			id_menu--;
-		showhide_div('row_mroute', 0);
+	id_menu = 3;
+	if (lan_proto == '1')
+	id_menu--;
+	showhide_div('row_mroute', 0);
 	}else{
-		on_click_mroute();
+	on_click_mroute();
 	}
 
 	show_banner(1);
@@ -51,43 +51,43 @@ function initial(){
 	var o1 = document.form.ether_uport;
 	var num_ephy = support_num_ephy();
 	if (!support_2g_inic_mii())
-		o1.remove(9);
+	o1.remove(9);
 	if (num_ephy < 8)
-		o1.remove(8);
+	o1.remove(8);
 	if (num_ephy < 7)
-		o1.remove(7);
+	o1.remove(7);
 	if (num_ephy < 6)
-		o1.remove(6);
+	o1.remove(6);
 	if (num_ephy < 5)
-		o1.remove(5);
+	o1.remove(5);
 	if (num_ephy < 4)
-		o1.remove(4);
+	o1.remove(4);
 	if (num_ephy < 3)
-		o1.remove(3);
+	o1.remove(3);
 
 	var switch_type = support_switch_type();
 	if (switch_type > 1) {
-		showhide_div('row_storm_ucast', 0);
-		showhide_div('row_storm_mcast_unk', 0);
-		showhide_div('row_storm_mcast', 0);
+	showhide_div('row_storm_ucast', 0);
+	showhide_div('row_storm_mcast_unk', 0);
+	showhide_div('row_storm_mcast', 0);
 	}
 
 	if (switch_type >= 10)
-		$("lbl_bcast").innerHTML = "[0..100]";
+	$("lbl_bcast").innerHTML = "[0..100]";
 
 	if(document.form.udpxy_enable_x.value == 0)
-		$("web_udpxy_link").style.display = "none";
+	$("web_udpxy_link").style.display = "none";
 
 	if(found_app_xupnpd()){
-		showhide_div('row_xupnpd', 1);
-		if(document.form.xupnpd_enable_x.value == 0)
-			$("web_xupnpd_link").style.display = "none";
-		if(document.form.udpxy_enable_x.value == 0 || document.form.xupnpd_enable_x.value == 0)
-			showhide_div('row_xupnpd_udpxy', 0);
-		else
-			showhide_div('row_xupnpd_udpxy', 1);
+	showhide_div('row_xupnpd', 1);
+	if(document.form.xupnpd_enable_x.value == 0)
+	$("web_xupnpd_link").style.display = "none";
+	if(document.form.udpxy_enable_x.value == 0 || document.form.xupnpd_enable_x.value == 0)
+	showhide_div('row_xupnpd_udpxy', 0);
+	else
+	showhide_div('row_xupnpd_udpxy', 1);
 	}else{
-		showhide_div('row_xupnpd', 0);
+	showhide_div('row_xupnpd', 0);
 	}
 
 	on_click_snoop();
@@ -95,50 +95,50 @@ function initial(){
 
 function applyRule(){
 	if(validForm()){
-		showLoading();
-
-		document.form.action_mode.value = " Apply ";
-		document.form.current_page.value = "/Advanced_IPTV_Content.asp";
-		document.form.next_page.value = "";
-		document.form.submit();
+	showLoading();
+	
+	document.form.action_mode.value = " Apply ";
+	document.form.current_page.value = "/Advanced_IPTV_Content.asp";
+	document.form.next_page.value = "";
+	document.form.submit();
 	}
 }
 
 function validForm(){
 	if(document.form.udpxy_enable_x.value != 0){
-		if(!validate_range(document.form.udpxy_enable_x, 1024, 65535))
-			return false;
+	if(!validate_range(document.form.udpxy_enable_x, 1024, 65535))
+	return false;
 	}
 
 	if(found_app_xupnpd()){
-		if(document.form.xupnpd_enable_x.value != 0){
-			if(!validate_range(document.form.xupnpd_enable_x, 1024, 65535))
-				return false;
-			if (document.form.xupnpd_enable_x.value == document.form.udpxy_enable_x.value){
-				document.form.xupnpd_enable_x.focus();
-				alert("<#JS_duplicate#>");
-				return false;
-			}
-		}
+	if(document.form.xupnpd_enable_x.value != 0){
+	if(!validate_range(document.form.xupnpd_enable_x, 1024, 65535))
+	return false;
+	if (document.form.xupnpd_enable_x.value == document.form.udpxy_enable_x.value){
+	document.form.xupnpd_enable_x.focus();
+	alert("<#JS_duplicate#>");
+	return false;
+	}
+	}
 	}
 
 	var switch_type = support_switch_type();
 	if(document.form.controlrate_unknown_unicast.value != 0 && switch_type < 2){
-		if(!validate_range(document.form.controlrate_unknown_unicast, 0, 1000))
-			return false;
+	if(!validate_range(document.form.controlrate_unknown_unicast, 0, 1000))
+	return false;
 	}
 	if(document.form.controlrate_unknown_multicast.value != 0 && switch_type < 2){
-		if(!validate_range(document.form.controlrate_unknown_multicast, 0, 1000))
-			return false;
+	if(!validate_range(document.form.controlrate_unknown_multicast, 0, 1000))
+	return false;
 	}
 	if(document.form.controlrate_multicast.value != 0 && switch_type < 2){
-		if(!validate_range(document.form.controlrate_multicast, 0, 1000))
-			return false;
+	if(!validate_range(document.form.controlrate_multicast, 0, 1000))
+	return false;
 	}
 	if(document.form.controlrate_broadcast.value != 0){
-		var max_rate = (switch_type >= 10) ? 100 : 1000;
-		if(!validate_range(document.form.controlrate_broadcast, 0, max_rate))
-			return false;
+	var max_rate = (switch_type >= 10) ? 100 : 1000;
+	if(!validate_range(document.form.controlrate_broadcast, 0, max_rate))
+	return false;
 	}
 
 	return true;
@@ -150,12 +150,12 @@ function done_validating(action){
 
 function valid_udpxy(){
 	if(document.form.udpxy_enable_x.value != 0)
-		validate_range(document.form.udpxy_enable_x, 1024, 65535);
+	validate_range(document.form.udpxy_enable_x, 1024, 65535);
 }
 
 function valid_xupnpd(){
 	if(found_app_xupnpd() && document.form.xupnpd_enable_x.value != 0)
-		validate_range(document.form.xupnpd_enable_x, 1024, 65535);
+	validate_range(document.form.xupnpd_enable_x, 1024, 65535);
 }
 
 function on_click_mroute(){

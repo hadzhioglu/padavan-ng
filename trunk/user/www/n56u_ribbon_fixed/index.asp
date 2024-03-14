@@ -45,19 +45,20 @@ function initial(){
 	set_default_choice();
 
 	if (!support_2g_radio() && !support_5g_radio()) { // Remove radio row
-		$("row_radio").style.display = "none";
+	$("row_radio").style.display = "none";
 	}
 
 	if(sw_mode == '3')
-		$("linkInternet").href = "/device-map/intranet.asp"
+	$("linkInternet").href = "/device-map/intranet.asp"
 
+	update_ss_internet_status();
 	update_internet_status();
 }
 
 function detect_update_info(){
 	var str = $("internetStatus").innerHTML;
 	if(str == "<#QKSet_detect_freshbtn#>...")
-		refreshpage();
+	refreshpage();
 }
 
 function show_default_icon(){
@@ -69,41 +70,60 @@ function show_default_icon(){
 function set_default_choice(){
 	var icon_name;
 	if(flag && flag.length > 0 && sw_mode != "3"){
-		if(flag == "Internet")
-			$("statusframe").src = "/device-map/internet.asp";
-		else if(flag == "Client")
-			$("statusframe").src = "/device-map/clients.asp";
-		else if(flag == "Router2g")
-			$("statusframe").src = "/device-map/router2g.asp";
-		else if(flag == "Router5g")
-			$("statusframe").src = "/device-map/router.asp";
-		else{
-			show_default_icon();
-			return;
-		}
-		if(flag == "Router2g" || flag == "Router5g")
-			icon_name = "iconRouter";
-		else
-			icon_name = "icon"+flag;
-		clickEvent($(icon_name));
+	if(flag == "Internet")
+	$("statusframe").src = "/device-map/internet.asp";
+	else if(flag == "Client")
+	$("statusframe").src = "/device-map/clients.asp";
+	else if(flag == "Router2g")
+	$("statusframe").src = "/device-map/router2g.asp";
+	else if(flag == "Router5g")
+	$("statusframe").src = "/device-map/router.asp";
+	else if(flag == "ss")
+	$("statusframe").src = "/device-map/ss.asp";
+	else{
+	show_default_icon();
+	return;
+	}
+	if(flag == "Router2g" || flag == "Router5g")
+	icon_name = "iconRouter";
+	else
+	icon_name = "icon"+flag;
+	clickEvent($(icon_name));
 	}else
-		show_default_icon();
+	show_default_icon();
 }
 
 function showMapWANStatus(flag){
 	$j("#internetStatus").removeClass("badge badge-success badge-warning badge-important");
 
 	if(flag == 1){
-		$j("#internetStatus").addClass("badge badge-success");
-		$j("#internetStatus").html('<i class="icon-ok icon-white"></i>');
+	$j("#internetStatus").addClass("badge badge-success");
+	$j("#internetStatus").html('<i class="icon-ok icon-white"></i>');
 	}
 	else if(flag == 2){
-		$j("#internetStatus").addClass("badge badge-warning");
-		$j("#internetStatus").html('<i class="icon-minus icon-white"></i>');
+	$j("#internetStatus").addClass("badge badge-warning");
+	$j("#internetStatus").html('<i class="icon-minus icon-white"></i>');
 	}
 	else{
-		$j("#internetStatus").addClass("badge badge-important");
-		$j("#internetStatus").html('<i class="icon-remove icon-white"></i>');
+	$j("#internetStatus").addClass("badge badge-important");
+	$j("#internetStatus").html('<i class="icon-remove icon-white"></i>');
+	}
+}
+
+function showMapSSStatus(flag){
+	$j("#ssinternetStatus").removeClass("badge badge-success badge-warning badge-important");
+
+	if(flag == 1){
+	$j("#ssinternetStatus").addClass("badge badge-success");
+	$j("#ssinternetStatus").html('<i class="icon-ok icon-white"></i>');
+	}
+	else if(flag == 2){
+	$j("#ssinternetStatus").addClass("badge badge-warning");
+	$j("#ssinternetStatus").html('<i class="icon-minus icon-white"></i>');
+	}
+	else{
+	$j("#ssinternetStatus").addClass("badge badge-important");
+	$j("#ssinternetStatus").html('<i class="icon-remove icon-white"></i>');
 	}
 }
 
@@ -114,40 +134,40 @@ function show_middle_status(){
 	var security_mode;
 
 	if(auth_mode == "open")
-		security_mode = "Open System";
+	security_mode = "Open System";
 	else if(auth_mode == "shared")
-		security_mode = "Shared Key";
+	security_mode = "Shared Key";
 	else if(auth_mode == "psk"){
-		if(wpa_mode == "1")
-			security_mode = "WPA-Personal";
-		else if(wpa_mode == "2")
-			security_mode = "WPA2-Personal";
-		else if(wpa_mode == "0")
-			security_mode = "WPA-Auto-Personal";
-		else
-			alert("System error for showing auth_mode!");
+	if(wpa_mode == "1")
+	security_mode = "WPA-Personal";
+	else if(wpa_mode == "2")
+	security_mode = "WPA2-Personal";
+	else if(wpa_mode == "0")
+	security_mode = "WPA-Auto-Personal";
+	else
+	alert("System error for showing auth_mode!");
 	}
 	else if(auth_mode == "wpa"){
-		if(wpa_mode == "3")
-			security_mode = "WPA-Enterprise";
-		else if(wpa_mode == "4")
-			security_mode = "WPA-Auto-Enterprise";
-		else
-			alert("System error for showing auth_mode!");
+	if(wpa_mode == "3")
+	security_mode = "WPA-Enterprise";
+	else if(wpa_mode == "4")
+	security_mode = "WPA-Auto-Enterprise";
+	else
+	alert("System error for showing auth_mode!");
 	}
 	else if(auth_mode == "wpa2")
-		security_mode = "WPA2-Enterprise";
+	security_mode = "WPA2-Enterprise";
 	else if(auth_mode == "radius")
-		security_mode = "Radius with 802.1x";
+	security_mode = "Radius with 802.1x";
 
 	//$("wl_securitylevel_span").innerHTML = security_mode;
 
 	if(auth_mode == "open" && wl_wep_x == 0) {
-		$j("#wl_securitylevel_span").addClass("badge badge-important");
-		$j("#wl_securitylevel_span").html('<i class="icon-exclamation-sign icon-white"></i>');
+	$j("#wl_securitylevel_span").addClass("badge badge-important");
+	$j("#wl_securitylevel_span").html('<i class="icon-exclamation-sign icon-white"></i>');
 	} else {
-		$j("#wl_securitylevel_span").addClass("badge badge-success");
-		$j("#wl_securitylevel_span").html('<i class="icon-lock icon-white"></i>');
+	$j("#wl_securitylevel_span").addClass("badge badge-success");
+	$j("#wl_securitylevel_span").html('<i class="icon-lock icon-white"></i>');
 	}
 }
 
@@ -159,9 +179,9 @@ function show_client_status(clients_count){
 
 	$j("#clientNumber").addClass("badge badge-success");
 	if(clients_count < 10)
-		$j("#clientNumber").css({paddingLeft: '6px', paddingRight: '7px'});
+	$j("#clientNumber").css({paddingLeft: '6px', paddingRight: '7px'});
 	else
-		$j("#clientNumber").css({paddingLeft: '3px', paddingRight: '4px'});
+	$j("#clientNumber").css({paddingLeft: '3px', paddingRight: '4px'});
 
 	$j("#clientNumber").html(clients_count);
 }
@@ -172,75 +192,75 @@ function show_usb_ports(){
 	var usb_ports_num = get_usb_ports_num();
 
 	if (usb_ports_num < 1) {
-		$("row_usb_port1").style.display = "none";
-		return;
+	$("row_usb_port1").style.display = "none";
+	return;
 	}
 
 	dev_type_usb = get_device_type_usb(1);
 	switch(dev_type_usb){
-		case "hub":
-			hub_html(0);
-			break;
-		case "storage":
-			for(i = 0; i < all_disks.length; ++i)
-				if(foreign_disk_interface_names()[i] == "1"){
-					disk_html(0, i);
-					break;
-				}
-			break;
-		case "printer":
-			for(i = 0; i < printer_ports().length; ++i)
-				if(printer_ports()[i] == "1"){
-					printer_html(0, i);
-					break;
-				}
-			break;
-		case "modem_tty":
-		case "modem_eth":
-			for(i = 0; i < modem_ports().length; ++i)
-				if(modem_ports()[i] == "1"){
-					modem_html(0, i);
-					break;
-				}
-			break;
-		default:
-			no_usb_device_html(0);
+	case "hub":
+	hub_html(0);
+	break;
+	case "storage":
+	for(i = 0; i < all_disks.length; ++i)
+	if(foreign_disk_interface_names()[i] == "1"){
+	disk_html(0, i);
+	break;
+	}
+	break;
+	case "printer":
+	for(i = 0; i < printer_ports().length; ++i)
+	if(printer_ports()[i] == "1"){
+	printer_html(0, i);
+	break;
+	}
+	break;
+	case "modem_tty":
+	case "modem_eth":
+	for(i = 0; i < modem_ports().length; ++i)
+	if(modem_ports()[i] == "1"){
+	modem_html(0, i);
+	break;
+	}
+	break;
+	default:
+	no_usb_device_html(0);
 	}
 
 	if (usb_ports_num < 2)
-		return;
+	return;
 
 	$("row_usb_port2").style.display = "";
 
 	dev_type_usb = get_device_type_usb(2);
 	switch(dev_type_usb){
-		case "hub":
-			hub_html(1);
-			break;
-		case "storage":
-			for(i = 0; i < all_disks.length; ++i)
-				if(foreign_disk_interface_names()[i] == "2"){
-					disk_html(1, i);
-					break;
-				}
-			break;
-		case "printer":
-			for(i = 0; i < printer_ports().length; ++i)
-				if(printer_ports()[i] == "2"){
-					printer_html(1, i);
-					break;
-				}
-			break;
-		case "modem_tty":
-		case "modem_eth":
-			for(i = 0; i < modem_ports().length; ++i)
-				if(modem_ports()[i] == "2"){
-					modem_html(1, i);
-					break;
-				}
-			break;
-		default:
-			no_usb_device_html(1);
+	case "hub":
+	hub_html(1);
+	break;
+	case "storage":
+	for(i = 0; i < all_disks.length; ++i)
+	if(foreign_disk_interface_names()[i] == "2"){
+	disk_html(1, i);
+	break;
+	}
+	break;
+	case "printer":
+	for(i = 0; i < printer_ports().length; ++i)
+	if(printer_ports()[i] == "2"){
+	printer_html(1, i);
+	break;
+	}
+	break;
+	case "modem_tty":
+	case "modem_eth":
+	for(i = 0; i < modem_ports().length; ++i)
+	if(modem_ports()[i] == "2"){
+	modem_html(1, i);
+	break;
+	}
+	break;
+	default:
+	no_usb_device_html(1);
 	}
 }
 
@@ -249,23 +269,23 @@ function show_ata_pool(){
 	var dev_found = 0;
 
 	if (typeof(get_ata_support) !== 'function')
-		return;
+	return;
 
 	if (!get_ata_support())
-		return;
+	return;
 
 	$("row_ata_pool").style.display = "";
 
 	for(i = 0; i < all_disks.length; ++i){
-		if(foreign_disk_interface_names()[i] == "1000"){
-			dev_found = 1;
-			ata_html(i);
-			break;
-		}
+	if(foreign_disk_interface_names()[i] == "1000"){
+	dev_found = 1;
+	ata_html(i);
+	break;
+	}
 	}
 
 	if (!dev_found)
-		no_device_html("sataIcon");
+	no_device_html("sataIcon");
 }
 
 function show_mmc_card(){
@@ -273,23 +293,23 @@ function show_mmc_card(){
 	var dev_found = 0;
 
 	if (typeof(get_mmc_support) !== 'function')
-		return;
+	return;
 
 	if (!get_mmc_support())
-		return;
+	return;
 
 	$("row_mmc_slot").style.display = "";
 
 	for(i = 0; i < all_disks.length; ++i){
-		if(foreign_disk_interface_names()[i] == "2000"){
-			dev_found = 1;
-			mmc_html(i);
-			break;
-		}
+	if(foreign_disk_interface_names()[i] == "2000"){
+	dev_found = 1;
+	mmc_html(i);
+	break;
+	}
 	}
 
 	if (!dev_found)
-		no_device_html("cardIcon");
+	no_device_html("cardIcon");
 }
 
 function dec_html(all_disk_order){
@@ -301,26 +321,26 @@ function dec_html(all_disk_order){
 	var mount_num = getDiskMountedNum(all_disk_order);
 
 	if(mount_num > 0){
-		if(all_disk_order < foreign_disks().length)
-			TotalSize = simpleNum(foreign_disk_total_size()[all_disk_order]);
-		else
-			TotalSize = simpleNum(blank_disk_total_size()[all_disk_order-foreign_disks().length]);
-
-		all_accessable_size = simpleNum2(computeallpools(all_disk_order, "size")-computeallpools(all_disk_order, "size_in_use"));
-
-		percentbar = simpleNum2((all_accessable_size)/TotalSize*100);
-		percentbar = Math.round(100-percentbar);
-		if(percentbar >= 66 && percentbar < 85)
-			alertPercentbar = 'progress-warning';
-		else if(percentbar >= 85)
-			alertPercentbar = 'progress-danger';
-		dec_html_code += '<div id="diskquota">\n';
-		dec_html_code += '<div style="margin-bottom: 10px;" class="progress ' + alertPercentbar + '"><div class="bar" style="width:'+percentbar+'%">'+(percentbar > 10 ? (percentbar + '%') : '')+'</div></div>';
-		dec_html_code += '</div>\n';
-		dec_html_code += '<strong><#Totaldisk#></strong>: '+TotalSize+' GB<br>\n';
-		dec_html_code += '<span class="style1"><strong><#Availdisk#></strong>: '+(all_accessable_size)+' GB</span>\n';
+	if(all_disk_order < foreign_disks().length)
+	TotalSize = simpleNum(foreign_disk_total_size()[all_disk_order]);
+	else
+	TotalSize = simpleNum(blank_disk_total_size()[all_disk_order-foreign_disks().length]);
+	
+	all_accessable_size = simpleNum2(computeallpools(all_disk_order, "size")-computeallpools(all_disk_order, "size_in_use"));
+	
+	percentbar = simpleNum2((all_accessable_size)/TotalSize*100);
+	percentbar = Math.round(100-percentbar);
+	if(percentbar >= 66 && percentbar < 85)
+	alertPercentbar = 'progress-warning';
+	else if(percentbar >= 85)
+	alertPercentbar = 'progress-danger';
+	dec_html_code += '<div id="diskquota">\n';
+	dec_html_code += '<div style="margin-bottom: 10px;" class="progress ' + alertPercentbar + '"><div class="bar" style="width:'+percentbar+'%">'+(percentbar > 10 ? (percentbar + '%') : '')+'</div></div>';
+	dec_html_code += '</div>\n';
+	dec_html_code += '<strong><#Totaldisk#></strong>: '+TotalSize+' GB<br>\n';
+	dec_html_code += '<span class="style1"><strong><#Availdisk#></strong>: '+(all_accessable_size)+' GB</span>\n';
 	}else
-		dec_html_code += '<span class="style1"><strong><#DISK_UNMOUNTED#></strong></span>\n';
+	dec_html_code += '<span class="style1"><strong><#DISK_UNMOUNTED#></strong></span>\n';
 
 	return dec_html_code;
 }
@@ -339,9 +359,9 @@ function disk_html(device_order,all_disk_order){
 	var disk_model_name = "";
 
 	if(all_disk_order < foreign_disks().length)
-		disk_model_name = foreign_disk_model_info()[all_disk_order];
+	disk_model_name = foreign_disk_model_info()[all_disk_order];
 	else
-		disk_model_name = blank_disks()[all_disk_order-foreign_disks().length];
+	disk_model_name = blank_disks()[all_disk_order-foreign_disks().length];
 
 	dec_html_code = dec_html(all_disk_order);
 
@@ -418,9 +438,9 @@ function mmc_html(all_disk_order){
 	var disk_model_name = "";
 
 	if(all_disk_order < foreign_disks().length)
-		disk_model_name = foreign_disk_model_info()[all_disk_order];
+	disk_model_name = foreign_disk_model_info()[all_disk_order];
 	else
-		disk_model_name = blank_disks()[all_disk_order-foreign_disks().length];
+	disk_model_name = blank_disks()[all_disk_order-foreign_disks().length];
 
 	dec_html_code = dec_html(all_disk_order);
 
@@ -462,89 +482,97 @@ function clickEvent(obj){
 	clicked_device_order = -1;
 
 	if(obj.id == "iflock"){
-		obj = $("big-icons-router-active");
+	obj = $("big-icons-router-active");
 	}
 
 	if(obj.id.indexOf("Internet") > 0){
-		icon = "big-icons-globe-active";
-		ContainerWidth = "300px";
-		Containerpadding = "5px";
-		if (sw_mode == '3'){
-			stitle = "<#statusTitle_Intranet#>";
-			$("statusframe").src = "/device-map/intranet.asp";
-		}else{
-			stitle = "<#statusTitle_Internet#>";
-			$("statusframe").src = "/device-map/internet.asp";
-		}
+	icon = "big-icons-globe-active";
+	ContainerWidth = "300px";
+	Containerpadding = "5px";
+	if (sw_mode == '3'){
+	stitle = "<#statusTitle_Intranet#>";
+	$("statusframe").src = "/device-map/intranet.asp";
+	}else{
+	stitle = "<#statusTitle_Internet#>";
+	$("statusframe").src = "/device-map/internet.asp";
+	}
 	}
 	else if(obj.id.indexOf("Router") > 0){
-		icon = "big-icons-router-active";
-		ContainerWidth = "320px";
-		Containerpadding = "4px";
-		stitle = "<#statusTitle_System#>";
+	icon = "big-icons-router-active";
+	ContainerWidth = "320px";
+	Containerpadding = "4px";
+	stitle = "<#statusTitle_System#>";
 	}
 	else if(obj.id.indexOf("Client") > 0){
-		icon = "big-icons-laptop-active";
-		ContainerWidth = "396px";
-		Containerpadding = "0px";
-		stitle = "<#statusTitle_Client#>";
+	icon = "big-icons-laptop-active";
+	ContainerWidth = "396px";
+	Containerpadding = "0px";
+	stitle = "<#statusTitle_Client#>";
 	}
 	else if(obj.id.indexOf("USBdisk") > 0){
-		icon = "big-icons-usbhdd-active";
-		ContainerWidth = "556px";
-		Containerpadding = "0px";
-		stitle = "<#statusTitle_USB_Disk#>";
-		$("statusframe").src = "/device-map/disk.asp";
+	icon = "big-icons-usbhdd-active";
+	ContainerWidth = "556px";
+	Containerpadding = "0px";
+	stitle = "<#statusTitle_USB_Disk#>";
+	$("statusframe").src = "/device-map/disk.asp";
 	}
 	else if(obj.id.indexOf("Printer") > 0){
-		seat = obj.id.indexOf("Printer")+7;
-		clicked_device_order = parseInt(obj.id.substring(seat, seat+1));
-		icon = "big-icons-printer-active";
-		ContainerWidth = "666px";
-		Containerpadding = "0px";
-		stitle = "<#statusTitle_Printer#>";
-		$("statusframe").src = "/device-map/printer.asp";
+	seat = obj.id.indexOf("Printer")+7;
+	clicked_device_order = parseInt(obj.id.substring(seat, seat+1));
+	icon = "big-icons-printer-active";
+	ContainerWidth = "666px";
+	Containerpadding = "0px";
+	stitle = "<#statusTitle_Printer#>";
+	$("statusframe").src = "/device-map/printer.asp";
 	}
 	else if(obj.id.indexOf("Modem") > 0){
-		seat = obj.id.indexOf("Modem")+5;
-		clicked_device_order = parseInt(obj.id.substring(seat, seat+1));
-		icon = "big-icons-modem-active";
-		ContainerWidth = "777px";
-		Containerpadding = "0px";
-		stitle = "<#statusTitle_Modem#>";
-		$("statusframe").src = "/device-map/modem.asp";
+	seat = obj.id.indexOf("Modem")+5;
+	clicked_device_order = parseInt(obj.id.substring(seat, seat+1));
+	icon = "big-icons-modem-active";
+	ContainerWidth = "777px";
+	Containerpadding = "0px";
+	stitle = "<#statusTitle_Modem#>";
+	$("statusframe").src = "/device-map/modem.asp";
 	}
 	else if(obj.id.indexOf("Hub") > 0){
-		seat = obj.id.indexOf("Hub")+3;
-		clicked_device_order = parseInt(obj.id.substring(seat, seat+1));
-		icon = "big-icons-hub-active";
-		ContainerWidth = "892px";
-		Containerpadding = "0px";
-		stitle = "<#statusTitle_Hub#>";
-		$("statusframe").src = "/device-map/hub.asp";
+	seat = obj.id.indexOf("Hub")+3;
+	clicked_device_order = parseInt(obj.id.substring(seat, seat+1));
+	icon = "big-icons-hub-active";
+	ContainerWidth = "892px";
+	Containerpadding = "0px";
+	stitle = "<#statusTitle_Hub#>";
+	$("statusframe").src = "/device-map/hub.asp";
 	}
 	else if(obj.id.indexOf("SATA") > 0){
-		icon = "big-icons-ata-active";
-		ContainerWidth = "892px";
-		Containerpadding = "0px";
-		stitle = "<#statusTitle_SATA#>";
-		$("statusframe").src = "/device-map/sata.asp";
+	icon = "big-icons-ata-active";
+	ContainerWidth = "892px";
+	Containerpadding = "0px";
+	stitle = "<#statusTitle_SATA#>";
+	$("statusframe").src = "/device-map/sata.asp";
 	}
 	else if(obj.id.indexOf("Card") > 0){
-		icon = "big-icons-mmc-active";
-		ContainerWidth = "892px";
-		Containerpadding = "0px";
-		stitle = "<#statusTitle_Card#>";
-		$("statusframe").src = "/device-map/disk.asp";
+	icon = "big-icons-mmc-active";
+	ContainerWidth = "892px";
+	Containerpadding = "0px";
+	stitle = "<#statusTitle_Card#>";
+	$("statusframe").src = "/device-map/disk.asp";
+	}
+	else if(obj.id.indexOf("ss") > 0){
+	icon = "big-ss-active";
+	ContainerWidth = "999px";
+	Containerpadding = "0px";
+	stitle = "Shadowsocks设置";
+	$("statusframe").src = "/device-map/ss.asp";
 	}
 	else if(obj.id.indexOf("No") > 0){
-		icon = "iconNo";
+	icon = "iconNo";
 	}
 
 	$('statusContainer').style.width = ContainerWidth;
 	$('statusContainer').style.paddingRight = Containerpadding;
 
 	$j(".big-icons").removeClass("big-icons-globe-active big-icons-router-active big-icons-laptop-active big-icons-usb-active big-icons-usbhdd-active big-icons-printer-active big-icons-modem-active big-icons-hub-active big-icons-mmc-active big-icons-ata-active");
+	$j("#iconss").removeClass("big-ss-active");
 	$j(obj).addClass(icon);
 
 	// show arrow right icon
@@ -562,25 +590,25 @@ function mouseEvent(obj, key){
 	var icon;
 
 	if(obj.id.indexOf("Internet") > 0)
-		icon = "iconInternet";
+	icon = "iconInternet";
 	else if(obj.id.indexOf("Router") > 0)
-		icon = "iconRouter";
+	icon = "iconRouter";
 	else if(obj.id.indexOf("Client") > 0)
-		icon = "iconClient";
+	icon = "iconClient";
 	else if(obj.id.indexOf("USBdisk") > 0)
-		icon = "iconUSBdisk";
+	icon = "iconUSBdisk";
 	else if(obj.id.indexOf("Printer") > 0)
-		icon = "iconPrinter";
+	icon = "iconPrinter";
 	else if(obj.id.indexOf("No") > 0)
-		icon = "iconNo";
+	icon = "iconNo";
 	else
-		alert("mouse over on wrong place!");
+	alert("mouse over on wrong place!");
 
 	if(avoidkey != icon){
-		if(key)
-			obj.style.background = 'url("/images/map-'+icon+'_r.gif") no-repeat';
-		else
-			obj.style.background = 'url("/images/map-'+icon+'.gif") no-repeat';
+	if(key)
+	obj.style.background = 'url("/images/map-'+icon+'_r.gif") no-repeat';
+	else
+	obj.style.background = 'url("/images/map-'+icon+'.gif") no-repeat';
 	}
 }
 
@@ -734,6 +762,13 @@ $j(document).ready(function(){
                                             <a id="clientStatusLink" href="device-map/clients.asp" target="statusframe" style="outline:0;"><div id="iconClient" class="big-icons big-icons-laptop" onclick="clickEvent(this);"></div></a>
                                             <div style="position: absolute; margin-top: -47px; margin-left: 50px;"><b><div id="clientNumber">&nbsp;</div></b></div>
                                             <div class="arrow-right" id="arrow-clients"><img src="/bootstrap/img/arrow-right.png"></div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <a href="device-map/ss.asp" target="statusframe" style="outline:0;"><div id="iconss" class="big-ss" onclick="clickEvent(this);"></div></a>
+                                            <div style="position: absolute; margin-top: -47px; margin-left: 50px;"><div id="ssinternetStatus" style="padding-left: 3px;"></div></div>
+                                            <div class="arrow-right" id="arrow-ss"><img src="/bootstrap/img/arrow-right.png"></div>
                                         </td>
                                     </tr>
                                     <tr id="row_usb_port1">
